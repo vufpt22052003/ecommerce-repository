@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/view/js/jquery-3.3.1.min.js"></script>
+
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+	rel="stylesheet" />
+
+<link rel="stylesheet" href="/view/css/bootstrap.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+</head>
+<style>
+.event-schedule-area .section-title .title-text {
+	margin-bottom: 50px;
+}
+
+.event-schedule-area .tab-area .nav-tabs {
+	border-bottom: inherit;
+}
+
+.event-schedule-area .tab-area .nav {
+	border-bottom: inherit;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	margin-top: 80px;
+}
+
+.event-schedule-area .tab-area .nav-item {
+	margin-bottom: 75px;
+}
+
+.event-schedule-area .tab-area .nav-item .nav-link {
+	text-align: center;
+	font-size: 22px;
+	color: #333;
+	font-weight: 600;
+	border-radius: inherit;
+	border: inherit;
+	padding: 0px;
+	text-transform: capitalize !important;
+}
+
+.event-schedule-area .tab-area .nav-item .nav-link.active {
+	color: #4125dd;
+	background-color: transparent;
+}
+
+.event-schedule-area .tab-area .tab-content .table {
+	margin-bottom: 0;
+	width: 80%;
+}
+
+.event-schedule-area .tab-area .tab-content .table thead td,
+	.event-schedule-area .tab-area .tab-content .table thead th {
+	border-bottom-width: 1px;
+	font-size: 20px;
+	font-weight: 600;
+	color: #252525;
+}
+
+.event-schedule-area .tab-area .tab-content .table td,
+	.event-schedule-area .tab-area .tab-content .table th {
+	border: 1px solid #b7b7b7;
+	padding-left: 30px;
+}
+
+.event-schedule-area .tab-area .tab-content .table tbody th .heading,
+	.event-schedule-area .tab-area .tab-content .table tbody td .heading {
+	font-size: 16px;
+	text-transform: capitalize;
+	margin-bottom: 16px;
+	font-weight: 500;
+	color: #252525;
+	margin-bottom: 6px;
+}
+
+.event-schedule-area .tab-area .tab-content .table tbody th span,
+	.event-schedule-area .tab-area .tab-content .table tbody td span {
+	color: #4125dd;
+	font-size: 18px;
+	text-transform: uppercase;
+	margin-bottom: 6px;
+	display: block;
+}
+
+.event-schedule-area .tab-area .tab-content .table tbody th span.date,
+	.event-schedule-area .tab-area .tab-content .table tbody td span.date {
+	color: #656565;
+	font-size: 14px;
+	font-weight: 500;
+	margin-top: 15px;
+}
+
+.event-schedule-area .tab-area .tab-content .table tbody th p {
+	font-size: 14px;
+	margin: 0;
+	font-weight: normal;
+}
+
+.event-schedule-area-two .section-title .title-text h2 {
+	margin: 0px 0 15px;
+}
+
+.event-schedule-area-two ul.custom-tab {
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	border-bottom: 1px solid #dee2e6;
+	margin-bottom: 30px;
+}
+
+.event-schedule-area-two ul.custom-tab li {
+	margin-right: 70px;
+	position: relative;
+}
+
+.event-schedule-area-two ul.custom-tab li a {
+	color: #252525;
+	font-size: 25px;
+	line-height: 25px;
+	font-weight: 600;
+	text-transform: capitalize;
+	padding: 35px 0;
+	position: relative;
+}
+
+.event-schedule-area-two ul.custom-tab li a:hover:before {
+	width: 100%;
+}
+
+.event-schedule-area-two ul.custom-tab li a:before {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	content: "";
+	background: #4125dd;
+	width: 0;
+	height: 2px;
+	-webkit-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	transition: all 0.4s;
+}
+
+.event-schedule-area-two ul.custom-tab li a.active {
+	color: #4125dd;
+}
+
+.event-schedule-area-two .primary-btn {
+	margin-top: 40px;
+}
+
+.event-schedule-area-two .tab-content .table {
+	-webkit-box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+	margin-bottom: 0;
+}
+
+.event-schedule-area-two .tab-content .table thead {
+	background-color: #007bff;
+	color: #fff;
+	font-size: 20px;
+}
+
+.event-schedule-area-two .tab-content .table thead tr th {
+	padding: 20px;
+	border: 0;
+}
+
+.event-schedule-area-two .tab-content .table tbody {
+	background: #fff;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr.inner-box {
+	border-bottom: 1px solid #dee2e6;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr th {
+	border: 0;
+	padding: 30px 20px;
+	vertical-align: middle;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr th .event-date {
+	color: #252525;
+	text-align: center;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr th .event-date span
+	{
+	font-size: 50px;
+	line-height: 50px;
+	font-weight: normal;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td {
+	padding: 30px 20px;
+	vertical-align: middle;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .r-no span {
+	color: #252525;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap h3 a
+	{
+	font-size: 20px;
+	line-height: 20px;
+	color: #cf057c;
+	-webkit-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	transition: all 0.4s;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap h3 a:hover
+	{
+	color: #4125dd;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .categories
+	{
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	margin: 10px 0;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .categories a
+	{
+	color: #252525;
+	font-size: 16px;
+	margin-left: 10px;
+	-webkit-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	transition: all 0.4s;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .categories a:before
+	{
+	content: "\f07b";
+	font-family: fontawesome;
+	padding-right: 5px;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .time span
+	{
+	color: #252525;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .organizers
+	{
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+	margin: 10px 0;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .organizers a
+	{
+	color: #4125dd;
+	font-size: 16px;
+	-webkit-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	transition: all 0.4s;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .organizers a:hover
+	{
+	color: #47352acc;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-wrap .organizers a:before
+	{
+	content: "\f007";
+	font-family: fontawesome;
+	padding-right: 5px;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .primary-btn {
+	margin-top: 0;
+	text-align: center;
+}
+
+.event-schedule-area-two .tab-content .table tbody tr td .event-img img
+	{
+	width: 100px;
+	height: 100px;
+	border-radius: 8px;
+}
+
+#table_pending td.event-wrap {
+	display: flex;
+}
+
+#table_pending td.event-img {
+	margin-right: 40px;
+}
+
+#table_pending td.event-img img {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+#table_pending td.meta {
+	flex-grow: 1;
+}
+
+#table_pending td b {
+	font-weight: bold;
+}
+
+#table_pending td b.total-price {
+	display: block;
+}
+
+#table_pending {
+	table-layout: fixed;
+	width: 100%;
+}
+
+#table_pending td {
+	word-wrap: break-word;
+	white-space: normal;
+}
+</style>
+<body ng-app="MyApp" ng-controller="OrderController">
+
+
+		<div th:replace="views/menu :: menu"></div>
+
+	<div class="event-schedule-area-two bg-color pad100"
+		style="background-color: #f5f5f5">
+		<div class="container">
+
+			<!-- row end-->
+			<div class="row">
+				<div class="col-lg-12">
+					<ul class="nav custom-tab" id="myTab" role="tablist">
+						<li class="nav-item"><a class="nav-link active show"
+							id="home-taThursday" data-toggle="tab" href="#home" role="tab"
+							aria-controls="home" aria-selected="true" ng-model="information"
+							ng-click="loadData('pending')"> Đang Chờ</a></li>
+						<li class="nav-item"><a class="nav-link" id="profile-tab"
+							data-toggle="tab" href="#profile" role="tab"
+							aria-controls="profile" aria-selected="false"
+							ng-model="information" ng-click="loadData('confirm')">Hoàn
+								Thành</a></li>
+
+						<li class="nav-item"><a class="nav-link" id="contact-tab"
+							data-toggle="tab" href="#contact" role="tab"
+							aria-controls="contact" aria-selected="false"
+							ng-click="loadData('cancel')">Đơn Hàng Đã Hủy</a></li>
+
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade active show" id="home" role="tabpanel">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th scope="col">Tên Sản Phẩm</th>
+											<th scope="col">Giá Tiền</th>
+											<th scope="col">Tổng Tiền</th>
+											<th scope="col">Thao Tác</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in data" class="inner-box">
+
+											<td>
+												<div class="event-img">
+													<img src="images/{{ item.product_id.img }}"
+														alt="Ảnh sản phẩm">
+												</div>
+											</td>
+											<td>
+												<div class="event-wrap">
+													<h3>
+														<a href="#">{{item.product_id.name}}</a>
+													</h3>
+													<div class="meta">
+														<div>
+															<a href="#">x{{item.quantity}}</a>
+														</div>
+													</div>
+													<div class="meta">
+														<div>
+															<p>Phân Loại Hàng</p>
+														</div>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="r-no">
+													<span>${{item.price}}</span>
+												</div>
+											</td>
+											<td>${{item.price * item.quantity}}</td>
+											<td>
+												<p ng-if="information == 'pending' ">
+													<button class="btn btn-primary" ng-click="cancel(item.id)">Hủy
+														Đơn Hàng</button>
+													<button disabled class="btn btn-light">Đang Chờ</button>
+												</p>
+												<p ng-if="information == 'confirm' ">
+													<button class="btn btn-primary" ng-click="cancel(item.id)">Hủy
+														Đơn Hàng</button>
+													<button disabled class="btn btn-light">Đang Chờ</button>
+												</p>
+												<p ng-if="information == 'confirm' ">Thành Công</p>
+											</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- <div class="tab-pane fade" id="profile" role="tabpanel"
+							aria-labelledby="profile-tab">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th scope="col">Tên Sản Phẩm</th>
+											<th scope="col">Giá Tiền</th>
+											<th scope="col">Tổng Tiền</th>
+											<th scope="col">Trạng Thái</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in data" class="inner-box">
+
+											<td>
+												<div class="event-img">
+													<img src="images/{{ item.product_id.img }}"
+														alt="Ảnh sản phẩm">
+												</div>
+											</td>
+											<td>
+												<div class="event-wrap">
+													<h3>
+														<a href="#">{{item.product_id.name}}</a>
+													</h3>
+													<div class="meta">
+														<div>
+															<a href="#">x{{item.quantity}}</a>
+														</div>
+													</div>
+													<div class="meta">
+														<div>
+															<p>Phân Loại Hàng</p>
+														</div>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="r-no">
+													<span>${{item.price}}</span>
+												</div>
+											</td>
+											<td>${{item.price * item.quantity}}</td>
+											<td>Thành Công</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="contact" role="tabpanel"
+							aria-labelledby="contact-tab">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th></th>
+											<th scope="col">Tên Sản Phẩm</th>
+											<th scope="col">Giá Tiền</th>
+											<th scope="col">Tổng Tiền</th>
+											<th scope="col">Trạng Thái</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in data" class="inner-box">
+
+											<td>
+												<div class="event-img">
+													<img src="images/{{ item.product_id.img }}"
+														alt="Ảnh sản phẩm">
+												</div>
+											</td>
+											<td>
+												<div class="event-wrap">
+													<h3>
+														<a href="#">{{item.product_id.name}}</a>
+													</h3>
+													<div class="meta">
+														<div>
+															<a href="#">x{{item.quantity}}</a>
+														</div>
+													</div>
+													<div class="meta">
+														<div>
+															<p>Phân Loại Hàng</p>
+														</div>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="r-no">
+													<span>${{item.price}}</span>
+												</div>
+											</td>
+											<td>${{item.price * item.quantity}}</td>
+											<td>Đơn Hàng Đã Bị Hủy</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+
+-->
+					</div>
+				</div>
+			</div>
+			<!-- /row end-->
+		</div>
+	</div>
+
+
+	<script src="/controllers/Controller.js"></script>
+	<script src="/details/js/bootstrap.min.js"></script>
+</body>
+</html>

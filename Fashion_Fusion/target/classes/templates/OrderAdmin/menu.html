@@ -1,0 +1,83 @@
+<style>
+a {
+	direction: none !important;
+}
+</style>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<div th:fragment="menu">
+	<aside class="left-sidebar" data-sidebarbg="skin6" style="z-index: 9999">
+		<!-- Sidebar scroll-->
+		<div class="scroll-sidebar" style="font-size:15px">
+			<!-- Sidebar navigation-->
+			<nav class="sidebar-nav" style="position: fixed;">
+				<ul id="sidebarnav">
+					<!-- User Profile-->
+					<li class="sidebar-item pt-2"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link"
+						href="homeAdmin" aria-expanded="false"> <i
+							class=" fas fa-chart-line" aria-hidden="true"></i> <span
+							class="hide-menu">Thống Kê Doanh Thu</span>
+					</a></li>
+					<li class="sidebar-item"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link"
+						href="Manager" aria-expanded="false"> <i class="fas fa-tasks"
+							aria-hidden="true"></i> <span class="hide-menu">Quản Lý
+								Đơn Hàng</span>
+					</a></li>
+					<li class="sidebar-item"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link"
+						href="addPro" aria-expanded="false"> <i class="fas fa-plus-circle"
+							aria-hidden="true"></i> <span class="hide-menu">Thêm Sản
+								Phẩm</span>
+					</a></li>
+
+					<li class="sidebar-item"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link"
+						href="ManagerProduct" aria-expanded="false"> <i
+							class="fas fa-cogs" aria-hidden="true"></i> <span
+							class="hide-menu">Quản Lý Sản Phẩm</span>
+					</a></li>
+					<li class="sidebar-item"><a
+						class="sidebar-link waves-effect waves-dark sidebar-link"
+						href="saleManage" aria-expanded="false"> <i class="fas fa-tag"
+							aria-hidden="true"></i> <span class="hide-menu">Sản Phẩm
+								Giảm Giá</span>
+					</a></li>
+<!-- 					<li class="sidebar-item"><a -->
+<!-- 						class="sidebar-link waves-effect waves-dark sidebar-link" -->
+<!-- 						href="fontawesome.html" aria-expanded="false"> <i -->
+<!-- 							class="fa fa-font" aria-hidden="true"></i> <span -->
+<!-- 							class="hide-menu">Icon</span> -->
+<!-- 					</a></li> -->
+<!-- 					<li class="sidebar-item"><a -->
+<!-- 						class="sidebar-link waves-effect waves-dark sidebar-link" -->
+<!-- 						href="map-google.html" aria-expanded="false"> <i -->
+<!-- 							class="fa fa-globe" aria-hidden="true"></i> <span -->
+<!-- 							class="hide-menu">Google Map</span> -->
+<!-- 					</a></li> -->
+<!-- 					<li class="sidebar-item"><a -->
+<!-- 						class="sidebar-link waves-effect waves-dark sidebar-link" -->
+<!-- 						href="blank.html" aria-expanded="false"> <i -->
+<!-- 							class="fa fa-columns" aria-hidden="true"></i> <span -->
+<!-- 							class="hide-menu">Blank Page</span> -->
+<!-- 					</a></li> -->
+<!-- 					<li class="sidebar-item"><a -->
+<!-- 						class="sidebar-link waves-effect waves-dark sidebar-link" -->
+<!-- 						href="404.html" aria-expanded="false"> <i -->
+<!-- 							class="fa fa-info-circle" aria-hidden="true"></i> <span -->
+<!-- 							class="hide-menu">Error 404</span> -->
+<!-- 					</a></li> -->
+					<li class="text-center p-20 upgrade-btn"><a
+						href="https://www.wrappixel.com/templates/ampleadmin/"
+						class="btn d-grid btn-danger text-white" target="_blank">
+							Đăng Xuất</a></li>
+				</ul>
+
+			</nav>
+			<!-- End Sidebar navigation -->
+		</div>
+		<!-- End Sidebar scroll-->
+	</aside>
+</div>

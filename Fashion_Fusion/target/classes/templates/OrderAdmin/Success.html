@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16"
+	href="plugins/images/favicon.png">
+<!-- Custom CSS -->
+<link href="plugins/bower_components/chartist/dist/chartist.min.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css">
+
+<script src="/Order_Management/ProductManage.js"></script>
+
+
+<link href="
+    OrderAdmin/css/style.min.css" rel="stylesheet">
+</head>
+<style>
+
+@keyframes robot-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.robot img {
+  animation: robot-animation 2s infinite;
+}
+
+</style>
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
+		data-sidebartype="full" data-sidebar-position="absolute"
+		data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<!-- Topbar header - style you can find in pages.scss -->
+		<!-- ============================================================== -->
+		<header class="topbar" data-navbarbg="skin5">
+			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
+				<div class="navbar-header" data-logobg="skin6">
+					<!-- ============================================================== -->
+					<!-- Logo -->
+					<!-- ============================================================== -->
+					<a class="navbar-brand" href="dashboard.html"> <!-- Logo icon -->
+						<b class="logo-icon"> <!-- Dark Logo icon --> <img
+							src="plugins/images/logo-icon.png" alt="homepage" />
+					</b> <!--End Logo icon --> <!-- Logo text --> <span class="logo-text">
+							<!-- dark Logo text --> <img src="plugins/images/logo-text.png"
+							alt="homepage" />
+					</span>
+					</a>
+					<!-- ============================================================== -->
+					<!-- End Logo -->
+					<!-- ============================================================== -->
+					<!-- ============================================================== -->
+					<!-- toggle and nav items -->
+					<!-- ============================================================== -->
+					<a
+						class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+						href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+				</div>
+				<!-- ============================================================== -->
+				<!-- End Logo -->
+				<!-- ============================================================== -->
+				<div class="navbar-collapse collapse" id="navbarSupportedContent"
+					data-navbarbg="skin5">
+
+					<!-- ============================================================== -->
+					<!-- Right side toggle and nav items -->
+					<!-- ============================================================== -->
+					<ul class="navbar-nav ms-auto d-flex align-items-center">
+
+						<!-- ============================================================== -->
+						<!-- Search -->
+						<!-- ============================================================== -->
+						<li class=" in">
+							<form role="search" class="app-search d-none d-md-block me-3">
+								<input type="text" placeholder="Search..."
+									class="form-control mt-0"> <a href="" class="active">
+									<i class="fa fa-search"></i>
+								</a>
+							</form>
+						</li>
+						<!-- ============================================================== -->
+						<!-- User profile and search -->
+						<!-- ============================================================== -->
+						<li><a class="profile-pic" href="#"> <img
+								src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+								class="img-circle"><span class="text-white font-medium">Steave</span></a>
+						</li>
+						<!-- ============================================================== -->
+						<!-- User profile and search -->
+						<!-- ============================================================== -->
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<div th:replace="OrderAdmin/menu :: menu"></div>
+
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb bg-white">
+				<div class="row align-items-center">
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+						<h4 class="page-title">Dashboard</h4>
+					</div>
+					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+						<div class="d-md-flex">
+							<ol class="breadcrumb ms-auto">
+								<li><a href="#" class="fw-normal">Dashboard</a></li>
+							</ol>
+							<a href="https://www.wrappixel.com/templates/ampleadmin/"
+								target="_blank"
+								class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Upgrade
+								to Pro</a>
+						</div>
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+
+			<div class="container-fluid">
+
+
+				<div class="row">
+					<div class="col-md-12 col-lg-12 col-sm-12">
+						<div class="white-box" style="text-align: center;">
+							<div class="robot">
+								<img src="background/robot.jpg" alt="Robot" />
+							</div>
+
+							<div class="js-container container"></div>
+							<div class="foo">
+								<h1 style="color: red; text-align: center;">Thành Công ✔</h1>
+								<a href="ManagerProduct">Quay Về Đơn Hàng</a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- ============================================================== -->
+				<!-- Recent Comments -->
+				<!-- ============================================================== -->
+
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Container fluid  -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<footer class="footer text-center">
+				2021 © Ample Admin brought to you by <a
+					href="https://www.wrappixel.com/">wrappixel.com</a>
+			</footer>
+			<!-- ============================================================== -->
+			<!-- End footer -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Page wrapper  -->
+		<!-- ============================================================== -->
+	</div>
+
+	<script
+		src=" OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src=" OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src=" OrderAdmin/js/app-style-switcher.js"></script>
+	<script
+		src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+	<!--Wave Effects -->
+	<!--Menu sidebar -->
+	<script src=" OrderAdmin/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src=" OrderAdmin/js/custom.js"></script>
+	<!--This page JavaScript -->
+	<!--chartis chart-->
+	<script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
+	<script
+		src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+	<script src="js/pages/dashboards/dashboard1.js"></script>
+
+</body>
+
+</html>

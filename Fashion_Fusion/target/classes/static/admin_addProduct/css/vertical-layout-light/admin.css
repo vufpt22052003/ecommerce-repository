@@ -1,0 +1,88 @@
+@charset "UTF-8";
+.image-container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.image-container {
+	max-width: 100%;
+	max-height: 100%;
+	border: 1px solid #ccc;
+	margin: 10px;
+	box-sizing: border-box;
+}
+
+#image-container img {
+	
+	height: auto;
+}
+
+#image-preview img {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+img {
+	width: 100px;
+	height: 100px;
+	margin: 10px;
+}
+
+.col-12 {
+	margin-bottom: 1rem;
+}
+
+.d-grid {
+	display: grid;
+	grid-template-columns: auto auto;
+	column-gap: 1rem;
+}
+
+#input-container input[type="text"] {
+	display: block;
+	width: 100%;
+	padding: 0.5rem;
+	border: 1px solid #ccc;
+	border-radius: 0.25rem;
+	box-sizing: border-box;
+}
+
+#add-input {
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	background-color: #007bff;
+	color: #fff;
+	border: none;
+	border-radius: 0.25rem;
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+}
+
+#add-input:hover {
+	background-color: #0069d9;
+}
+
+#input-container {
+	display: flex;
+	align-items: center;
+}
+
+#input-container input[type="text"] {
+	display: inline-block;
+	margin-right: 10px;
+}
+/* Style cho nhãn Kích cỡ */
+label {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Style cho hộp kiểm */
+input[type="checkbox"] {
+  display: inline-block;
+  margin-right: 5px;
+}

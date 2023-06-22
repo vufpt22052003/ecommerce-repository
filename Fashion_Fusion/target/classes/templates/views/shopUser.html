@@ -1,0 +1,284 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="#f02b2b">
+<link rel="canonical" href="https://template-alena.mysapo.net/quan-ao">
+<meta name="revisit-after" content="2 days">
+<meta name="viewport"
+	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noodp,index,follow">
+<meta name="description" content="">
+<title>Quần áo</title>
+<meta name="keywords"
+	content="Quần áo, Template Alena, template-alena.mysapo.net">
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Quần áo">
+<meta property="og:image"
+	content="https://bizweb.dktcdn.net/100/455/315/themes/894917/assets/logo.png?1676282094225">
+<meta property="og:image:secure_url"
+	content="https://bizweb.dktcdn.net/100/455/315/themes/894917/assets/logo.png?1676282094225">
+
+<meta property="og:description" content="">
+<meta property="og:url"
+	content="https://template-alena.mysapo.net/quan-ao">
+<meta property="og:site_name" content="Template Alena">
+<link rel="icon"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/favicon.png?1676282094225"
+	type="image/x-icon">
+<link rel="preload" as="script"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery.js?1676282094225">
+<script
+	src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery.js?1676282094225"
+	type="text/javascript"></script>
+<link rel="preload" as="script"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/swiper.js?1676282094225">
+<script
+	src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/swiper.js?1676282094225"
+	type="text/javascript"></script>
+<link rel="preload" as="script"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/lazy.js?1676282094225">
+<script
+	src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/lazy.js?1676282094225"
+	type="text/javascript"></script>
+<link rel="preload" as="style" type="text/css"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/bootstrap-4-3-min.css?1676282094225">
+<link rel="preload" as="style" type="text/css"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/main.scss.css?1676282094225">
+<link rel="preload" as="style" type="text/css"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/index.scss.css?1676282094225">
+<link rel="preload" as="style" type="text/css"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/404page.scss.css?1676282094225">
+<link rel="preload" as="style" type="text/css"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/quickviews_popup_cart.scss.css?1676282094225">
+<link rel="stylesheet" href="/view/css/style2.css" type="text/css">
+
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/bootstrap-4-3-min.css?1676282094225">
+<link
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/main.scss.css?1676282094225"
+	rel="stylesheet" type="text/css" media="all">
+<link rel="preload" as="style" type="text/css"
+	href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap">
+<link
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/breadcrumb_style.scss.css?1676282094225"
+	rel="stylesheet" type="text/css" media="all">
+<!-- Css Styles -->
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+
+
+
+<link
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/sidebar_style.scss.css?1676282094225"
+	rel="stylesheet" type="text/css" media="all">
+
+
+
+<link
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/collection_style.scss.css?1676282094225"
+	rel="stylesheet" type="text/css" media="all">
+
+<link
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/quickviews_popup_cart.scss.css?1676282094225"
+	rel="stylesheet" type="text/css" media="all">
+<style type="text/css">
+/* CSS cho hàng chứa 5 sản phẩm */
+.products-view-grid .row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+}
+
+.products-view-grid .col-lg-2, .products-view-grid .col-md-4,
+	.products-view-grid .col-sm-6 {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-bottom: 30px; /* Khoảng cách dưới giữa các sản phẩm */
+}
+
+@media ( min-width : 1200px) {
+	.container, .container-lg, .container-md, .container-sm, .container-xl {
+		max-width: 1250px !important;
+	}
+}
+
+.avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+	<div th:replace="views/menu :: menu"></div>
+
+	<div class="header-menu">
+		<div class="containers">
+			<div class="row">
+
+				<div class="col-lg-3 col-search-cart">
+					<div class="phone_header"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="bodywrap" style="background-color: #f5f5f5">
+	<br />
+		<div class="layout-collection">
+			<div class="container">
+				<div class="row" style="background-color: #fff; padding: 15px;">
+
+					<div class="col-2">
+						<div class="avatar" style="background-color: white;">
+							<img src="/images/avt.jpg" alt="Avatar">
+						</div>
+					</div>
+					<div class="col-5">
+						<br />
+						<h2 th:text="${user.get().us}"></h2>
+						<h5 th:text="${user.get().email}"></h5>
+					</div>
+					<div class="col-4">
+						<br />
+						Ngày Tham Gia : 11 tháng trước <br />
+						<i class="fas fa-store"></i><b th:text="${'Tổng Sản Phẩm : '+totalPro}"></b>
+
+					</div>
+					
+					<div class="col-4">
+						<br /> <br /> <br />
+
+					</div>
+					
+				</div>
+			</div>
+			<br /> <br />
+			<div class="container">
+				<div class="row">
+					<div class="block-collection col-lg-12 col-12">
+						<h1 class="title-page d-md-block d-none">Quần áo</h1>
+						<div class="category-products">
+							<div id="sort-by">
+								<label class="left">Sắp xếp: </label> <select name="sortBy"
+									id="sortBy" class="selectBox">
+									<option selected="" value="default">Mặc định</option>
+									<option value="alpha-asc">A → Z</option>
+									<option value="alpha-desc">Z → A</option>
+									<option value="price-asc">Giá tăng dần</option>
+									<option value="price-desc">Giá giảm dần</option>
+									<option value="created-desc">Hàng mới nhất</option>
+									<option value="created-asc">Hàng cũ nhất</option>
+								</select>
+								<script
+									src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/sortby.js?1676282094225"
+									type="text/javascript"></script>
+							</div>
+							<div class="products-view products-view-grid list_hover_pro">
+								<div class="row">
+									<th:block th:each="item, iteration : ${listProUser}">
+										<div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+											<div class="item_product_main" style="width: 200px;">
+												<form action="/cart/add" method="post"
+													class="variants product-action" data-cart-form=""
+													data-id="product-actions-26182932"
+													enctype="multipart/form-data">
+													<div class="product-thumbnail"
+														style="background-color: white;">
+														<a class="image_thumb scale_hover"
+															th:href="@{/shop_info/{id}(id=${item.id})}"
+															title="${item.name}" style="height: 218px;"> <img
+															class="lazyload" th:src="@{'/images/' + ${item.img}}"
+															data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
+															alt="${item.name}">
+														</a>
+														<div class="action d-xl-flex d-none">
+															<input class="hidden" type="hidden" name="variantId"
+																value="65670147">
+															<div class="action d-xl-flex d-none">
+																<input class="hidden" type="hidden" name="variantId"
+																	value="65670147"> <a
+																	style="text-decoration: none;"
+																	class="btn-cart btn-views" title="Tùy chọn"
+																	th:href="@{/add-to-cart/{id}(id=${item.id})}"> Thêm
+																	Vào Giỏ Hàng </a>
+
+															</div>
+														</div>
+													</div>
+													<div class="product-info">
+														<h3 class="product-name">
+															<a href="/ao-khoac-tre-em" title="Áo khoác trẻ em"
+																th:text="${item.name}"></a>
+														</h3>
+														<div class="price-box">
+															150.000₫&nbsp;<span class="compare-price">200.000₫</span>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</th:block>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+
+
+	<link rel="preload" as="script"
+		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/main.js?1676282094225">
+	<script
+		src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/main.js?1676282094225"
+		type="text/javascript"></script>
+	<script
+		src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/index.js?1676282094225"
+		type="text/javascript"></script>
+	<div id="popupCartModal" class="modal fade" role="dialog"></div>
+	<link rel="preload" as="style"
+		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/ajaxcart.scss.css?1676282094225"
+		type="text/css">
+	<link
+		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/ajaxcart.scss.css?1676282094225"
+		rel="stylesheet" type="text/css" media="all">
+	<div class="backdrop__body-backdrop___1rvky"></div>
+
+	<link rel="preload" as="style" type="text/css"
+		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.scss.css?1676282094225">
+	<link rel="preload" as="script"
+		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.js?1676282094225">
+	<link
+		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.scss.css?1676282094225"
+		rel="stylesheet" type="text/css" media="all">
+	<script
+		src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.js?1676282094225"
+		type="text/javascript"></script>
+	<script type="text/javascript"
+		src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&amp;family=Nunito:wght@200;300;400;600;700&amp;display=swap"
+		rel="stylesheet">
+</body>
+
+</html>

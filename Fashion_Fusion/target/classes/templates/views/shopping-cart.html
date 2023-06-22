@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Male_Fashion Template">
+<meta name="keywords" content="Male_Fashion, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Male-Fashion | Template</title>
+
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<!-- Css Styles -->
+<link rel="stylesheet" href="/view/css/bootstrap.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/elegant-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/magnific-popup.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="/view/css/owl.carousel.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/slicknav.min.css" type="text/css">
+
+
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+</head>
+<style>
+.contain {
+	object-fit: contain;
+}
+
+.checkPrice {
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.checkPrice::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 12px;
+	height: 12px;
+	background-color: #fff;
+	border: 2px solid #ccc;
+	border-radius: 2px;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+td.quantity__item input[type="text"] {
+	width: 50px;
+	padding: 5px;
+	font-size: 14px;
+	text-align: center;
+}
+
+td.quantity__item input[type="text"]:focus {
+	outline: none;
+	border: 2px solid blue;
+}
+.btn{
+margin-bottom: 20px; 
+    margin-left: 20px;
+}
+</style>
+<body>
+	<!-- Page Preloder -->
+
+		<div th:replace="views/menu :: menu"></div>
+	<section class="shopping-cart spad" style="background-color: #f5f5f5;">
+		<div class="containers" style="width: 1300px; margin-left: 98px;">
+		<br />
+			<form action="/checkout">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="shopping__cart__table">
+							<table id="table_cart" style="background-color: #fdf8f8">
+
+								<!-- đọc ajax -->
+
+							</table>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6">
+								<div class="continue__btn" style="display: flex;">
+									<input type="checkbox" id="checked" onclick="check()" />
+									<button type="button" style="width: 280px;"
+										class="primary-btn white-btn">
+										<span id="textAll">Chọn Tất Cả</span>
+									</button>
+									&nbsp;&nbsp;
+									<button type="button" id="btnDelCart"
+										style="width: 200px; display: none"
+										class="primary-btn
+									white-btn"
+										onclick="deleteSelected()">
+										<span id="delCart"></span>
+									</button>
+								</div>
+							</div>
+
+							<div class="col-lg-6 col-md-6 col-sm-6">
+								<div class="continue__btn update__btn">
+									<a onclick="update_cart()"><i class="fa fa-spinner"></i>
+										Update cart</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<!-- <div class="cart__discount">
+							<h6>Discount codes</h6>
+							<form action="#">
+								<input type="text" placeholder="Coupon code">
+								<button type="submit">Apply</button>
+							</form>
+						</div> -->
+						<div class="cart__total" id="cart_total"
+							style="position: fixed; background-color: #d8d5c9;">
+							<h6>Cart total</h6>
+							<ul>
+								<li id="totalPrice">Tổng thanh toán (0 Sản phẩm): &nbsp ₫0
+								</li>
+							</ul>
+							<button type="submit" style="width: 280px;" onclick="Purchase()"
+								class="primary-btn">Mua Hàng</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+	</section>
+
+	<br />
+	<br />
+	<!-- Shopping Cart Section End -->
+
+	<!-- Footer Section Begin -->
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="footer__about">
+						<div class="footer__logo">
+							<a href="#"><img src="img/footer-logo.png" alt=""></a>
+						</div>
+						<p>The customer is at the heart of our unique business model,
+							which includes design.</p>
+						<a href="#"><img src="img/payment.png" alt=""></a>
+					</div>
+				</div>
+				<div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+					<div class="footer__widget">
+						<h6>Shopping</h6>
+						<ul>
+							<li><a href="#">Clothing Store</a></li>
+							<li><a href="#">Trending Shoes</a></li>
+							<li><a href="#">Accessories</a></li>
+							<li><a href="#">Sale</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="footer__widget">
+						<h6>Shopping</h6>
+						<ul>
+							<li><a href="#">Contact Us</a></li>
+							<li><a href="#">Payment Methods</a></li>
+							<li><a href="#">Delivary</a></li>
+							<li><a href="#">Return & Exchanges</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+					<div class="footer__widget">
+						<h6>NewLetter</h6>
+						<div class="footer__newslatter">
+							<p>Be the first to know about new arrivals, look books, sales
+								& promos!</p>
+							<form action="#">
+								<input type="text" placeholder="Your email">
+								<button type="submit">
+									<span class="icon_mail_alt"></span>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="footer__copyright__text">
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						<p>
+							Copyright ©
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							2020 All rights reserved | This template is made with <i
+								class="fa fa-heart-o" aria-hidden="true"></i> by <a
+								href="https://colorlib.com" target="_blank">Colorlib</a>
+						</p>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- Footer Section End -->
+
+	<!-- Search Begin -->
+	<div class="search-model">
+		<div class="h-100 d-flex align-items-center justify-content-center">
+			<div class="search-close-switch">+</div>
+			<form class="search-model-form">
+				<input type="text" id="search-input" placeholder="Search here.....">
+			</form>
+		</div>
+	</div>
+	<!-- Search End -->
+
+	<!-- Js Plugins -->
+	<script src="/view/js/jquery-3.3.1.min.js"></script>
+	<script src="/view/js/bootstrap.min.js"></script>
+	<script src="/view/js/jquery.nice-select.min.js"></script>
+	<script src="/view/js/jquery.nicescroll.min.js"></script>
+	<script src="/view/js/jquery.magnific-popup.min.js"></script>
+	<script src="/view/js/jquery.countdown.min.js"></script>
+	<script src="/view/js/jquery.slicknav.js"></script>
+	<script src="/view/js/mixitup.min.js"></script>
+	<script src="/view/js/owl.carousel.min.js"></script>
+	<script src="/view/js/main.js"></script>
+	<script src="/cart/ajax.js"></script>
+
+</body>
+
+</html>

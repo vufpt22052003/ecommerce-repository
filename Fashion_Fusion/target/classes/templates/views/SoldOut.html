@@ -1,0 +1,197 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<link rel="preload" as="script"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery.js?1676282094225">
+<script
+	src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery.js?1676282094225"
+	type="text/javascript"></script>
+<link rel="preload" as="script"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/swiper.js?1676282094225">
+<script
+	src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/swiper.js?1676282094225"
+	type="text/javascript"></script>
+<link rel="preload" as="script"
+	href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/lazy.js?1676282094225">
+
+<link rel="stylesheet" href="/details/css/font-awesome.min.css"
+	type="text/css">
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link href="/index/css/fonts.googleapis.css" rel="stylesheet"
+	type="text/css" media="all">
+
+<link href="/index/css/index.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css">
+<style>
+@media ( min-width : 992px) {
+	.col-lg-3 {
+		-ms-flex: 0 0 25%;
+		flex: 0 0 25%;
+		max-width: 20%;
+	}
+}
+
+.search-switch {
+	height: 28px;
+	padding-top: 2px;
+}
+
+.sale-badge {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	padding: 5px 10px;
+	background-color: red;
+	color: white;
+	font-weight: bold;
+	border-style: dotted;
+}
+</style>
+
+
+</head>
+<body>
+	<div th:replace="views/menu :: menu"></div>
+
+	<section class="product spad" style="background-color: #f5f5f5;">
+
+		<div class="container">
+			<br />
+			<div class="col-12">
+				<div class="row" style="background-color: #fff; padding: 15px;">
+					<div class="col-3">
+						<img th:src="@{'/images/' + ${product.get().img}}" alt="" />
+
+					</div>
+					<div class="col-6">
+						<br />
+						<h2 th:text="${product.get().name}"></h2>
+						<br />
+
+						<h5 th:if="${product.get().checkSale}">
+							<span class="special-price"> <span
+								class="price product-price"
+								th:text="${product.get().price +'đ'}"></span>
+							</span> &nbsp;
+							<!-- Giá Khuyến mại -->
+							<span class="old-price"> Giá cũ: <del
+									class="price product-price-old">
+									<span style="color: red" th:text="${price} +'đ'"></span>
+								</del>
+							</span>
+						</h5>
+
+						<h5 th:unless="${product.get().checkSale}">
+							<span class="old-price"> <span th:text="${price} +'đ'"></span>
+							</span>
+						</h5>
+
+						<br />
+						<button style="background: #facac0 !important;" disabled>Hết
+							Hàng</button>
+					</div>
+					<div class="col-3">
+						<br />
+						<h4>Tên Shop</h4>
+						<br />
+						<button class="btn btn-success">Xem Shop</button>
+					</div>
+				</div>
+				<br /> Sản Phẩm Tương Tự <br /> <br />
+				<div class="row">
+					<div class="block-collection col-lg-12 col-12">
+						<div class="category-products">
+
+							<div id="sort-by">
+
+
+								<script
+									src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/sortby.js?1676282094225"
+									type="text/javascript"></script>
+							</div>
+
+							<div class="products-view products-view-grid list_hover_pro">
+								<div class="row">
+
+									<th:block th:each="item : ${listByName}">
+										<th:block th:if="${item.id != product.get().id}">
+											<div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+												<div class="item_product_main" style="width: 200px;">
+													<form action="/cart/add" method="post"
+														class="variants product-action" data-cart-form=""
+														data-id="product-actions-26182932"
+														enctype="multipart/form-data">
+														<div class="product-thumbnail"
+															style="background-color: #fff;">
+															<a class="image_thumb scale_hover"
+																th:href="@{/shop_info/{id}(id=${item.id})}"
+																style="height: 218px;"> <img class="lazyload"
+																th:src="@{'/images/' + ${item.img}}"
+																data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
+																alt="${item.name}"> <span class="sale-badge"
+																th:if="${item.checkSale}"
+																th:text="${'-'+item.sale_percent +'%'}"></span> <!-- Thêm phần tử chứa chữ "Sale" --></a>
+															<div class="action d-xl-flex d-none">
+																<input class="hidden" type="hidden" name="variantId"
+																	value="65670147">
+																<button class="btn-cart btn-views" title="Tùy chọn"
+																	type="button">
+																	<a style="text-decoration: none" th:href="@{/add-to-cart/{id}(id=${item.id})}">Thêm Vào Giỏ Hàng</a>
+																</button>
+															</div>
+														</div>
+														<div class="product-info">
+															<h3 class="product-name">
+																<a href="/ao-khoac-tre-em" th:title="${item.name}"
+																	th:text="${item.name}"></a>
+															</h3>
+															<!-- tính giá -->
+															<div class="price-box">
+																<p th:if="${item.checkSale()}">
+																	<span th:text="${item.price}"></span>&nbsp;<span
+																		class="compare-price"
+																		th:text="${item.originalPrice + 'đ'}"></span>
+																</p>
+																<p th:unless="${item.checkSale()}"
+																	th:text="${item.price + 'đ'}"></p>
+															</div>
+
+															<!-- tính dã bán  -->
+															<th:block th:if="${item.in_stock > 0}"
+																th:with="count=${#aggregates.sum(item.details.![is_completed ? quantity : 0])}"
+																th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
+																<p
+																	th:text="${  count != null ? 'Đã Bán ' + count : '0 Đã Bán'}"></p>
+															</th:block>
+															<th:block th:unless="${item.in_stock > 0}"
+																class="sold-out">
+																<b style="color: red" th:text="${'Đã Bán Hết'}"></b>
+															</th:block>
+
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- Kiểm tra số lượng sản phẩm hiện tại và chia hàng khi cần -->
+
+										</th:block>
+									</th:block>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+	</section>
+
+</body>
+</html>

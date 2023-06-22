@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<link rel="canonical"
+	href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16"
+	href="plugins/images/favicon.png">
+<!-- Custom CSS -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/view/js/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="/OrderAdmin/css/style.min.css">
+
+<style type="text/css">
+body {
+	font-family: "lato", sans-serif;
+}
+
+.image-container {
+	max-width: 50px;
+}
+
+.image-container img {
+	max-width: 150%;
+	height: auto;
+	vertical-align: middle;
+}
+
+.conten {
+	padding-top: 25px;
+}
+
+.container {
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+h2 {
+	font-size: 26px;
+	margin: 20px 0;
+	text-align: center;
+}
+
+h2 small {
+	font-size: 0.5em;
+}
+
+.responsive-table li {
+	border-radius: 3px;
+	padding: 25px 30px;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 25px;
+}
+
+.responsive-table .table-header {
+	background-color: #95A5A6;
+	font-size: 14px;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+}
+
+.responsive-table .table-row {
+	background-color: #ffffff;
+	box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+}
+
+.responsive-table .col-1 {
+	flex-basis: 10%;
+}
+
+.responsive-table .col-2 {
+	flex-basis: 40%;
+}
+
+.responsive-table .col-3 {
+	flex-basis: 25%;
+}
+
+.responsive-table .col-4 {
+	flex-basis: 25%;
+}
+
+@media all and (max-width: 767px) {
+	.responsive-table .table-header {
+		display: none;
+	}
+	.responsive-table li {
+		display: block;
+	}
+	.responsive-table .col {
+		flex-basis: 100%;
+	}
+	.responsive-table .col {
+		display: flex;
+		padding: 10px 0;
+	}
+	.responsive-table .col:before {
+		color: #6C7A89;
+		padding-right: 10px;
+		content: attr(data-label);
+		flex-basis: 50%;
+		text-align: right;
+	}
+}
+
+.form-control {
+	font-size: 14px;
+	border-radius: 30px;
+}
+
+.preview-image {
+	max-width: 100%;
+	height: auto;
+}
+
+.contain {
+	object-fit: contain;
+	width: 200px;
+}
+
+.preview-image {
+	object-fit: contain;
+	width: 120px;
+	height: 120px;
+	margin-right: 10px;
+	margin-bottom: 16px;
+	margin-right: 10px;
+}
+
+.horizontal-images {
+	display: flex;
+}
+
+.horizontal-images img {
+	object-fit: contain;
+	width: 120px;
+	height: 120px
+}
+
+.image-container {
+	position: relative;
+	margin-right: 40px; /* Khoảng cách ngang giữa các ảnh */
+	margin-bottom: 15px; /* Khoảng cách dọc giữa các ảnh */
+}
+
+.delete-button {
+	position: absolute;
+	top: 0px;
+	left: 55px;
+	background-color: transparent;
+	color: red;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.delete-button:hover {
+	background-color: black;
+}
+
+.delete-button {
+	background-color: transparent;
+	border: none;
+	color: red;
+	cursor: pointer;
+	font-size: 16px;
+	/* Tùy chỉnh các thuộc tính khác cho nút X */
+}
+</style>
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
+		data-sidebartype="full" data-sidebar-position="absolute"
+		data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<!-- Topbar header - style you can find in pages.scss -->
+		<!-- ============================================================== -->
+		<header class="topbar" data-navbarbg="skin5">
+			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
+				<div class="navbar-header" data-logobg="skin6">
+					<!-- ============================================================== -->
+					<!-- Logo -->
+					<!-- ============================================================== -->
+					<a class="navbar-brand" href="dashboard.html"> <!-- Logo icon -->
+						<b class="logo-icon"> <!-- Dark Logo icon --> <img
+							src="plugins/images/logo-icon.png" alt="homepage" />
+					</b> <!--End Logo icon --> <!-- Logo text --> <span class="logo-text">
+							<!-- dark Logo text --> <img src="plugins/images/logo-text.png"
+							alt="homepage" />
+					</span>
+					</a>
+					<!-- ============================================================== -->
+					<!-- End Logo -->
+					<!-- ============================================================== -->
+					<!-- ============================================================== -->
+					<!-- toggle and nav items -->
+					<!-- ============================================================== -->
+					<a
+						class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+						href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+				</div>
+				<!-- ============================================================== -->
+				<!-- End Logo -->
+				<!-- ============================================================== -->
+				<div class="navbar-collapse collapse" id="navbarSupportedContent"
+					data-navbarbg="skin5">
+					<ul class="navbar-nav d-none d-md-block d-lg-none">
+						<li class="nav-item"><a
+							class="nav-toggler nav-link waves-effect waves-light text-white"
+							href="javascript:void(0)"><i class="ti-menu ti-close"></i></a></li>
+					</ul>
+					<!-- ============================================================== -->
+					<!-- Right side toggle and nav items -->
+					<!-- ============================================================== -->
+					<ul class="navbar-nav ms-auto d-flex align-items-center">
+
+
+						<li class=" in">
+							<form role="search" class="app-search d-none d-md-block me-3">
+								<input type="text" placeholder="Search..."
+									class="form-control mt-0"> <a href="" class="active">
+									<i class="fa fa-search"></i>
+								</a>
+							</form>
+						</li>
+
+						<li><a class="profile-pic" href="#"> <img
+								src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+								class="img-circle"><span class="text-white font-medium">Steave</span></a>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<div th:replace="OrderAdmin/menu :: menu"></div>
+
+
+		<div class="page-wrapper">
+
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+				<!-- Row -->
+
+				<div class="col-lg-12 col-xlg-9 col-md-12">
+					<div class="card">
+						<div class="card-body">
+
+							<div class="modal-header">
+								<h5 class="modal-title" id="myModalLabel">Thông tin sản
+									phẩm</h5>
+
+							</div>
+							<div class="modal-body">
+								<form action="post" method="post" enctype="multipart/form-data">
+									<!--  thông tin sp -->
+									<div class="row p-2">
+										<div class="form-group col-12">
+											Tên Sản Phẩm <br> <input type="text"
+												class="form-control" id="name" th:value="${product.name}"
+												name="name">
+
+										</div>
+										<div class="form-group col-12">
+											<br>
+											<div class="form-group">
+												<label for="exampleFormControlTextarea1">Miêu Tả Sản
+													Phẩm </label>
+												<textarea class="form-control"
+													id="exampleFormControlTextarea1" name="description"
+													rows="3" th:text="${product.description}"></textarea>
+											</div>
+										</div>
+									</div>
+
+
+									<!--  Danh Mục-->
+
+									<div class="row p-2">
+										<div class="form-group col-11">
+											Danh Mục <br> <select class="form-control"
+												name="category_id">
+												<option th:text="${catogery.name}"></option>
+												<option>----Danh Mục Khác---</option>	
+												<option th:each="category : ${listCato}"
+													th:value="${category.id}" th:text="${category.name}"></option>
+											</select>
+										</div>
+									</div>
+									<!-- Só luong Xuat Xu ... -->
+									<div class="row p-2">
+										<div class="form-group col-6">
+											Số Lượng Sản Phẩm <br> <input type="text"
+												class="form-control" id="exampleFormControlInput1"
+												name="in_stock" th:value="${product.in_stock}">
+
+										</div>
+										<div class="form-group col-6">
+											Xuất Xứ <br> <input type="text" class="form-control"
+												id="exampleFormControlInput1" name="origin"
+												th:value="${product.origin}">
+										</div>
+
+										<div class="form-group col-6">
+											Sản Phẩm Có Tại <br> <select class="form-control">
+												<option ng-repeat="it in location" value="{{ it.id }}">{{
+													it.results.code }}</option>
+											</select>
+										</div>
+
+										<div class="form-group <col-6></col-6>">
+											Sản Phẩm Dành Cho <br> <select class="form-control"
+												name="target_audience" ng-model="age"><option
+													value="">Tất Cả Đối Tượng</option>
+												<option value="nam">Nam</option>
+												<option value="nữ">Nữ</option>
+												<option value="trẻ_em">Trẻ em</option>
+											</select>
+										</div>
+
+										<div class="row">
+											<div class="form-group col-6">
+												Số Tiền <br> <input type="text" class="form-control"
+													id="exampleFormControlInput1" name="price"
+													th:value="${product.price}">
+
+
+											</div>
+
+											<div class="form-group col-5">
+												Tổng Tiền <br> <input disabled class="form-control"
+													id="exampleFormControlInput1" ng-value="' $ ' + total">
+											</div>
+										</div>
+										<!--  color , size-->
+
+										<div class="row p-2">
+
+											<div class="col-5">
+												<label for="inputCostPerPrice" class="form-label">Màu
+													Sắc</label>
+												<div id="input-container" class="d-flex flex-wrap">
+													<p th:if="${listColor == null}"
+														th:text="${'Sản Phẩm K Có Màu'}">
+													<p></p>
+													<th:block th:each="it: ${listColor}">
+														<input class="w3-input w3-border w3-round" style=""
+															type="text" name="color[]" th:value="${it.color}"
+															placeholder="thêm màu sắc">
+													</th:block>
+												</div>
+												<br />
+												<button id="add-input" class="btn btn-success" type="button">Thêm
+													Color</button>
+											</div>
+
+
+
+
+
+											<div class="col-5" style="margin-left: 89px">
+												<label for="inputCostPerPrice" class="form-label">Chọn
+													Size</label>
+												<div id="input-size" class="d-flex flex-wrap">
+													<th:block th:each="it : ${listSize}">
+														<input class="w3-input w3-border w3-round" type="text"
+															name="sizes[]" th:value="${it.size}"
+															placeholder="Chọn Size">
+													</th:block>
+												</div>
+												<br />
+												<button id="add-size" class="btn btn-success" type="button">Thêm
+													Size</button>
+											</div>
+										</div>
+										<br /> <br />
+										<!-- -sale -->
+
+										<div class="col-11">
+											<br />
+											<hr />
+										</div>
+										<br />
+										<!-- img -->
+										<div class="form-group col-12">
+											<div class="border border-3 p-4 rounded">
+												<div class="mb-3">
+													<label for="inputProductDescription" class="form-label">Chọn
+														Ảnh Sản Phẩm</label> <input id="image-upload" type="file"
+														accept="image/*" name="image"
+														onchange="handleFileSelect(event)" multiple>
+												</div>
+												<div id="image-container">
+													<img class="contain"
+														th:src="@{'/images/' + ${product.img}}"
+														alt="Product Image" name="img">
+
+												</div>
+											</div>
+											<br>
+											<div class="border border-3 p-4 rounded">
+												<div class="mb-3">
+													<label for="inputProductDescription" class="form-label">Chọn
+														Ảnh Sản Phẩm Có Liên Quan</label> <input id="image-upload-2"
+														type="file" accept="image/*" name="images[]" multiple>
+												</div>
+												<div class="horizontal-images">
+
+													<th:block th:each="img : ${listImg}">
+														<img th:src="@{'/images/' + ${img}}" class="contain"
+															alt="" />
+
+													</th:block>
+												</div>
+												<div id="image-preview"></div>
+
+
+
+
+											</div>
+										</div>
+
+
+									</div>
+									<!--  lấy id -->
+									<input hidden th:value="${product.id}" name="Pid" />
+									<div class="row">
+										<div class="d-flex" style="margin-left: 850px;">
+											<button type="submit" class="btn btn-primary mr-2">Hoàn
+												Tất</button>
+											&nbsp; &nbsp;
+											<button type="button" class="btn btn-primary">Hủy Bỏ</button>
+										</div>
+									</div>
+
+
+								</form>
+							</div>
+
+
+
+
+
+						</div>
+					</div>
+				</div>
+				<!-- Column -->
+			</div>
+
+
+			<!-- Modal -->
+
+			<!-- Row -->
+			<!-- ============================================================== -->
+			<!-- End PAge Content -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Right sidebar -->
+			<!-- ============================================================== -->
+			<!-- .right-sidebar -->
+			<!-- ============================================================== -->
+			<!-- End Right sidebar -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Container fluid  -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- footer -->
+		<!-- ============================================================== -->
+		<footer class="footer text-center">
+			2021 © Ample Admin brought to you by <a
+				href="https://www.wrappixel.com/">wrappixel.com</a>
+		</footer>
+		<!-- ============================================================== -->
+		<!-- End footer -->
+		<!-- ============================================================== -->
+	</div>
+	<script>
+		$(document).ready(function() {
+			$('.table-row').on('show.bs.collapse', function() {
+				// Ẩn tất cả các table-details khác đang hiển thị
+				$('.table-details').collapse('hide');
+
+				// Hiển thị table-details của table-row hiện tại
+				$(this).next('.table-details').collapse('show');
+			});
+		});
+	</script>
+	</div>
+
+
+	<script
+		src="/OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/OrderAdmin/js/custom.js"></script>
+	<script src="/admin_addProduct/js/admin.js"></script>
+
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script src="/OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/OrderAdmin/js/app-style-switcher.js"></script>
+	<script
+		src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+	<!--Wave Effects -->
+	<script src="/OrderAdmin/js/waves.js"></script>
+	<!--Menu sidebar -->
+	<script src="/OrderAdmin/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+
+
+	<script src="/plugins/bower_components/chartist/dist/chartist.min.js"></script>
+	<script
+		src="/plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+	<script src="js/pages/dashboards/dashboard1.js"></script>
+</body>
+
+</html>

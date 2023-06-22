@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Male_Fashion Template">
+<meta name="keywords" content="Male_Fashion, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Male-Fashion | Template</title>
+
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+	rel="stylesheet">
+
+<!-- Css Styles -->
+<link rel="stylesheet" href="/view/css/bootstrap.min.css"
+	type="text/css">
+
+<link rel="stylesheet" href="/view/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/elegant-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/magnific-popup.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="/view/owl.carousel.min.css" type="text/css">
+<link rel="stylesheet" href="/view/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/view/css/style2.css" type="text/css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+	integrity="sha512-*****************************"
+	crossorigin="anonymous" />
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+</head>
+<style>
+.select-container {
+	display: flex;
+	gap: 10px;
+	padding-left: 13px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	overflow: hidden;
+	background-color: #f9f9f9;
+}
+
+.select-container select {
+	padding: 10px;
+	border: none;
+	background-color: transparent;
+	font-size: 16px;
+	color: #333;
+}
+
+a {
+	direction: none !important;
+}
+</style>
+<body>
+	<div th:replace="views/menu :: menu"></div>
+
+	<!-- Header Section End -->
+
+
+	<!-- Checkout Section Begin -->
+	<section class="checkout spad">
+		<div class="container">
+			<div class="checkout__form">
+				<form action="/add-adres" method="post">
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="checkout__input">
+										<p>
+											Họ Tên<span>*</span>
+										</p>
+										<input type="text" name="name" autocomplete="new-password"
+											style="color: black;">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="checkout__input">
+										<p>
+											Số Điện Thoại<span>*</span>
+										</p>
+										<input type="text" name="phone" style="color: black;">
+									</div>
+								</div>
+
+								<div class="col-md-12 btn-group"
+									style="display: flex; gap: 10px; padding-left: 30px;">
+									<select id="city" name="province">
+										<option value="" selected>Chọn tỉnh thành</option>
+									</select> <select id="district" name="district">
+										<option value="" selected>Chọn quận huyện</option>
+									</select> <select id="ward" name="ward">
+										<option class="dropdown-item" value="" selected>Chọn
+											phường xã</option>
+									</select>
+								</div>
+							</div>
+							<br /> <br />
+
+
+							<div class="row">
+								<div class="col-lg-12">
+									<textarea class="form-control" id="exampleFormControlTextarea1"
+										rows="4" style="width: 100%"
+										placeholder="Địa Chỉ Cụ Thể (vd: số nhà...)"
+										name="Tool_address"></textarea>
+									<br />
+									<div style="text-align: center;">
+										<iframe
+											src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1972341.8309656216!2d108.0457656828125!3d15.090639678361994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1684655973163!5m2!1svi!2s"
+											width="400" height="300" style="border: 0;"
+											allowfullscreen="" loading="lazy"
+											referrerpolicy="no-referrer-when-downgrade"></iframe>
+									</div>
+									<hr />
+									<button type="submit" class="btn btn-primary"
+										style="margin-top: 10px;">Hoàn Tất</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	<!-- Checkout Section End -->
+
+	<!-- Footer Section Begin -->
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="footer__about">
+						<div class="footer__logo">
+							<a href="#"><img src="img/footer-logo.png" alt=""></a>
+						</div>
+						<p>The customer is at the heart of our unique business model,
+							which includes design.</p>
+						<a href="#"><img src="img/payment.png" alt=""></a>
+					</div>
+				</div>
+				<div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+					<div class="footer__widget">
+						<h6>Shopping</h6>
+						<ul>
+							<li><a href="#">Clothing Store</a></li>
+							<li><a href="#">Trending Shoes</a></li>
+							<li><a href="#">Accessories</a></li>
+							<li><a href="#">Sale</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="footer__widget">
+						<h6>Shopping</h6>
+						<ul>
+							<li><a href="#">Contact Us</a></li>
+							<li><a href="#">Payment Methods</a></li>
+							<li><a href="#">Delivary</a></li>
+							<li><a href="#">Return & Exchanges</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+					<div class="footer__widget">
+						<h6>NewLetter</h6>
+						<div class="footer__newslatter">
+							<p>Be the first to know about new arrivals, look books, sales
+								& promos!</p>
+							<form action="#">
+								<input type="text" placeholder="Your email">
+								<button type="submit">
+									<span class="icon_mail_alt"></span>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="footer__copyright__text">
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						<p>
+							Copyright ©
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							2020 All rights reserved | This template is made with <i
+								class="fa fa-heart-o" aria-hidden="true"></i> by <a
+								href="https://colorlib.com" target="_blank">Colorlib</a>
+						</p>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- Footer Section End -->
+
+	<!-- Search Begin -->
+	<div class="search-model">
+		<div class="h-100 d-flex align-items-center justify-content-center">
+			<div class="search-close-switch">+</div>
+			<form class="search-model-form">
+				<input type="text" id="search-input" placeholder="Search here.....">
+			</form>
+		</div>
+	</div>
+	<!-- Search End -->
+
+	<!-- Js Plugins -->
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+		referrerpolicy="no-referrer"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+	<script src="/api_province/api.js"></script>
+	<script src="/details/js/jquery-3.3.1.min.js"></script>
+	<script src="/details/js/bootstrap.min.js"></script>
+	<script src="/details/js/jquery.nice-select.min.js"></script>
+	<script src="/details/js/jquery-ui.min.js"></script>
+	<script src="/details/js/jquery.slicknav.js"></script>
+	<script src="/details/js/mixitup.min.js"></script>
+	<script src="/details/js/owl.carousel.min.js"></script>
+
+</body>
+
+</html>

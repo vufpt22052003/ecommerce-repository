@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+<style>
+
+@keyframes robot-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.robot img {
+  animation: robot-animation 2s infinite;
+}
+
+</style>
+<body>
+		<div th:replace="views/menu :: menu"></div>
+<br /><br />
+<div class="container" style="background-color: f5f5f5">
+<div class="row">
+					<div class="col-md-12 col-lg-12 col-sm-12" >
+						<div class="white-box" style="text-align: center;">
+							<div class="robot">
+								<img src="background/iconSucces.jpg" alt="Robot" />
+							</div>
+
+							<div class="js-container container"></div><br />
+							<div class="foo">
+								<h1 style="color: red; text-align: center;">Đặt Hàng Thành Công ✔</h1>
+								<a href="ManagerProduct"><a href="/index">Quay Về Trang Chủ</a> / <a href="/MyOrders">Xem Đơn Hàng</a></a>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				</div>
+</body>
+</html>

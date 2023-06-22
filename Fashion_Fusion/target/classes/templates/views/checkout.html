@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Male_Fashion Template">
+<meta name="keywords" content="Male_Fashion, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Male-Fashion | Template</title>
+
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="/view/css/bootstrap.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/elegant-icons.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/magnific-popup.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/nice-select.css" type="text/css">
+<link rel="stylesheet" href="/view/css/owl.carousel.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/slicknav.min.css" type="text/css">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+</head>
+<style>
+.contain {
+	object-fit: contain;
+}
+
+.btn {
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+</style>
+<body>
+		<div th:replace="views/menu :: menu"></div>
+
+	<!-- modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<form action="/add-adres" method="post">
+				<div class="modal-content" style="width: 580px">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Cập Nhật Địa
+							Chỉ</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-container">
+
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label for="recipient-name" class="col-form-label">Họ
+										Và Tên:</label> <input type="text" class="form-control"
+										id="recipient-name" name="name" th:value="${adres.name}">
+								</div>
+								<div class="col-md-6 form-group">
+									<label for="phone-number" class="col-form-label">Số
+										Điện Thoại:</label> <input type="text" class="form-control"
+										id="phone-number" name="phone" th:value="${adres.phone}">
+								</div>
+								<div class="col-md-12 btn-group"
+									style="display: flex; gap: 3px; padding-left: 13px;">
+									<select id="city" name="province">
+										<option value="" selected>Chọn tỉnh thành</option>
+									</select> <select id="district" name="district">
+										<option value="" selected>Chọn quận huyện</option>
+									</select> <select id="ward" name="ward">
+										<option class="dropdown-item" value="" selected>Chọn
+											phường xã</option>
+									</select>
+								</div>
+								<div class="col-md-12 form-group">
+									<label for="address" class="col-form-label">Địa Chỉ Cụ
+										Thể:</label>
+									<textarea class="form-control" id="address" name="Tool_address">
+    [[${adres.Tool_address}]]
+</textarea>
+
+								</div>
+							</div>
+
+						</div>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Hoàn Thành</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- end -->
+
+	<!-- Shopping Cart Section Begin -->
+	<form action="add_order" method="post">
+		<section class="shopping-cart spad" style="background-color: #f9f9f9">
+			<div class="containers" style="width: 1300px; margin-left: 98px;">
+				<div class="row">
+					<div class="col-lg-8">
+						<h6 class="coupon__code">
+							<svg height="16" viewBox="0 0 12 16" width="12"
+								class="shopee-svg-icon icon-location-marker">
+							<path
+									d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
+									fill-rule="evenodd"></path></svg>
+							&nbsp;&nbsp;&nbsp; Địa Chỉ Nhận Hàng <br /> <br /> <b
+								th:text="${info}"></b> <a data-toggle="modal"
+								data-target="#exampleModal" data-whatever="@mdo"><b
+								style="color: blue">Click</b> Vào Đây Để Thay Đổi</a>
+						</h6>
+
+
+						<div class="shopping__cart__table">
+							<table>
+								<thead>
+									<tr>
+										<th>Product</th>
+										<th>Quantity</th>
+										<th>Total</th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody th:each="product : ${session.selectedProducts}"
+									style="border: 1px solid rgba(0, 0, 0, .125); margin-bottom: 10px;">
+
+									<tr>
+										<td class="product__cart__item">
+											<div class="product__cart__item__pic">
+												<img th:src="@{'/images/' + ${product.product_id.img}}"
+													class="contain"
+													style="height: 120px; width: 120px; object-fit: contain; margin-left: 20px;"
+													alt="">
+											</div> <input hidden name="idProduct[]"
+											th:value="${product.product_id.id}">
+
+											<div class="product__cart__item__text">
+												<h6
+													th:text="${product.product_id.name + ' ' + product.product_id.price}"></h6>
+												<h5 th:text="${product.product_id.price}"></h5>
+											</div>
+										</td>
+										<td class="quantity__item">
+											<div class="quantity">
+												<div class="pro-qty-2">
+													<input type="text" th:value="${product.quantity}"
+														name="quantity">
+												</div>
+											</div>
+										</td>
+										<td class="cart__price">
+											<p th:text="${product.product_id.price * product.quantity}"></p>
+											<input hidden name="price"
+											th:value="${product.product_id.price * product.quantity}" />
+										</td>
+									</tr>
+								</tbody>
+
+							</table>
+
+							<br />
+							<br /> <br />
+							</table>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6">
+								<div class="continue__btn">
+									<a href="/cart">Quay Lại Giỏ Hàng</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="cart__discount">
+							<h6>Discount codes</h6>
+
+							<input type="text" placeholder="Coupon code">
+							<button type="submit">Apply</button>
+
+						</div>
+						<div class="cart__total">
+							<h6>Cart total</h6>
+							<ul>
+								<li>Tổng Sản Phẩm <span
+									th:text="${session.selectedProducts.size()}"></span></li>
+								<li>Thành Tiền <span
+									th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
+
+								<li>Tổng Tiền <span
+									th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
+								<input hidden name="total_price" th:value="${total}" />
+							</ul>
+							<button type="submit" class="primary-btn">
+								Đặt Hàng</a>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</section>
+	</form>
+	<!-- Shopping Cart Section End -->
+
+
+
+	<!-- Search Begin -->
+	<div class="search-model">
+		<div class="h-100 d-flex align-items-center justify-content-center">
+			<div class="search-close-switch">+</div>
+			<form class="search-model-form">
+				<input type="text" id="search-input" placeholder="Search here.....">
+			</form>
+		</div>
+	</div>
+	<!-- Search End -->
+
+	<!-- Js Plugins -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+		referrerpolicy="no-referrer"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+	<script src="/api_province/api.js"></script>
+
+	<script src="/view/js/jquery-3.3.1.min.js"></script>
+	<script src="/view/js/bootstrap.min.js"></script>
+	<script src="/view/js/jquery.nice-select.min.js"></script>
+	<script src="/view/js/jquery.nicescroll.min.js"></script>
+	<script src="/view/js/jquery.magnific-popup.min.js"></script>
+	<script src="/view/js/jquery.countdown.min.js"></script>
+	<script src="/view/js/jquery.slicknav.js"></script>
+	<script src="/view/js/mixitup.min.js"></script>
+	<script src="/view/js/owl.carousel.min.js"></script>
+	<script src="/view/ajax/ajax.js"></script>
+</body>
+
+</html>

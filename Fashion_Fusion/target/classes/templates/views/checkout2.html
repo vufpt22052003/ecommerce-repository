@@ -1,0 +1,196 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<style>
+@media ( min-width : 1025px) {
+	.h-custom {
+		height: 100vh !important;
+	}
+}
+</style>
+</head>
+<body>
+	<div th:replace="views/menu :: menu"></div>
+
+	<section class="h-100 h-custom" style="background-color: #f9f9f9;">
+		<div class="container py-5 h-100">
+			<div
+				class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col">
+					<div class="card">
+						<div class="card-body p-4">
+							<form action="add_order" method="post">
+								<div class="row">
+
+									<div class="col-lg-7">
+										<h5 class="mb-3">
+											<a href="#!" class="text-body"><i
+												class="fas fa-long-arrow-alt-left me-2"></i>Continue
+												shopping</a>
+										</h5>
+										<hr>
+
+										<div
+											class="d-flex justify-content-between align-items-center mb-4">
+											<div>
+												<p class="mb-1">Shopping cart</p>
+												<p class="mb-0">You have 4 items in your cart</p>
+											</div>
+											<div>
+												<p class="mb-0">
+													<span class="text-muted">Sort by:</span> <a href="#!"
+														class="text-body">price <i
+														class="fas fa-angle-down mt-1"></i></a>
+												</p>
+											</div>
+										</div>
+
+										<th:block th:each="product : ${session.selectedProducts}">
+											<div class="card mb-3">
+												<div class="card-body">
+													<div class="d-flex justify-content-between">
+														<div class="d-flex flex-row align-items-center">
+															<div>
+																<img th:src="@{'/images/' + ${product.product_id.img}}"
+																	class="img-fluid rounded-3" alt="Shopping item"
+																	style="width: 80px;">
+															</div>
+															<div class="ms-3" style="margin-left: 30px;">
+																<h5 th:text="${product.product_id.name}"></h5>
+																<p class="small mb-0"
+																	th:text="${product.product_id.price}"></p>
+															</div>
+														</div>
+														<div class="d-flex flex-row align-items-center">
+															<div style="width: 50px;">
+																<h5 class="fw-normal mb-0">2</h5>
+															</div>
+															<div style="width: 80px;">
+																<h5 class="mb-0"
+																	h:text="${product.product_id.price * product.quantity}"></h5>
+															</div>
+															<a href="#!" style="color: #cecece;"><i
+																class="fas fa-trash-alt"></i></a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</th:block>
+
+
+
+
+									</div>
+									<div class="col-lg-5">
+
+										<div class="card bg-primary text-white rounded-3" style="">
+											<div class="card-body">
+												<div
+													class="d-flex justify-content-between align-items-center mb-4">
+													<h5 class="mb-0">Card details</h5>
+													<img
+														src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+														class="img-fluid rounded-3" style="width: 45px;"
+														alt="Avatar">
+												</div>
+
+												<p class="small mb-2">Card type</p>
+												<a href="#!" type="submit" class="text-white"><i
+													class="fab fa-cc-mastercard fa-2x me-2"></i></a> <a href="#!"
+													type="submit" class="text-white"><i
+													class="fab fa-cc-visa fa-2x me-2"></i></a> <a href="#!"
+													type="submit" class="text-white"><i
+													class="fab fa-cc-amex fa-2x me-2"></i></a> <a href="#!"
+													type="submit" class="text-white"><i
+													class="fab fa-cc-paypal fa-2x"></i></a>
+
+												<form class="mt-4">
+													<div class="form-outline form-white mb-4">
+														<input type="text" id="typeName"
+															class="form-control form-control-lg" siez="17"
+															placeholder="Cardholder's Name" /> <label
+															class="form-label" for="typeName">Cardholder's
+															Name</label>
+													</div>
+
+													<div class="form-outline form-white mb-4">
+														<input type="text" id="typeText"
+															class="form-control form-control-lg" siez="17"
+															placeholder="1234 5678 9012 3457" minlength="19"
+															maxlength="19" /> <label class="form-label"
+															for="typeText">Card Number</label>
+													</div>
+
+
+
+												</form>
+
+												<hr class="my-4">
+
+												<div class="d-flex justify-content-between">
+													<p class="mb-2">Tổng Sản Phẩm</p>
+													<p class="mb-2"
+														th:text="${session.selectedProducts.size()}"></p>
+												</div>
+
+												<div class="d-flex justify-content-between">
+													<p class="mb-2">Thành Tiền</p>
+													<p class="mb-2"
+														th:text="${'$' +#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></p>
+												</div>
+
+												<div class="d-flex justify-content-between mb-4">
+													<p class="mb-2">Tổng Tiền</p>
+													<p class="mb-2"
+														th:text="${'$' +#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></p>
+												</div>
+
+												<button type="submit" class="btn btn-info btn-block btn-lg">
+													<div class="d-flex justify-content-between">
+														<span>$4818.00</span> <span>Checkout <i
+															class="fas fa-long-arrow-alt-right ms-2"></i></span>
+													</div>
+												</button>
+
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+</body>
+</html>

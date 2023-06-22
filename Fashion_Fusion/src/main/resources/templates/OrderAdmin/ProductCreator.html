@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Tell the browser to be responsive to screen width -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords"
+	content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Ample lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Ample admin lite dashboard bootstrap 5 dashboard template">
+<meta name="description"
+	content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
+<meta name="robots" content="noindex,nofollow">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="canonical"
+	href="https://www.wrappixel.com/templates/ample-admin-lite/" />
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16"
+	href="plugins/images/favicon.png">
+<!-- Custom CSS -->
+
+<link href="
+    OrderAdmin/css/style.min.css" rel="stylesheet">
+<style type="text/css">
+.preview-image {
+	max-width: 100%;
+	height: auto;
+}
+
+.contain {
+	object-fit: contain;
+	width: 200px;
+}
+
+.preview-image {
+	object-fit: contain;
+	width: 120px;
+	margin-right: 10px;
+	margin-bottom: 16px;
+}
+
+#input-container input {
+	margin-bottom: 20px; /* Khoảng cách giữa các ô input */
+	margin-left: 5px
+}
+
+#input-size input {
+	margin-bottom: 10px;
+	margin-left: 5px
+}
+
+.form-control {
+	font-size: 14px;
+	border-radius: 30px;
+}
+</style>
+</head>
+
+<body ng-app="myapp" ng-controller="Controller">
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
+	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
+		data-sidebartype="full" data-sidebar-position="absolute"
+		data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<!-- Topbar header - style you can find in pages.scss -->
+		<!-- ============================================================== -->
+		<header class="topbar" data-navbarbg="skin5">
+			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
+				<div class="navbar-header" data-logobg="skin6">
+					<!-- ============================================================== -->
+					<!-- Logo -->
+					<!-- ============================================================== -->
+					<a class="navbar-brand" href="dashboard.html"> <!-- Logo icon -->
+						<b class="logo-icon"> <!-- Dark Logo icon --> <img
+							src="plugins/images/logo-icon.png" alt="homepage" />
+					</b> <!--End Logo icon --> <!-- Logo text --> <span class="logo-text">
+							<!-- dark Logo text --> <img src="plugins/images/logo-text.png"
+							alt="homepage" />
+					</span>
+					</a> <a
+						class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+						href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+				</div>
+				<!-- ============================================================== -->
+				<!-- End Logo -->
+				<!-- ============================================================== -->
+				<div class="navbar-collapse collapse" id="navbarSupportedContent"
+					data-navbarbg="skin5">
+					<ul class="navbar-nav d-none d-md-block d-lg-none">
+						<li class="nav-item"><a
+							class="nav-toggler nav-link waves-effect waves-light text-white"
+							href="javascript:void(0)"><i class="ti-menu ti-close"></i></a></li>
+					</ul>
+					<!-- ============================================================== -->
+					<!-- Right side toggle and nav items -->
+					<!-- ============================================================== -->
+					<ul class="navbar-nav ms-auto d-flex align-items-center">
+
+						<!-- ============================================================== -->
+						<!-- Search -->
+						<!-- ============================================================== -->
+						<li class=" in">
+							<form role="search" class="app-search d-none d-md-block me-3">
+								<input type="text" placeholder="Search..."
+									class="form-control mt-0"> <a href="" class="active">
+									<i class="fa fa-search"></i>
+								</a>
+							</form>
+						</li>
+						<!-- ============================================================== -->
+						<!-- User profile and search -->
+						<!-- ============================================================== -->
+						<li><a class="profile-pic" href="#"> <img
+								src="plugins/images/users/varun.jpg" alt="user-img" width="36"
+								class="img-circle"><span class="text-white font-medium">Steave</span></a>
+						</li>
+						<!-- ============================================================== -->
+						<!-- User profile and search -->
+						<!-- ============================================================== -->
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<div th:replace="OrderAdmin/menu :: menu"></div>
+
+
+		<div class="page-wrapper">
+			<!-- ============================================================== -->
+			<!-- Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<div class="page-breadcrumb bg-white">
+				<div class="row align-items-center">
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+						<h4 class="page-title">Profile page</h4>
+					</div>
+					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+						<div class="d-md-flex">
+							<ol class="breadcrumb ms-auto">
+								<li><a href="#" class="fw-normal">Dashboard</a></li>
+							</ol>
+							<a href="https://www.wrappixel.com/templates/ampleadmin/"
+								target="_blank"
+								class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white">Upgrade
+								to Pro</a>
+						</div>
+					</div>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Bread crumb and right sidebar toggle -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- Container fluid  -->
+			<!-- ============================================================== -->
+			<div class="container-fluid">
+				<!-- ============================================================== -->
+				<!-- Start Page Content -->
+				<!-- ============================================================== -->
+				<!-- Row -->
+				<div class="row">
+
+					<!-- Column <-->
+
+					<div class="col-lg-12 col-xlg-9 col-md-12" style="font-size: 17px">
+						<div class="card">
+
+							<div class="tab-content" id="myTabContent">
+								<div class="tab-pane fade show active" id="home" role="tabpanel"
+									aria-labelledby="home-tab">
+									<div class="card" style="margin-left: 50px">
+										<div class="card-header">
+											<i class="bi bi-pencil-square"></i> Thêm Sản Phẩm Mới
+										</div>
+										<form action="/post" method="post"
+											enctype="multipart/form-data">
+
+											<!--  thông tin sp -->
+											<div class="row p-2">
+												<div class="form-group col-11">
+													Tên Sản Phẩm <br> <input type="text"
+														class="form-control font-weight-bold"  id="exampleFormControlInput1"
+														name="name" ng-model="info.name">
+
+												</div>
+												<div class="form-group col-11">
+													<br>
+													<div class="form-group">
+														<label for="exampleFormControlTextarea1">Miêu Tả
+															Sản Phẩm </label>
+														<textarea class="form-control"
+															id="exampleFormControlTextarea1" name="description"
+															rows="3"></textarea>
+													</div>
+												</div>
+											</div>
+
+											<!--  Danh Mục-->
+											<div class="row p-2">
+												<div class="form-group col-11">
+													Danh Mục <br> <select class="form-control"
+														name="category_id">
+														<option ng-repeat="it in data" value="{{ it.id }}">{{
+															it.name }}</option>
+													</select>
+
+
+												</div>
+
+											</div>
+
+											<!-- Só luong Xuat Xu ... -->
+											<div class="row p-2">
+												<div class="form-group col-6">
+													Số Lượng Sản Phẩm <br> <input type="text"
+														class="form-control" id="exampleFormControlInput1"
+														name="in_stock">
+
+												</div>
+												<div class="form-group col-5">
+													Xuất Xứ <br> <input type="text" class="form-control"
+														id="exampleFormControlInput1" name="origin">
+												</div>
+
+												<div class="form-group col-6">
+													Sản Phẩm Có Tại <br> <select class="form-control">
+														<option ng-repeat="it in location" value="{{ it.id }}">{{
+															it.results.code }}</option>
+													</select>
+												</div>
+
+												<div class="form-group col-5">
+													Sản Phẩm Dành Cho <br> <select class="form-control"
+														name="target_audience" ng-model="age"><option
+															value="">Tất Cả Đối Tượng</option>
+														<option value="nam">Nam</option>
+														<option value="nữ">Nữ</option>
+														<option value="trẻ_em">Trẻ em</option>
+													</select>
+												</div>
+
+
+												<!--  color , size-->
+												<div class="row p-2">
+													<div class="col-5">
+														<label for="inputCostPerPrice" class="form-label">Màu
+															Sắc</label>
+														<div id="input-container" class="d-flex flex-wrap">
+															<!-- Thêm lớp CSS "flex-wrap" -->
+															<input class="w3-input w3-border w3-round" type="text"
+																name="color[]" ng-model="color"
+																placeholder="thêm màu sắc">
+														</div>
+														<br />
+														<button id="add-input" class="btn btn-success"
+															type="button">Thêm Color</button>
+													</div>
+
+													<div class="col-5" style="margin-left: 89px">
+														<label for="inputCostPerPrice" class="form-label">Chọn
+															Size</label>
+														<div id="input-size" class="d-flex flex-wrap">
+															<input class="w3-input w3-border w3-round" type="text"
+																name="sizes[]" placeholder="Chọn Size">
+														</div>
+														<br />
+														<button id="add-size" class="btn btn-success"
+															type="button">Thêm Size</button>
+													</div>
+												</div>
+												<br />
+												<!-- proice -->
+												<div class="row">
+													<div class="form-group col-6">
+														Số Tiền <br> <input type="text" class="form-control"
+															id="exampleFormControlInput1" name="price"
+															ng-model="price" ng-model-options="{ updateOn: 'blur' }"
+															ng-change="calculateTotal('price')">
+
+
+													</div>
+
+													<div class="form-group col-5">
+														Tổng Tiền <br> <input disabled class="form-control"
+															id="exampleFormControlInput1" ng-value="' $ ' + total">
+
+
+													</div>
+												</div>
+
+												<br /> <br />
+												<!-- -sale -->
+												<div class="mb-3">
+													<button type="button" class="btn btn-primary"
+														onclick="showInputs()" style="margin-left: 10px;">Thêm Giảm
+														Giá ? </button>
+													<br />
+													<div class="row" style="padding-top: 20px;">
+														<div class="col-md-6 hidden-input mt-3"
+															style="display: none;">
+															<label for="inputPrice" class="form-label">Giá
+																giảm</label> <input type="text" class="form-control"
+																id="inputCompareatprice" placeholder="00.00"
+																name="sale_price"
+																>
+
+														</div>
+
+
+														<div class="col-md-5 hidden-input mt-3"
+															style="display: none;">
+															<label for="inputPrice" class="form-label">Nội
+																dung giảm</label> <input type="text" class="form-control"
+																id="inputCompareatprice" placeholder="Nội Dung Giảm Giá"
+																name="contend_sale">
+														</div>
+
+														<!-- Ngày bắt đầu giảm -->
+														<div class="col-md-6 hidden-input mt-5"
+															style="display: none;">
+															<label>Ngày Bắt Đầu </label> <input type="datetime-local"
+																style="width: 220px;" name="start_datetime">
+														</div>
+
+														<!-- Ngày kết thúc giảm -->
+														<div class="col-md-6 hidden-input mt-5"
+															style="display: none;">
+															<label>Ngày kết thúc </label> <input
+																type="datetime-local" style="width: 220px;"
+																name="end_datetime">
+														</div>
+
+													</div>
+
+												</div>
+												<div class="col-11">
+													<br />
+													<hr />
+												</div>
+												<br />
+												<!-- img -->
+												<div class="form-group col-11">
+													<div class="border border-3 p-4 rounded">
+														<div class="mb-3">
+															<label for="inputProductDescription" class="form-label">Chọn
+																Ảnh Sản Phẩm</label> <input id="image-upload" type="file"
+																accept="image/*" name="image"
+																onchange="handleFileSelect(event)" multiple>
+														</div>
+														<div id="image-container"></div>
+													</div>
+													<br>
+													<div class="border border-3 p-4 rounded">
+														<div class="mb-3">
+															<label for="inputProductDescription" class="form-label">Chọn
+																Ảnh Sản Phẩm Có Liên Quan</label> <input id="image-upload-2"
+																type="file" accept="image/*" name="images[]" multiple>
+														</div>
+														<div id="image-preview"></div>
+													</div>
+												</div>
+
+
+											</div>
+											<div class="row">
+												<div class="d-flex" style="margin-left: 810px;">
+													<button type="submit" class="btn btn-primary mr-2">Hoàn
+														Tất</button>
+													&nbsp; &nbsp;
+													<button type="button" class="btn btn-primary">Hủy
+														Bỏ</button>
+												</div>
+											</div>
+
+
+										</form>
+
+									</div>
+
+
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+					<!-- Column -->
+				</div>
+				<!-- Row -->
+				<!-- ============================================================== -->
+				<!-- End PAge Content -->
+				<!-- ============================================================== -->
+				<!-- ============================================================== -->
+				<!-- Right sidebar -->
+				<!-- ============================================================== -->
+				<!-- .right-sidebar -->
+				<!-- ============================================================== -->
+				<!-- End Right sidebar -->
+				<!-- ============================================================== -->
+			</div>
+			<!-- ============================================================== -->
+			<!-- End Container fluid  -->
+			<!-- ============================================================== -->
+			<!-- ============================================================== -->
+			<!-- footer -->
+			<!-- ============================================================== -->
+			<footer class="footer text-center">
+				2021 © Ample Admin brought to you by <a
+					href="https://www.wrappixel.com/">wrappixel.com</a>
+			</footer>
+			<!-- ============================================================== -->
+			<!-- End footer -->
+			<!-- ============================================================== -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Page wrapper  -->
+		<!-- ============================================================== -->
+	</div>
+	<script src="/admin_addProduct/js/admin.js"></script>
+	<script src="/controllers/addProController.js"></script>
+
+	<script
+		src=" OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script src=" OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src=" OrderAdmin/js/app-style-switcher.js"></script>
+	<script
+		src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+	<!--Wave Effects -->
+	<script src=" OrderAdmin/js/waves.js"></script>
+	<!--Menu sidebar -->
+	<script src=" OrderAdmin/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src=" OrderAdmin/js/custom.js"></script>
+	<!--This page JavaScript -->
+
+	<!--chartis chart-->
+	<script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
+	<script
+		src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+	<script src="js/pages/dashboards/dashboard1.js"></script>
+</body>
+
+</html>

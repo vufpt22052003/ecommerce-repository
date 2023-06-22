@@ -1,0 +1,902 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<title>Title</title>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/font-awesome.min.css"
+	type="text/css">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+</head>
+
+<body>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="#f2586e">
+<meta http-equiv="Content-Security-Policy"
+	content="block-all-mixed-content">
+<meta http-equiv="Content-Security-Policy"
+	content="upgrade-insecure-requests">
+<link rel="canonical"
+	href="https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi">
+<link rel="alternate" href="https://ego-baby.mysapo.net" hreflang="vi">
+<meta name="revisit-after" content="2 days">
+<link rel="preconnect" href="https://ego-baby.mysapo.net">
+<link rel="preconnect" href="//www.google-analytics.com/">
+<link rel="preconnect" href="//www.googletagmanager.com/">
+<link rel="preconnect" href="https://bizweb.dktcdn.net" crossorigin="">
+<link rel="icon"
+	href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/favicon.png?1684485482688"
+	type="image/x-icon">
+<link rel="apple-touch-icon"
+	href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/favicon.png?1684485482688">
+
+
+<link
+	href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&amp;display=fallback"
+	as="style" type="text/css" rel="preload stylesheet">
+
+
+
+<link
+	href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/swiper-style.scss.css?1684485482688"
+	rel="stylesheet" type="text/css" media="all">
+
+
+<link href="/details/main.css" rel="stylesheet" type="text/css"
+	media="all">
+<link
+	href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/header.scss.css?1684485482688"
+	rel="stylesheet" type="text/css" media="all">
+
+<link href="/details/product.css" rel="stylesheet" type="text/css"
+	media="all">
+
+
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+
+<link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link rel="stylesheet" href="/view/css/style.css" type="text/css">
+<link rel="stylesheet" href="/details/css/bootstrap.min.css"
+	type="text/css">
+
+<script src="/dist/js/stats.min.js?v=69e02f0"></script>
+<script async=""
+	src="//bizweb.dktcdn.net/web/assets/lib/js/fp.v3.3.0.min.js"></script>
+<script async=""
+	src="//bizweb.dktcdn.net/web/assets/lib/js/fp.v3.3.0.min.js"></script>
+
+
+<link rel="preload" as="image"
+	href="//bizweb.dktcdn.net/thumb/large/100/459/160/themes/867807/assets/slider_1.jpg?1684485482688"
+	media="screen and (max-width: 480px)">
+<link rel="preload" as="image"
+	href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/slider_1.jpg?1684485482688"
+	media="screen and (min-width: 481px)">
+</head>
+<style>
+.rte p {
+	text-align: justify;
+	text-indent: 1em;
+	width: 600px;
+}
+
+.description {
+	height: 60px;
+	background-color: rgba(0, 0, 0, .02);
+	padding: 20px;
+}
+
+button span {
+	display: block;
+	margin-left: 0.3em;
+	transition: all 0.3s ease-in-out;
+}
+
+button svg {
+	display: block;
+	transform-origin: center center;
+	transition: transform 0.3s ease-in-out;
+}
+
+button:hover .svg-wrapper {
+	animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+button:hover svg {
+	transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+button:hover span {
+	transform: translateX(5em);
+}
+
+button:active {
+	transform: scale(0.95);
+}
+
+.inputShearch {
+	width: 202px;
+}
+
+.search-switch {
+	background: whitesmoke;
+}
+
+.btn {
+	margin-left: 105px;
+	margin-bottom: 20px;
+}
+
+.avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+a {
+	direction: none !important;
+}
+</style>
+
+<body ng-app="MyApp" ng-controller="CommentController">
+	<div class="opacity_menu"></div>
+
+	<div th:replace="views/menu :: menu"></div>
+
+	<script
+		src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/jquery-plugin.js?1684485482688"
+		type="text/javascript"></script>
+	<link rel="preload"
+		href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/swiper-plugin.js?1684485482688"
+		as="script">
+	<script
+		src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/swiper-plugin.js?1684485482688"></script>
+	<br />
+	<main class="wrapperMain_content" style="background-color: #f5f5f5;">
+
+		<br />
+		<section class="product details-main" itemscope=""
+			itemtype="https://schema.org/Product">
+			<meta itemprop="category" content="Sản phẩm khuyến mãi">
+			<meta itemprop="url"
+				content="//ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi">
+			<meta itemprop="name" content="Áo thun bé gái cotton hình con voi">
+			<meta itemprop="image"
+				content="http://bizweb.dktcdn.net/thumb/grande/100/459/160/products/8224f1f46b79a6bd203f60e9eac93f8d-jpeg.jpg?v=1657181802817">
+			<meta itemprop="description"
+				content="Chất liệu: cotton tici mềm mịn, thấm hút mồ hôi, thoáng mát cho bé
+Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không bếp dính, không phai màu và an toàn cho da của bé.">
+			<div class="d-none" itemprop="brand"
+				itemtype="https://schema.org/Brand" itemscope="">
+				<meta itemprop="name" content="Việt Nam">
+			</div>
+			<meta itemprop="model" content="">
+			<meta itemprop="sku" content="kmx">
+			<div class="d-none hidden" itemprop="offers" itemscope=""
+				itemtype="http://schema.org/Offer">
+				<div class="inventory_quantity hidden" itemscope=""
+					itemtype="http://schema.org/ItemAvailability">
+					<span class="a-stock" itemprop="supersededBy"> Còn hàng </span>
+				</div>
+				<link itemprop="availability" href="http://schema.org/InStock">
+				<meta itemprop="priceCurrency" content="VND">
+				<meta itemprop="price" content="45000">
+				<meta itemprop="url"
+					content="https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi">
+				<span itemprop="UnitPriceSpecification" itemscope=""
+					itemtype="https://schema.org/Downpayment">
+					<meta itemprop="priceType" content="45000">
+				</span> <span itemprop="UnitPriceSpecification" itemscope=""
+					itemtype="https://schema.org/Downpayment">
+					<meta itemprop="priceSpecification" content="80000">
+				</span>
+				<meta itemprop="priceValidUntil" content="2099-01-01">
+			</div>
+			<div class="d-none hidden" id="https://ego-baby.mysapo.net"
+				itemprop="seller" itemtype="http://schema.org/Organization"
+				itemscope="">
+				<meta itemprop="name" content="Ego baby">
+				<meta itemprop="url" content="https://ego-baby.mysapo.net">
+				<meta itemprop="logo"
+					content="http://bizweb.dktcdn.net/100/459/160/themes/867807/assets/logo.png?1684485482688">
+			</div>
+			<div class="container">
+				<div class="row ">
+					<div
+						class="product-detail-left product-images col-12 col-md-12 col-lg-4">
+						<div class="product-image-detail">
+							<div
+								class="swiper-container gallery-top margin-bottom-10 swiper-container-initialized swiper-container-horizontal swiper-container-free-mode">
+								<div class="swiper-wrapper" id="lightgallery" aria-live="polite">
+
+									<!-- Phần tử <a> cần được cập nhật -->
+									<a class="swiper-slide swiper-slide-active" data-hash="0"
+										role="group" aria-label="1 / 3"
+										style="width: 377px; margin-right: 10px;"> <img
+										th:src="@{'/images/' + ${product.get().img}}"
+										data-image="//bizweb.dktcdn.net/thumb/medium/100/459/160/products/8224f1f46b79a6bd203f60e9eac93f8d-jpeg.jpg?v=1657181802817"
+										class="img-responsive mx-auto d-block swiper-lazy swiper-lazy-loaded">
+									</a>
+								</div>
+								<span class="swiper-notification" aria-live="assertive"
+									aria-atomic="true"></span>
+							</div>
+							<div
+								class="swiper-container gallery-thumbs swiper-container-initialized swiper-container-horizontal swiper-container-free-mode swiper-container-thumbs">
+								<div class="swiper-wrapper"
+									id="swiper-wrapper-ed434617234651085" aria-live="polite">
+									<div class="swiper-slide">
+										<img th:src="@{'/images/' + ${product.get().img}}" alt=""
+											class="main-image" onclick="showImage(this)">
+									</div>
+
+									<!-- Các phần tử ban đầu -->
+									<th:block th:each="list : ${ListImg}">
+										<div class="swiper-slide">
+											<img th:src="@{'/images/' + ${list}}"
+												alt="Áo thun bé gái cotton hình con voi"
+												class="thumbnail-image" onclick="showImage(this)">
+										</div>
+									</th:block>
+								</div>
+
+
+								<span class="swiper-notification" aria-live="assertive"
+									aria-atomic="true"></span>
+							</div>
+							<div class="swiper-button-prev swiper-button-disabled"
+								tabindex="-1" role="button" aria-label="Previous slide"
+								aria-controls="swiper-wrapper-ed434617234651085"
+								aria-disabled="true">
+								<svg class="icon">
+										<use xlink:href="#previcon"></use>
+									</svg>
+							</div>
+							<div class="swiper-button-next swiper-button-disabled"
+								tabindex="-1" role="button" aria-label="Next slide"
+								aria-controls="swiper-wrapper-ed434617234651085"
+								aria-disabled="true">
+								<svg class="icon">
+										<use xlink:href="#nexticon"></use>
+									</svg>
+							</div>
+
+						</div>
+
+					</div>
+					<div class="col-12 col-md-12 col-lg-8 details-pro">
+
+						<div class="row">
+							<div class="col-lg-7 col-xl-7 col-md-7 col-12">
+								<div class="prview"></div>
+								<h1 class="title-head" th:text="${product.get().name}"></h1>
+								<div class="flex-vd">
+
+									<div class="vendor">
+										<span>Thương hiệu: <span
+											th:text="${product.get().origin}"></span></span>
+									</div>
+
+									<div class="skuuu sku-product">
+										<span class="variant-sku" itemprop="sku" content="kmx">Mã
+											sản phẩm: <strong th:text="${product.get().id}"></strong>
+										</span>
+									</div>
+								</div>
+
+								<div class="group-action-button">
+
+									<div class="flashdetails" th:if="${product.get().checkSale}">
+
+										<div class="timer">
+											<p>
+												Nhanh tay chỉ còn <br> <span
+													th:text="${product.get().sale[0].contend_sale}"></span>
+											</p>
+											<div class="timein" data-time="8/30/2022 15:10:00"
+												data-countdown-type="hours">
+												<span>06</span>:<span>28</span>:<span>51</span>
+											</div>
+
+										</div>
+
+										<div class="flashsale_product">
+
+
+											<div class="product-item-flash" data-productid="26841733"
+												data-qty="300" data-pavailable="true">
+												<div class="flashproduct">
+													<div class="quantity_sale" style="">
+														<div class="titlecount">
+															<b class="qtyflash">213</b> sản phẩm đã bán
+														</div>
+
+														<div class="barprocess">
+															<div class="countlength_sale" style="width: 71%;"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="group-power">
+
+										<div class="inventory_quantity d-none">
+
+											<span class="a-stock a2">
+												<link itemprop="availability"
+													href="http://schema.org/InStock">Còn hàng
+											</span>
+
+										</div>
+										<div class="price-box clearfix"
+											th:if="${product.get().checkSale}">
+
+											<span class="special-price"> <span
+												class="price product-price"
+												th:text="${product.get().price +'đ'}"></span>
+											</span>
+											<!-- Giá Khuyến mại -->
+											<span class="old-price"> Giá cũ: <del
+													class="price product-price-old">
+													<span th:text="${price} +'đ'"></span>
+												</del>
+											</span> <span class="old-price"
+												style="background-color: red; color: white; border-radius: 2px; padding: 5px"
+												th:text="${product.get().sale_percent} +'% giảm'"> </span>
+											<!-- Giás gốc -->
+											<span class="save-price d-none">Rẻ hơn <span
+												class="price product-price-save">35.000₫</span> so với thị
+												trường
+											</span>
+											<!-- Tiết kiệm -->
+
+										</div>
+										<div th:unless="${product.get().checkSale}">
+											<h3 style="color: red" th:text="${product.get().price+'$'}"></h3>
+											<br />
+										</div>
+
+									</div>
+
+									<form enctype="multipart/form-data" id="add-to-cart-form"
+										data-cart-form="" action="/cart/add" method="post"
+										class="wishItem">
+										<div class="form-product">
+
+											<div class="box-variant clearfix  d-none ">
+
+												<input type="hidden" id="one_variant" name="variantId"
+													value="68292987">
+
+											</div>
+											<div class="clearfix from-action-addcart ">
+												<div class="qty-ant clearfix custom-btn-number ">
+													<label class="d-none">Số lượng:</label>
+													<div
+														class="custom custom-btn-numbers clearfix input_number_product">
+														<button onclick=" result.value--;return false;"
+															class="btn-minus btn-cts" type="button">–</button>
+														<input aria-label="Số lượng" type="text"
+															class="qty input-text" id="qty" name="quantity" size="4"
+															value="1" maxlength="3"
+															onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;"
+															onchange="if(this.value == 0)this.value=1;">
+														<button
+															onclick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN(qty)) result.value++;return false;"
+															class="btn-plus btn-cts" type="button">+</button>
+													</div>
+												</div>
+												<div class="btn-mua">
+
+													<a th:href="@{/add-to-cart/{id}(id=${product.get().id})}"><img
+														src="../banner/cart.png" style="width: 30px; color: black"
+														alt="" /> &nbsp; Thêm Vào Giỏ Hàng</a> <br /> <br />
+													<button type="button"
+														class="btn btn-lg btn-gray btn_buy btn-buy-now"
+														style="margin-left: 0px;">
+														Mua ngay<em>Thanh toán online hoặc ship COD</em>
+													</button>
+													
+												</div>
+											</div>
+											<div class="product-wish">
+
+												<a href="javascript:void(0)" class="setWishlist"
+													data-wish="ao-thun-be-gai-cotton-hinh-con-voi" tabindex="0"
+													title="Thêm vào yêu thích"> <svg class="icon">
+															<use xmlns:xlink="http://www.w3.org/1999/xlink"
+															xlink:href="#wishlist"></use>
+														</svg>
+												</a>
+
+											</div>
+										</div>
+									</form>
+									<ul class="social-media__item-list list--unstyled" role="list">
+										<li>Chia sẻ ngay:</li>
+										<li class="social-media__item social-media__item--facebook">
+											<a title="Chia sẻ lên Facebook"
+											href="https://www.facebook.com/sharer.php?u=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi"
+											target="_blank" rel="noopener"
+											aria-label="Chia sẻ lên Facebook"> <svg
+													xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+														<path
+														d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
+														</path>
+													</svg> Chia sẻ
+										</a>
+										</li>
+										<li class="social-media__item social-media__item--pinterest">
+											<a title="Chia sẻ lên Pinterest"
+											href="https://pinterest.com/pin/create/button/?url=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi&amp;"
+											target="_blank" rel="noopener" aria-label="Pinterest"> <svg
+													xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+														<path
+														d="M204 6.5C101.4 6.5 0 74.9 0 185.6 0 256 39.6 296 63.6 296c9.9 0 15.6-27.6 15.6-35.4 0-9.3-23.7-29.1-23.7-67.8 0-80.4 61.2-137.4 140.4-137.4 68.1 0 118.5 38.7 118.5 109.8 0 53.1-21.3 152.7-90.3 152.7-24.9 0-46.2-18-46.2-43.8 0-37.8 26.4-74.4 26.4-113.4 0-66.2-93.9-54.2-93.9 25.8 0 16.8 2.1 35.4 9.6 50.7-13.8 59.4-42 147.9-42 209.1 0 18.9 2.7 37.5 4.5 56.4 3.4 3.8 1.7 3.4 6.9 1.5 50.4-69 48.6-82.5 71.4-172.8 12.3 23.4 44.1 36 69.3 36 106.2 0 153.9-103.5 153.9-196.8C384 71.3 298.2 6.5 204 6.5z">
+														</path>
+													</svg> Chia sẻ
+										</a>
+										</li>
+										<li class="social-media__item social-media__item--twitter">
+											<a title="Chia sẻ lên Twitter"
+											href="https://twitter.com/share?url=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi"
+											target="_blank" rel="noopener" aria-label="Tweet on Twitter">
+												<svg xmlns="http://www.w3.org/2000/svg"
+													viewBox="0 0 512 512">
+														<path
+														d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
+														</path>
+													</svg> Chia sẻ
+										</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-lg-5 col-xl-5 col-md-5 col-12">
+								<div class="service">
+									<h2 style="color: black">Dịch vụ khách hàng</h2>
+									<div class="benefit-item">
+										<div class="image">
+											<img class="lazyload loaded"
+												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv1.png?1684485482688"
+												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv1.png?1684485482688"
+												alt="Hỗ trợ 24/7" data-was-processed="true">
+										</div>
+										<div class="contentsv">
+											<h4>Hỗ trợ 24/7</h4>
+											<p>Nhân viên online hỗ trợ</p>
+										</div>
+									</div>
+									<div class="benefit-item">
+										<div class="image">
+											<img class="lazyload loaded"
+												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv2.png?1684485482688"
+												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv2.png?1684485482688"
+												alt="Tiết kiệm" data-was-processed="true">
+										</div>
+										<div class="contentsv">
+											<h4>Tiết kiệm</h4>
+											<p>Mua nhiều ưu đãi hơn</p>
+										</div>
+									</div>
+									<div class="benefit-item">
+										<div class="image">
+											<img class="lazyload loaded"
+												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv3.png?1684485482688"
+												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv3.png?1684485482688"
+												alt="Quà tặng" data-was-processed="true">
+										</div>
+										<div class="contentsv">
+											<h4>Quà tặng</h4>
+											<p>Tri ân khách hàng cũ</p>
+										</div>
+									</div>
+									<div class="benefit-item">
+										<div class="image">
+											<img class="lazyload loaded"
+												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv4.png?1684485482688"
+												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv4.png?1684485482688"
+												alt="Vận chuyển" data-was-processed="true">
+										</div>
+										<div class="contentsv">
+											<h4>Vận chuyển</h4>
+											<p>Siêu nhanh, toàn thế giới</p>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+					<div class="col-12">
+						<div class="row">
+							<div class="col-lg-8 col-12">
+								<br /> <br /> <br />
+
+
+								<div class="row" style="background-color: white;">
+									<div class="col-2" style="margin-bottom: 20px;">
+										<div class="avatar" style="background-color: white;">
+											<img src="/images/avt.jpg" alt="Avatar">
+										</div>
+
+									</div>
+									<div class="col-2">
+										<br /> <b th:text="${product.get().user_id.us}"></b><br />
+										<p th:text="${product.get().user_id.email}"></p>
+
+									</div>
+									<div class="col-5">
+										<br /> <a class="btn btn-success"
+											th:href="@{/shopUser/{uid}(uid=${product.get().user_id.id})}"><i
+											class="fas fa-store"></i> Xem Shop</a>
+									</div>
+								</div>
+
+
+								<br />
+								<div class="ba-text-fpt">
+
+									<div class="description">
+										<b>Chi Tiết Sản Phẩm</b>
+									</div>
+									<br />
+									<p th:text="${'Tên Sản Phẩm : '+product.get().name}">
+								</div>
+								<div class="rte">
+
+									<p th:text="${'- '+product.get().description}"></p>
+								</div>
+								<br /> <br />
+
+
+								<hr />
+								<br /> <br /> <br />
+
+
+								<form name="/formCmt">
+
+									<div class="col-12" style="background-color: #f9f9f9;">
+										<div class="form-outline">
+											<label class="form-label" for="textAreaExample">Đánh
+												Giá Của Bạn Về Sản Phẩm</label><br />
+											<textarea class="form-control" id="textAreaExample1" rows="4"
+												ng-model="comment"></textarea>
+										</div>
+										<br />
+										<div id="myElement" ng-init="productId=${product.get().id}"></div>
+
+
+										<input hidden th:value="${product.get().id}">
+
+
+										<button class="btn btn-danger" id="post-comment-btn"
+											type="button" ng-click="postComment()">
+											<div class="svg-wrapper-1">
+												<div class="svg-wrapper">
+													<svg height="24" width="24" viewBox="0 0 24 24"
+														xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path
+															d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+															fill="currentColor"></path>
+          </svg>
+												</div>
+											</div>
+											<button>Click here</button>
+									</div>
+								</form>
+
+							</div>
+							<!-- cmt -->
+
+
+
+							<div class="col-lg-4 col-12">
+								<aside class="popular_categories">
+									<h2 class="title-module">Danh mục nổi bật</h2>
+									<div class="wrap-slide-cate slide-cate-product">
+										<div
+											class="swiper-container swiper-cateproduct swiper-container-initialized swiper-container-horizontal swiper-container-multirow"
+											style="cursor: grab;">
+											<ul class="swiper-wrapper slide-categories"
+												id="swiper-wrapper-dd8f29597e8a54e4" aria-live="polite"
+												style="width: 516px; transform: translate3d(0px, 0px, 0px);">
+												<li class="cate-item swiper-slide swiper-slide-active"
+													role="group" aria-label="1 / 8"
+													style="order: 0; width: 119px; margin-right: 10px;"><a
+													class="image image_thumb radius-12" href="/dam-be-gai"
+													title="Đầm bé gái" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/dam-be-gai-80.png?v=1657182649087"
+														alt="Đầm bé gái">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/dam-be-gai" title="Đầm bé gái">Đầm bé gái</a>
+													</h4></li>
+												<li class="cate-item swiper-slide swiper-slide-next"
+													role="group" aria-label="2 / 8"
+													style="-webkit-box-ordinal-group: 1; order: 1; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Bộ bé gái" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-gai-80.png?v=1657182638380"
+														alt="Bộ bé gái">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/bo-be-gai" title="Bộ bé gái">Bộ bé gái</a>
+													</h4>
+												</li>
+												<li class="cate-item swiper-slide" role="group"
+													aria-label="3 / 8"
+													style="-webkit-box-ordinal-group: 4; order: 4; margin-top: 10px; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Áo bé gái" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/ao-be-gai-80.png?v=1657182670947"
+														alt="Áo bé gái">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/ao-be-gai" title="Áo bé gái">Áo bé gái</a>
+													</h4>
+												</li>
+												<li class="cate-item swiper-slide" role="group"
+													aria-label="4 / 8"
+													style="-webkit-box-ordinal-group: 5; order: 5; margin-top: 10px; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Bộ bé trai" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-trai-80.png?v=1657182685220"
+														alt="Bộ bé trai">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/bo-be-trai" title="Bộ bé trai">Bộ bé trai</a>
+													</h4>
+												</li>
+												<li class="cate-item swiper-slide" role="group"
+													aria-label="5 / 8"
+													style="-webkit-box-ordinal-group: 2; order: 2; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Quần bé trai" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-trai-80.png?v=1657182701517"
+														alt="Quần bé trai">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/quan-be-trai" title="Quần bé trai">Quần bé
+															trai</a>
+													</h4>
+												</li>
+												<li class="cate-item swiper-slide" role="group"
+													aria-label="6 / 8"
+													style="-webkit-box-ordinal-group: 3; order: 3; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Áo bé trai" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/ao-be-trai-80.png?v=1657182718667"
+														alt="Áo bé trai">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/ao-be-trai" title="Áo bé trai">Áo bé trai</a>
+													</h4>
+												</li>
+												<li class="cate-item swiper-slide" role="group"
+													aria-label="7 / 8"
+													style="-webkit-box-ordinal-group: 6; order: 6; margin-top: 10px; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Quần bé gái" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-gai-80.png?v=1657182733363"
+														alt="Quần bé gái">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/quan-be-gai" title="Quần bé gái">Quần bé gái</a>
+													</h4>
+												</li>
+												<li class="cate-item swiper-slide" role="group"
+													aria-label="8 / 8"
+													style="-webkit-box-ordinal-group: 7; order: 7; margin-top: 10px; width: 119px; margin-right: 10px;">
+													<a class="image image_thumb radius-12" href=""
+													title="Giày dép" style="height: 119px;"> <img
+														class="image_cate_thumb lazyload" width="140" height="140"
+														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/giay-be-gai-80.png?v=1657184995837"
+														alt="Giày dép">
+												</a>
+													<h4 class="title_cate_">
+														<a href="/giay-dep" title="Giày dép">Giày dép</a>
+													</h4>
+												</li>
+											</ul>
+											<span class="swiper-notification" aria-live="assertive"
+												aria-atomic="true"></span>
+										</div>
+										<div class="swiper-button-prev swiper-button-disabled"
+											tabindex="-1" role="button" aria-label="Previous slide"
+											aria-controls="swiper-wrapper-dd8f29597e8a54e4"
+											aria-disabled="true">
+											<svg class="icon">
+													<use xlink:href="#previcon"></use>
+												</svg>
+										</div>
+										<div class="swiper-button-next" tabindex="0" role="button"
+											aria-label="Next slide"
+											aria-controls="swiper-wrapper-dd8f29597e8a54e4"
+											aria-disabled="false">
+											<svg class="icon">
+												>
+												</svg>
+										</div>
+									</div>
+								</aside>
+								<aside class="related_blogs">
+									<h2 class="title-module">Tin tức liên quan</h2>
+									<ul>
+										<li><a href="/co-nen-mua-quan-ao-tre-em-tren-san-online"
+											title="Có nên mua quần áo trẻ em trên sàn online?">Có nên
+												mua quần áo trẻ em trên sàn online?</a></li>
+
+									</ul>
+								</aside>
+								<script>
+									var galleryRelated = new Swiper(
+											'.swiper-cateproduct',
+											{
+												grabCursor : true,
+												spaceBetween : 10,
+												slidesPerView : 3,
+												roundLengths : true,
+												slideToClickedSlide : false,
+												slidesPerColumn : 2,
+												slidesPerColumnFill : 'row',
+												slidesPerGroup : 2,
+												slideToClickedSlide : false,
+												navigation : {
+													nextEl : '.slide-cate-product .swiper-button-next',
+													prevEl : '.slide-cate-product .swiper-button-prev',
+												},
+												breakpoints : {
+													300 : {
+														slidesPerView : 2,
+														slidesPerGroup : 2,
+														spaceBetween : 10,
+														slidesPerColumn : 2,
+														slidesPerColumnFill : 'row'
+													},
+													640 : {
+														slidesPerView : 4,
+														slidesPerGroup : 2,
+														spaceBetween : 10,
+														slidesPerColumn : 2,
+														slidesPerColumnFill : 'row'
+													},
+													768 : {
+														slidesPerView : 4,
+														slidesPerGroup : 2,
+														spaceBetween : 10,
+														slidesPerColumn : 2,
+														slidesPerColumnFill : 'row'
+													},
+													1024 : {
+														slidesPerView : 3,
+														slidesPerGroup : 2,
+														spaceBetween : 10
+													},
+													1200 : {
+														slidesPerView : 3,
+														slidesPerGroup : 2,
+														spaceBetween : 10
+													}
+												}
+											});
+								</script>
+							</div>
+
+						</div>
+
+					</div>
+
+
+				</div>
+			</div>
+		</section>
+
+
+
+		<script>
+			function showImage(element) {
+				var img = element.getAttribute('src');
+				var link = document.querySelector('.swiper-slide-active');
+
+				// Cập nhật href và src của phần tử <a> và <img>
+				link.href = img;
+				link.querySelector('img').src = img;
+			}
+		</script>
+
+		<script
+			src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/flash.js?1684485482688"
+			defer=""></script>
+		<script
+			src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/color-convert.js?1684485482688"></script>
+
+	</main>
+
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+		media="all">
+
+
+	</footer>
+	<link rel="preload"
+		href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/main.js?1684485482688"
+		as="script">
+	<script
+		src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/main.js?1684485482688"
+		type="text/javascript"></script>
+
+	<script
+		src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/flash.js?1684485482688"
+		defer=""></script>
+
+	<link
+		href="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/plugin-contact.scss.css?1684485482688"
+		rel="stylesheet" type="text/css" media="all">
+
+
+	<div
+		style="visibility: hidden; position: absolute; z-index: -1; bottom: 0; left: 0;">
+
+	</div>
+</body>
+
+</html>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="/controllers/ajaxPostCmt.js"></script>
+<script src="/details/js.js"></script>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+</body>
+
+</html>
