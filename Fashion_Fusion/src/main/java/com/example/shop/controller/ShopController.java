@@ -46,6 +46,7 @@ import com.example.shop.model.Users;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.Max;
 
 @Controller
 public class ShopController {
@@ -102,12 +103,13 @@ public class ShopController {
 	@GetMapping("/ProductSale")
 	public String ProductSale(Model model) {
 		List<Sale> listSale = productsServiceImp.findSalesByIsSale();
-		Page<Products> listPro = productsServiceImp.getAllProduct(PageRequest.of(0, 8));
+		Page<Products> listPro = productsServiceImp.getAllProduct(PageRequest.of(0, Integer.MAX_VALUE));
 
 		List<Products> saleProductsList = new ArrayList<>();
 		for (Products product : listPro.getContent()) {
 			for (Sale sale : listSale) {
 				if (product.getId() == sale.getProduct_id().getId()) {
+					System.out.println(product.getId());
 					saleProductsList.add(product);
 					break;
 				}

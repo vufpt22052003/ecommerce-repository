@@ -38,11 +38,13 @@ public class Orders {
 	private Users user_id;
 
 	private String created_at;
-	 
-	private String total_price;
+
+	private double total_price;
 
 	@OneToMany(mappedBy = "order_id")
 	@JsonIgnore
 	List<Order_details> order_details;
+
+	private String shipping_address;
 
 }

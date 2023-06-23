@@ -85,10 +85,36 @@
 	media="screen and (min-width: 481px)">
 </head>
 <style>
+a {
+	text-decoration: none !important;
+	color: #336087
+}
+
+a:hover {
+	color: #336087
+}
+
 .rte p {
 	text-align: justify;
 	text-indent: 1em;
 	width: 600px;
+}
+
+.button {
+	display: inline-block;
+	padding: 10px 20px;
+	background-color: #4CAF50;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.button:hover {
+	background-color: #45a049;
 }
 
 .description {
@@ -153,6 +179,45 @@ button:active {
 
 a {
 	direction: none !important;
+}
+
+.from-action-addcart {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.qty-ant {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.qty-ant .custom-btn-number {
+	display: flex;
+	align-items: center;
+	margin-right: 10px;
+}
+
+.qty-ant .custom-btn-number .qty {
+	width: 40px;
+	text-align: center;
+}
+
+.sbtn-mua {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+}
+
+.icon {
+	margin-right: 5px;
 }
 </style>
 
@@ -382,57 +447,53 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 										data-cart-form="" action="/cart/add" method="post"
 										class="wishItem">
 										<div class="form-product">
-
-											<div class="box-variant clearfix  d-none ">
-
+											<div class="box-variant clearfix d-none">
 												<input type="hidden" id="one_variant" name="variantId"
 													value="68292987">
-
 											</div>
-											<div class="clearfix from-action-addcart ">
-												<div class="qty-ant clearfix custom-btn-number ">
+											<div class="clearfix from-action-addcart "
+												style="margin-right: 50px;">
+												<div class="qty-ant clearfix custom-btn-number"
+													style="text-align: center; margin-right: 250px;">
 													<label class="d-none">Số lượng:</label>
 													<div
 														class="custom custom-btn-numbers clearfix input_number_product">
-														<button onclick=" result.value--;return false;"
+														<button onclick="decrementValue()"
 															class="btn-minus btn-cts" type="button">–</button>
 														<input aria-label="Số lượng" type="text"
 															class="qty input-text" id="qty" name="quantity" size="4"
 															value="1" maxlength="3"
-															onkeypress="if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;"
-															onchange="if(this.value == 0)this.value=1;">
-														<button
-															onclick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN(qty)) result.value++;return false;"
+															onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+															onchange="if(this.value == 0) this.value=1;"
+															style="width: 250px">
+														<button onclick="incrementValue()"
 															class="btn-plus btn-cts" type="button">+</button>
 													</div>
 												</div>
-												<div class="btn-mua">
 
-													<a th:href="@{/add-to-cart/{id}(id=${product.get().id})}"><img
-														src="../banner/cart.png" style="width: 30px; color: black"
-														alt="" /> &nbsp; Thêm Vào Giỏ Hàng</a> <br /> <br />
-													<button type="button"
-														class="btn btn-lg btn-gray btn_buy btn-buy-now"
-														style="margin-left: 0px;">
-														Mua ngay<em>Thanh toán online hoặc ship COD</em>
-													</button>
-													
-												</div>
+												<div class="sbtn-mua">
+													<a th:href="@{/checkBuyNow/{id}(id=${product.get().id})}"
+														class="button no-underline"> <span class="icon">&#x1F4B8;</span>
+														Mua ngay
+													</a>  <a th:href="@{/add-to-cart/{id}(id=${product.get().id})}"
+														class="button"> <span class="icon">&#128722;</span>
+														Thêm vào giỏ hàng
+													</a>
+												</div> 
 											</div>
 											<div class="product-wish">
-
 												<a href="javascript:void(0)" class="setWishlist"
 													data-wish="ao-thun-be-gai-cotton-hinh-con-voi" tabindex="0"
 													title="Thêm vào yêu thích"> <svg class="icon">
-															<use xmlns:xlink="http://www.w3.org/1999/xlink"
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink"
 															xlink:href="#wishlist"></use>
-														</svg>
+                </svg>
 												</a>
-
 											</div>
 										</div>
 									</form>
-									<ul class="social-media__item-list list--unstyled" role="list">
+									<ul class="social-media__item-list list--unstyled" role="list"
+										style="list-style: none;">
 										<li>Chia sẻ ngay:</li>
 										<li class="social-media__item social-media__item--facebook">
 											<a title="Chia sẻ lên Facebook"
@@ -442,7 +503,7 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 													xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
 														<path
 														d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
-														</path>
+															</path>
 													</svg> Chia sẻ
 										</a>
 										</li>
@@ -565,10 +626,11 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 									<br />
 									<p th:text="${'Tên Sản Phẩm : '+product.get().name}">
 								</div>
-								<div class="rte">
-
-									<p th:text="${'- '+product.get().description}"></p>
+								<div class="rte"
+									style="white-space: pre-wrap; line-height: 0.1;">
+									<p th:text="${'- ' + product.get().description}"></p>
 								</div>
+
 								<br /> <br />
 
 

@@ -136,7 +136,7 @@ public class Products {
 				}
 
 				foundSale = true;
-				System.out.println(originalPrice+"price");
+//				System.out.println(originalPrice+"price");
 
 				break;
 			}

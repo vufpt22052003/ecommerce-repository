@@ -46,25 +46,38 @@
 }
 </style>
 <body>
-		<div th:replace="views/menu :: menu"></div>
+	<div th:replace="views/menu :: menu"></div>
 
 	<!-- modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<form action="/add-adres" method="post">
+	<form action="/add_order" method="post">
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content" style="width: 580px">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Cập Nhật Địa
-							Chỉ</h5>
+
+						<h5 class="modal-title" id="exampleModalLabel">Địa Chỉ Giao
+							Hàng</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+					<!-- form chọn địa chỉ -->
 					<div class="modal-body">
 						<div class="form-container">
+							<div class="row">
+								<input type="checkbox"> 
+								<!-- Các ô hidden để lấy thông tin -->
+							</div>
+						</div>
 
+
+						<!-- form thêm địa chỉ -->
+					</div>
+					<div class="modal-body">
+						<div class="form-container">
 							<div class="row">
 								<div class="col-md-6 form-group">
 									<label for="recipient-name" class="col-form-label">Họ
@@ -76,28 +89,38 @@
 										Điện Thoại:</label> <input type="text" class="form-control"
 										id="phone-number" name="phone" th:value="${adres.phone}">
 								</div>
-								<div class="col-md-12 btn-group"
-									style="display: flex; gap: 3px; padding-left: 13px;">
-									<select id="city" name="province">
-										<option value="" selected>Chọn tỉnh thành</option>
-									</select> <select id="district" name="district">
-										<option value="" selected>Chọn quận huyện</option>
-									</select> <select id="ward" name="ward">
-										<option class="dropdown-item" value="" selected>Chọn
-											phường xã</option>
-									</select>
+								<div class="col-md-12 form-group">
+									<label for="recipient-name" class="col-form-label">Địa
+										Chỉ Cũ:</label><input type="text" class="form-control"
+										id="recipient-name" name="newAddress" th:value="${newAddress}"
+										readonly>
+
+								</div>
+								<div class="col-md-12 form-group">
+									<label for="recipient-name" class="col-form-label">Chọn
+										Địa Chỉ Khác:</label>
+									<div class="col-md-12 btn-group"
+										style="display: flex; gap: 3px; padding-left: 13px;">
+										<select id="city" name="province">
+											<option value="" selected>Chọn tỉnh thành</option>
+										</select><select id="district" name="district">
+											<option value="" selected>Chọn quận huyện</option>
+										</select> <select id="ward" name="ward">
+											<option class="dropdown-item" value="" selected>Chọn
+												phường xã</option>
+										</select>
+									</div>
 								</div>
 								<div class="col-md-12 form-group">
 									<label for="address" class="col-form-label">Địa Chỉ Cụ
 										Thể:</label>
-									<textarea class="form-control" id="address" name="Tool_address">
-    [[${adres.Tool_address}]]
-</textarea>
-
+									<textarea class="form-control" id="address" name="Tool_address"
+										th:text="${adres.Tool_address}"></textarea>
 								</div>
+								<!-- Các ô hidden để lấy thông tin -->
 							</div>
-
 						</div>
+
 
 
 					</div>
@@ -106,13 +129,11 @@
 						<button type="submit" class="btn btn-primary">Hoàn Thành</button>
 					</div>
 				</div>
-			</form>
+			</div>
 		</div>
-	</div>
-	<!-- end -->
+		<!-- end -->
 
-	<!-- Shopping Cart Section Begin -->
-	<form action="add_order" method="post">
+		<!-- Shopping Cart Section Begin -->
 		<section class="shopping-cart spad" style="background-color: #f9f9f9">
 			<div class="containers" style="width: 1300px; margin-left: 98px;">
 				<div class="row">
@@ -141,10 +162,38 @@
 									</tr>
 								</thead>
 
-								<tbody th:each="product : ${session.selectedProducts}"
-									style="border: 1px solid rgba(0, 0, 0, .125); margin-bottom: 10px;">
-
+								<tbody th:if="${buyProduct != null}">
 									<tr>
+										<td class="product__cart__item">
+											<div class="product__cart__item__pic">
+												<img th:src="@{'/images/' + ${buyProduct.get().img}}"
+													class="contain"
+													style="height: 120px; width: 120px; object-fit: contain; margin-left: 20px;"
+													alt="">
+											</div>
+											<div class="product__cart__item__text">
+												<h6 th:text="${buyProduct.get().name}"></h6>
+											</div>
+										</td>
+										<td class="quantity__item">
+											<div class="quantity">
+												<div class="pro-qty-2">
+													<input type="text" th:value="1" name="quantity">
+												</div>
+											</div>
+										</td>
+										<td class="cart__price">
+											<h5 th:text="${buyProduct.get().price +'$'}"></h5> <input
+											hidden name="price" th:value="${buyProduct.get().price}" />
+											<input hidden name="productId"
+											th:value="${buyProduct.get().id}">
+										</td>
+									</tr>
+								</tbody>
+
+								<tbody th:if="${session.selectedProducts != null}">
+									<tr th:each="product : ${session.selectedProducts}"
+										style="border: 1px solid rgba(0, 0, 0, .125); margin-bottom: 10px;">
 										<td class="product__cart__item">
 											<div class="product__cart__item__pic">
 												<img th:src="@{'/images/' + ${product.product_id.img}}"
@@ -153,10 +202,8 @@
 													alt="">
 											</div> <input hidden name="idProduct[]"
 											th:value="${product.product_id.id}">
-
 											<div class="product__cart__item__text">
-												<h6
-													th:text="${product.product_id.name + ' ' + product.product_id.price}"></h6>
+												<h6 th:text="${product.product_id.name}"></h6>
 												<h5 th:text="${product.product_id.price}"></h5>
 											</div>
 										</td>
@@ -178,8 +225,7 @@
 
 							</table>
 
-							<br />
-							<br /> <br />
+							<br /> <br /> <br />
 							</table>
 						</div>
 						<div class="row">
@@ -202,8 +248,12 @@
 						<div class="cart__total">
 							<h6>Cart total</h6>
 							<ul>
-								<li>Tổng Sản Phẩm <span
-									th:text="${session.selectedProducts.size()}"></span></li>
+								<li th:if="${session.selectedProducts != null}">Tổng Sản
+									Phẩm <span th:text="${session.selectedProducts.size()}"></span>
+								</li>
+								<li th:if="${buyProduct != null}">Tổng Sản Phẩm <span
+									th:text="${'1'}"></span>
+								</li>
 								<li>Thành Tiền <span
 									th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
 
@@ -211,8 +261,14 @@
 									th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
 								<input hidden name="total_price" th:value="${total}" />
 							</ul>
-							<button type="submit" class="primary-btn">
-								Đặt Hàng</a>
+							<th:block th:if="${session.selectedProducts != null}">
+								<button type="submit" name="submitButton" class="primary-btn"
+									value="BuyInCart">Đặt Hàng</button>
+							</th:block>
+							<th:block th:if="${buyProduct != null}">
+								<button type="submit" name="submitButton" class="primary-btn"
+									value="BuyNow">Đặt Hàng</button>
+							</th:block>
 						</div>
 					</div>
 

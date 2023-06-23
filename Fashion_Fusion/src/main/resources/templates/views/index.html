@@ -141,8 +141,10 @@ a:hover {
 .header-menu {
 	height: 66px !important;
 }
-.btn{
-    margin-left: 20px;}
+
+.btn {
+	margin-left: 20px;
+}
 </style>
 <body>
 	<div class="bodywrap">
@@ -151,7 +153,8 @@ a:hover {
 		<div id="modalOverlay">
 			<div id="modalContainer">
 				<img id="bannerImage" class="banner-image">
-				<button id="closeModalButton" style="background: red"></button> <!-- dấu x gán ở js -->
+				<button id="closeModalButton" style="background: red"></button>
+				<!-- dấu x gán ở js -->
 			</div>
 		</div>
 
@@ -275,19 +278,20 @@ a:hover {
 																150.000₫&nbsp; <span class="compare-price">200.000₫</span>
 															</div>
 														</div>
-														
-													
-														
+
+
+
 														<!-- tính dã bán  -->
-													<th:block th:if="${item.in_stock > 0}"
-														th:with="count=${#aggregates.sum(item.details.![is_completed ? quantity : 0])}"
-														th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
-														<p
-															th:text="${  count != null ? 'Đã Bán ' + count : '0 Đã Bán'}"></p>
-													</th:block>
-													<th:block th:unless="${item.in_stock > 0}" class="sold-out">
-														<b style="color: red" th:text="${'Đã Bán Hết'}"></b>
-													</th:block>
+														<th:block th:if="${item.in_stock > 0}"
+															th:with="count=${#aggregates.sum(item.details.![is_completed ? quantity : 0])}"
+															th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
+															<p
+																th:text="${  count != null ? 'Đã Bán ' + count : '0 Đã Bán'}"></p>
+														</th:block>
+														<th:block th:unless="${item.in_stock > 0}"
+															class="sold-out">
+															<b style="color: red" th:text="${'Đã Bán Hết'}"></b>
+														</th:block>
 
 													</form>
 												</div>
@@ -600,12 +604,13 @@ a:hover {
 				</div>
 			</div>
 		</div>
-		
-		
+
+
 		<script src="index/js/file_js.js"></script>
 		<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 		<link rel="stylesheet"
 			href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+		<input hidden="abc">
 </body>
 
 </html>

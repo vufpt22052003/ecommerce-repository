@@ -38,7 +38,9 @@ public class LoginController {
 		String url = request.getRequestURL().toString();
 
 		if (url.contains("logout")) {
-			session.removeAttribute("acc");
+			//session.removeAttribute("acc");
+		    session.invalidate(); // Xóa tất cả các thuộc tính trong session
+
 			return "redirect:/index";
 		}
 		return "views/login";

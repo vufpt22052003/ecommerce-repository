@@ -1,6 +1,7 @@
 package com.example.shop.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +69,26 @@ public class CartController {
 
 	}
 
+//lấy thông tin địa chỉ
+	public void checkAdress(Model model) {
+//		Users acc = (Users) session.getAttribute("acc");
+//		int uid = acc.getId();
+		Address adres = checkOutServiceImp.getAdres(1);
+
+//		List<String> addressList = Arrays.asList(adresString.split(","));
+//		String xa = addressList.get(0).trim();
+//		String huyen = addressList.get(1).trim();
+//		String tinh = addressList.get(2).trim();
+		
+		
+		String info = adres.getName() + " (+84) " + adres.getPhone() + " , " + adres.getTool_address() + " "
+				+ adres.getAdress();
+		model.addAttribute("info", info);
+		model.addAttribute("adres", adres);
+		model.addAttribute("newAddress", adres.getAdress());
+	}
+
+// chọn trong giỏ hàng các món mua
 	@GetMapping("/checkout")
 	public String checkout(@RequestParam(value = "check[]") int[] Pid, Model model) {
 		ArrayList<Cart> selectedProducts = new ArrayList<>();
@@ -94,14 +115,24 @@ public class CartController {
 		model.addAttribute("total", total);
 		System.out.println(total);
 
-		Address adres = checkOutServiceImp.getAdres(1);
-		String u = adres.getAdress();
-		String info = adres.getName() + " (+84) " + adres.getPhone() + " , " + adres.getTool_address() + " "
-				+ adres.getAdress();
+		checkAdress(model);
 
-		model.addAttribute("info", info);
-		model.addAttribute("adres", adres);
 		return "views/checkout";
+	}
+
+	// check Mua ngay
+	@GetMapping("/checkBuyNow/{id}")
+	public String checkBuyNow(@PathVariable("id") int pid, Model model) {
+		Optional<Products> pro = productsServiceImp.findById(pid);
+		session.removeAttribute("selectedProducts");
+
+		model.addAttribute("buyProduct", pro);
+
+		model.addAttribute("total", pro.get().getPrice());
+
+		checkAdress(model);
+		return "views/checkout";
+
 	}
 
 	@GetMapping("cart")
