@@ -1,11 +1,16 @@
 package com.example.shop.model;
 
+import java.util.List;
+
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,16 +27,20 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	//@NotBlank(message = "Vui Lòng Nhập Họ Tên")
+
+	// @NotBlank(message = "Vui Lòng Nhập Họ Tên")
 	private String name;
 
 	private int phone;
 	private String adress;
 	private int uid;
 	private String Tool_address;
+	private boolean default_address;
+//	@OneToOne(mappedBy = "Address_id")
+//	@JsonIgnore
+//	private Checkout Address_id;
 
-	@OneToOne(mappedBy = "Address_id")
-	private Checkout Address_id;
-
+	@OneToMany(mappedBy = "adres_id")
+	 @JsonIgnore
+	List<Orders> order;
 }

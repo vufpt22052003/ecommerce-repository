@@ -16,8 +16,7 @@
 	href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="/view/css/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet" href="/view/css/font-awesome.min.css"
+	type="text/css"><link rel="stylesheet" href="/view/css/font-awesome.min.css"
 	type="text/css">
 <link rel="stylesheet" href="/view/css/elegant-icons.css"
 	type="text/css">
@@ -40,21 +39,108 @@
 	object-fit: contain;
 }
 
+.item {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+}
+
+.checkbox {
+	margin-right: 10px;
+}
+
+.content {
+	padding-left: 20px;
+}
+
 .btn {
 	margin-bottom: 10px;
 	margin-left: 20px;
+}
+
+.form-container {
+	padding: 20px;
+	background-color: #f2f2f2;
+	border-radius: 5px;
+	height: 400px
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	font-weight: bold;
+}
+
+.form-control {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.btn-group {
+	display: flex;
+	gap: 3px;
+	padding-left: 13px;
+}
+
+textarea.form-control {
+	height: 100px;
+}
+
+.button-container {
+	text-align: right;
+}
+
+.button-container button {
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.button-container button:hover {
+	background-color: #45a049;
+}
+
+.add-button {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+}
+
+.add-button:hover {
+	background-color: #45a049;
+}
+
+.plus-icon {
+	font-size: 22px;
+}
+
+.round-input {
+	border-radius: 50px;
+	/* Đặt bán kính của viền input để tạo hình dạng tròn */
+	padding: 8px 15px; /* Điều chỉnh padding tùy ý */
+	border: 1px solid #ccc; /* Tạo viền cho ô input */
 }
 </style>
 <body>
 	<div th:replace="views/menu :: menu"></div>
 
 	<!-- modal -->
-	<form action="/add_order" method="post">
+	<form action="/add_order" method="post" ng-app="MyApp"
+		ng-controller="adressController">
 
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
-				<div class="modal-content" style="width: 580px">
+				<div class="modal-content" style="width: 580px; height: 600px">
 					<div class="modal-header">
 
 						<h5 class="modal-title" id="exampleModalLabel">Địa Chỉ Giao
@@ -65,40 +151,49 @@
 						</button>
 					</div>
 					<!-- form chọn địa chỉ -->
-					<div class="modal-body">
+					<div class="modal-body" ng-show="!displayAdres">
 						<div class="form-container">
-							<div class="row">
-								<input type="checkbox"> 
-								<!-- Các ô hidden để lấy thông tin -->
+							<div class="row" ng-repeat="it in dataAdres">
+								<div class="item">
+									<div class="checkbox">
+										<input type="checkbox" class="<round-inpu></round-inpu>t"
+											ng-model="it.default_address"
+											ng-change="handleCheckboxChange(it)">
+									</div>
+									<div class="content">
+										{{it.name}} | {{it.phone}} <br /> {{it.adress}}
+									
+									</div>
+								</div>
 							</div>
+
+							<br />
+							<button type="button" class="add-button" ng-click="add()">
+								<span class="plus-icon">+</span> Thêm Địa Chỉ
+							</button>
+
 						</div>
 
-
-						<!-- form thêm địa chỉ -->
 					</div>
-					<div class="modal-body">
+
+					<!-- form thêm địa chỉ -->
+					<div class="modal-body" ng-show="displayAdres">
 						<div class="form-container">
 							<div class="row">
 								<div class="col-md-6 form-group">
 									<label for="recipient-name" class="col-form-label">Họ
 										Và Tên:</label> <input type="text" class="form-control"
-										id="recipient-name" name="name" th:value="${adres.name}">
+										id="recipient-name" ng-model="formData.name">
 								</div>
 								<div class="col-md-6 form-group">
 									<label for="phone-number" class="col-form-label">Số
 										Điện Thoại:</label> <input type="text" class="form-control"
-										id="phone-number" name="phone" th:value="${adres.phone}">
+										id="phone-number" ng-model="formData.phone">
 								</div>
-								<div class="col-md-12 form-group">
-									<label for="recipient-name" class="col-form-label">Địa
-										Chỉ Cũ:</label><input type="text" class="form-control"
-										id="recipient-name" name="newAddress" th:value="${newAddress}"
-										readonly>
 
-								</div>
 								<div class="col-md-12 form-group">
 									<label for="recipient-name" class="col-form-label">Chọn
-										Địa Chỉ Khác:</label>
+										Địa Chỉ :</label>
 									<div class="col-md-12 btn-group"
 										style="display: flex; gap: 3px; padding-left: 13px;">
 										<select id="city" name="province">
@@ -114,19 +209,21 @@
 								<div class="col-md-12 form-group">
 									<label for="address" class="col-form-label">Địa Chỉ Cụ
 										Thể:</label>
-									<textarea class="form-control" id="address" name="Tool_address"
-										th:text="${adres.Tool_address}"></textarea>
+									<textarea class="form-control" id="address"
+										ng-model="formData.Tool_address"></textarea>
 								</div>
 								<!-- Các ô hidden để lấy thông tin -->
 							</div>
 						</div>
-
-
-
 					</div>
+
 					<div class="modal-footer">
-						<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Hoàn Thành</button>
+						<button ng-show="!displayAdres" type="button"
+							class="btn btn-light" data-dismiss="modal" ng-click="back()">Hủy</button>
+						<button ng-show="displayAdres" type="button" class="btn btn-light"
+							ng-click="back()">Trở Lại</button>
+						<button ng-show="displayAdres" type="button"
+							class="btn btn-primary" ng-click="addAdres()">Hoàn Thành</button>
 					</div>
 				</div>
 			</div>
@@ -144,10 +241,11 @@
 							<path
 									d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
 									fill-rule="evenodd"></path></svg>
-							&nbsp;&nbsp;&nbsp; Địa Chỉ Nhận Hàng <br /> <br /> <b
-								th:text="${info}"></b> <a data-toggle="modal"
-								data-target="#exampleModal" data-whatever="@mdo"><b
-								style="color: blue">Click</b> Vào Đây Để Thay Đổi</a>
+							&nbsp;&nbsp;&nbsp; Địa Chỉ Nhận Hàng <br /> <br /> <b>{{info}}</b>
+							<a data-toggle="modal" data-target="#exampleModal"
+								data-whatever="@mdo"><b style="color: blue">Click</b> Vào
+								Đây Để Thay Đổi</a>
+									<input hidden="" ng-value="id" name="id_adres">
 						</h6>
 
 
@@ -294,12 +392,17 @@
 
 	<!-- Js Plugins -->
 	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 		referrerpolicy="no-referrer"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 	<script src="/api_province/api.js"></script>
-
+	<script src="/controllers/adres.js"></script>
 	<script src="/view/js/jquery-3.3.1.min.js"></script>
 	<script src="/view/js/bootstrap.min.js"></script>
 	<script src="/view/js/jquery.nice-select.min.js"></script>

@@ -26,8 +26,8 @@ public class Checkout {
 	private String transport;
 	private double total_price;
 
-	@OneToOne
-	@JoinColumn(name = "Address_id")
-	private Address Address_id;
+//	@OneToOne
+//	@JoinColumn(name = "Address_id")
+//	private Address Address_id;
 
 }

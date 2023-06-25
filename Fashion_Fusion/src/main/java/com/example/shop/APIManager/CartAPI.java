@@ -1,5 +1,6 @@
 package com.example.shop.APIManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.shop.ServiceImp.AdresServiceImp;
 import com.example.shop.ServiceImp.CartServiceImp;
+import com.example.shop.model.Address;
 import com.example.shop.model.Cart;
 
 @RestController
 public class CartAPI {
 	@Autowired
 	CartServiceImp cartServiceImp;
+	@Autowired
+	AdresServiceImp adresServiceImp;
 
 	// xóa theo danh sách chọn
 	@RequestMapping("/deleteSelected")
@@ -50,6 +55,20 @@ public class CartAPI {
 
 		return new ResponseEntity<>(cart, HttpStatus.OK);
 
+	}
+
+	// lây dịa chỉ
+	@GetMapping("/aders/api")
+	public ResponseEntity<List<Address>> getAdres() {
+		ArrayList<Address> getAllByUser = (ArrayList<Address>) adresServiceImp.getAdres();
+		return new ResponseEntity<List<Address>>(getAllByUser, HttpStatus.OK);
+	}
+
+	// update địa chỉ mặc định
+	@RequestMapping("/updateDefault")
+	public ResponseEntity<Void> updateDefault(@RequestParam("id") int id) {
+		adresServiceImp.updateDefault(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

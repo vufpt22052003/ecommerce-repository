@@ -35,11 +35,17 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
 	integrity="sha512-*****************************"
 	crossorigin="anonymous" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
 	media="all">
 <link rel="stylesheet" href="/view/css/style.css" type="text/css">
 <link rel="stylesheet" href="/details/css/bootstrap.min.css"
 	type="text/css">
+
 </head>
 <style>
 .select-container {
@@ -63,82 +69,174 @@
 a {
 	direction: none !important;
 }
+
+.plus-icon {
+	font-size: 22px;
+}
 </style>
-<body>
+<body ng-app="MyApp" ng-controller="adressController">
 	<div th:replace="views/menu :: menu"></div>
 
 	<!-- Header Section End -->
 
-
+	<br />
 	<!-- Checkout Section Begin -->
-	<section class="checkout spad">
-		<div class="container">
-			<div class="checkout__form">
-				<form action="/add-adres" method="post">
-					<div class="row">
-						<div class="col-lg-12 col-md-12">
+	<div class="container">
 
-							<div class="row">
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>
-											Họ Tên<span>*</span>
-										</p>
-										<input type="text" name="name" autocomplete="new-password"
-											style="color: black;">
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>
-											Số Điện Thoại<span>*</span>
-										</p>
-										<input type="text" name="phone" style="color: black;">
-									</div>
-								</div>
+		<section class="checkout spad" style="background-color: #f5f5f5;">
+			<div style="display: flex;">
+				<h3 style="margin-left: 30px;">Địa chỉ của tôi</h3>
+				<button data-toggle="modal" data-target="#exampleModal"
+					data-whatever="@mdo" type="button" class="btn btn-outline-danger"
+					style="margin-left: 700px;" ng-click="clearForm()">
+					<span class="plus-icon">+</span> Thêm Địa Chỉ Mới
+				</button>
+			</div>
+			<hr />
+			<div class="container">
+				<br />
 
-								<div class="col-md-12 btn-group"
-									style="display: flex; gap: 10px; padding-left: 30px;">
-									<select id="city" name="province">
-										<option value="" selected>Chọn tỉnh thành</option>
-									</select> <select id="district" name="district">
-										<option value="" selected>Chọn quận huyện</option>
-									</select> <select id="ward" name="ward">
-										<option class="dropdown-item" value="" selected>Chọn
-											phường xã</option>
-									</select>
-								</div>
-							</div>
-							<br /> <br />
+				<div class="checkout__form" ng-repeat="it in dataAdres"
+					style="background-color: #f3ebeb; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+					<div>
+						{{it.name}} | (+84) {{it.phone}}<br /> <span
+							style="opacity: 0.7;">{{it.tool_address}}<br />{{it.adress}}
+
+						</span><br /> <br />
+						<div ng-if="it.id == id">
+							<button type="button" class="btn btn-light">Địa Chỉ Mặc
+								Định</button>
+							<button type="button" class="btn btn-light">Địa Chỉ Lấy
+								Hàng</button>
+
+						</div>
+					</div>
+					<div>
+						<!-- Chỗ này để nút "Xóa" và "Cập nhật" -->
+
+						&nbsp;&nbsp;&nbsp;&nbsp;<a href="" data-toggle="modal"
+							data-target="#exampleModal" data-whatever="@mdo" type="button"
+							class="btn-update" ng-click="finById(it.id); " style="direction: none">Cập nhật</a>
+						&nbsp; <a href="" class="btn-delete"
+							ng-click="deleteAddress(it.id  )" style="direction: none">Xóa</a><br /> <br />
+						<!-- neu bằng disable -->
+						<button type="button" class="btn btn-light"
+							ng-disabled="it.id == id ? true : false"
+							ng-click="default(it.id)">Thiết Lập Mặc Định</button>
+
+						<!-- neu k  bằng thì chọn -->
+
+					</div>
+				</div>
+			</div>
 
 
-							<div class="row">
-								<div class="col-lg-12">
-									<textarea class="form-control" id="exampleFormControlTextarea1"
-										rows="4" style="width: 100%"
-										placeholder="Địa Chỉ Cụ Thể (vd: số nhà...)"
-										name="Tool_address"></textarea>
-									<br />
-									<div style="text-align: center;">
-										<iframe
+		</section>
+		<form action="/add-adres" method="post">
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width: 580px; height: 650px;background-color: lavenderblush">
+						<div class="modal-header">
+
+							<h5 class="modal-title" id="exampleModalLabel">Địa Chỉ Giao
+								Hàng</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<!-- form thêm địa chỉ -->
+						<div class="modal-body" ng-show="!displayAdres">
+							<div class="form-container">
+								<div class="row">
+									<div class="col-lg-12 col-md-12">
+										<div class="row">
+											<div class="col-lg-6">
+												<div class="checkout__input">
+													<p>
+														Họ Tên<span>*</span>
+													</p>
+													<input type="text" name="name" autocomplete="new-password"
+														style="color: black;" ng-model="objectAdres.name">
+												</div>
+											</div>
+											<div class="col-lg-6">
+												<div class="checkout__input">
+													<p>
+														Số Điện Thoại<span>*</span>
+													</p>
+													<input type="text" name="phone"
+														ng-model="objectAdres.phone" style="color: black;">
+												</div>
+											</div>
+
+
+											<div class="col-md-12" ng-if="showAddress">
+												<p>Địa Chỉ Cũ</p>
+												<input readonly  class="custom-input" name="old_adres"
+													ng-value="objectAdres.adress"
+													style="width: 100%; margin-bottom: 10px;background-color:#f3f3f3">
+											</div>
+											<input type="hidden" name="idAdres" ng-value="objectAdres.id" />
+
+											<div class="col-md-12 " style="gap: 10px; overflow-y: auto;">
+												<p> Cập nhật Địa Chỉ Mới</p>
+												<select id="city" name="province">
+													<option value="" selected>Chọn tỉnh thành</option>
+												</select> <select id="district" name="district">
+													<option value="" selected>Chọn quận huyện</option>
+												</select> <select id="ward" name="ward">
+													<option class="dropdown-item" value="" selected>Chọn
+														phường xã</option>
+												</select>
+											</div>
+										</div>
+										<br />
+
+
+										<div class="row">
+											<div class="col-lg-12">
+											<p>  Địa Chỉ Cụ Thể</p>
+												<textarea class="form-control"
+													id="exampleFormControlTextarea1" rows="4"
+													style="width: 100%"
+													placeholder="Địa Chỉ Cụ Thể (vd: số nhà...)"
+													name="Tool_address" ng-model="objectAdres.tool_address"></textarea>
+												<br />
+												<div style="text-align: center;">
+													<!-- <iframe
 											src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1972341.8309656216!2d108.0457656828125!3d15.090639678361994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1684655973163!5m2!1svi!2s"
 											width="400" height="300" style="border: 0;"
 											allowfullscreen="" loading="lazy"
-											referrerpolicy="no-referrer-when-downgrade"></iframe>
-									</div>
-									<hr />
-									<button type="submit" class="btn btn-primary"
-										style="margin-top: 10px;">Hoàn Tất</button>
-								</div>
-							</div>
+											referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+												</div>
 
+
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
 						</div>
 
+						<div class="modal-footer">
+							<button ng-show="!displayAdres" type="button"
+								class="btn btn-light" data-dismiss="modal" ng-click="back()">Hủy</button>
+							<button type="submit" class="btn btn-primary"
+								style="margin-top: 10px;">Hoàn Tất</button>
+						</div>
 					</div>
-				</form>
+				</div>
 			</div>
-		</div>
-	</section>
+
+		</form>
+
+
+	</div>
 	<!-- Checkout Section End -->
 
 	<!-- Footer Section Begin -->
@@ -232,6 +330,7 @@ a {
 		referrerpolicy="no-referrer"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+	<script src="/controllers/adres.js"></script>
 
 	<script src="/api_province/api.js"></script>
 	<script src="/details/js/jquery-3.3.1.min.js"></script>

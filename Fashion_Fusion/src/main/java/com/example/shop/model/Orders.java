@@ -45,6 +45,8 @@ public class Orders {
 	@JsonIgnore
 	List<Order_details> order_details;
 
-	private String shipping_address;
+	@ManyToOne
+	@JoinColumn(name ="adres_id")
+	private Address adres_id;
 
 }

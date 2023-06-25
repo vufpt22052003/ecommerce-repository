@@ -25,9 +25,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.annotation.SessionScope;
 
+import com.example.shop.DAO.AddresDAO;
 import com.example.shop.Service.OrderDetailsService;
 import com.example.shop.Service.OrderService;
 import com.example.shop.ServiceImp.ProductsServiceImp;
+import com.example.shop.model.Address;
 import com.example.shop.model.Cart;
 import com.example.shop.model.Order_details;
 import com.example.shop.model.Orders;
@@ -49,20 +51,26 @@ public class OrderController {
 	ProductsServiceImp productsServiceImp;
 	@Autowired
 	OrderDetailsService orderDetailsService;
+	@Autowired
+	AddresDAO addresDAO;
 
 	@RequestMapping({ "/add_order" })
 	public String processOrder(@ModelAttribute("order") Orders order,
 			@ModelAttribute("checkout") Order_details model_details,
-			@RequestParam(value = "productId" , required = false) Integer pid,
-			@RequestParam("submitButton") String submitButton, SessionStatus sessionStatus) {
-
+			@RequestParam(value = "productId", required = false) Integer pid,
+			@RequestParam("submitButton") String submitButton, SessionStatus sessionStatus,
+			@RequestParam("id_adres") int id_adres) {
 		Users acc = (Users) session.getAttribute("acc");
 		int uid = acc.getId();
+
 		// Lấy ngày và giờ hiện tại
 		Calendar calendar = Calendar.getInstance();
 		Date currentDate = calendar.getTime();
 
 		Orders ord = new Orders();
+		Optional<Address> geAdresById = addresDAO.findById(id_adres);
+
+		ord.setAdres_id(geAdresById.get());
 		if (submitButton.equals("BuyInCart")) {
 
 			ord.setUser_id(acc);
@@ -82,9 +90,8 @@ public class OrderController {
 			}
 
 		}
-		
-		if (submitButton.equals("BuyNow")) {
 
+		if (submitButton.equals("BuyNow")) {
 			Optional<Products> pro = productsServiceImp.findById(pid);
 			System.out.println(pid + "pridik");
 
@@ -99,7 +106,6 @@ public class OrderController {
 			od_details.setQuantity(1);
 			od_details.setProduct_id(pro.get());
 			od_details.setCreated_at(currentDate);
-			
 
 			orderDetailsService.add_orderDetails(od_details);
 		}

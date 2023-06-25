@@ -3,7 +3,9 @@ package com.example.shop.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.shop.DAO.CartDAO;
 import com.example.shop.DAO.SaleDAO;
+import com.example.shop.ServiceImp.AdresServiceImp;
 import com.example.shop.ServiceImp.CartServiceImp;
-import com.example.shop.ServiceImp.CheckOutServiceImp;
 import com.example.shop.ServiceImp.ProductsServiceImp;
 import com.example.shop.model.Address;
 import com.example.shop.model.Cart;
@@ -40,14 +42,16 @@ public class CartController {
 
 	@Autowired
 	ProductsServiceImp productsServiceImp;
-	@Autowired
-	CheckOutServiceImp checkOutServiceImp;
+
 	@Autowired
 	SaleDAO saleDAO;
 	@Autowired
 	HttpSession session;
 	@Autowired
 	HttpServletRequest request;
+
+	@Autowired
+	AdresServiceImp adressServiceImp;
 
 	@RequestMapping("/add-to-cart/{Pid}")
 	public String addCart(@PathVariable("Pid") int id, HttpSession session, HttpServletRequest request) {
@@ -67,25 +71,6 @@ public class CartController {
 		}
 		return "redirect:/cart";
 
-	}
-
-//lấy thông tin địa chỉ
-	public void checkAdress(Model model) {
-//		Users acc = (Users) session.getAttribute("acc");
-//		int uid = acc.getId();
-		Address adres = checkOutServiceImp.getAdres(1);
-
-//		List<String> addressList = Arrays.asList(adresString.split(","));
-//		String xa = addressList.get(0).trim();
-//		String huyen = addressList.get(1).trim();
-//		String tinh = addressList.get(2).trim();
-		
-		
-		String info = adres.getName() + " (+84) " + adres.getPhone() + " , " + adres.getTool_address() + " "
-				+ adres.getAdress();
-		model.addAttribute("info", info);
-		model.addAttribute("adres", adres);
-		model.addAttribute("newAddress", adres.getAdress());
 	}
 
 // chọn trong giỏ hàng các món mua
@@ -115,7 +100,7 @@ public class CartController {
 		model.addAttribute("total", total);
 		System.out.println(total);
 
-		checkAdress(model);
+		// checkAdress(model);
 
 		return "views/checkout";
 	}
@@ -130,7 +115,7 @@ public class CartController {
 
 		model.addAttribute("total", pro.get().getPrice());
 
-		checkAdress(model);
+		// checkAdress(model);
 		return "views/checkout";
 
 	}
@@ -157,5 +142,11 @@ public class CartController {
 		cartServiceImp.updateNumber(number, cid);
 		return "views/checkout";
 	}
+
+//	@PostMapping("/updateDefault")
+//	public String updateDefault(@RequestParam("id") int id) {
+//		adressServiceImp.updateDefault(id);
+//		return "views/checkout";
+//	}
 
 }
