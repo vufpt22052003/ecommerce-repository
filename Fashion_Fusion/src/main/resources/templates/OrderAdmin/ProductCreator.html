@@ -54,7 +54,12 @@
 	font-size: 14px;
 	border-radius: 30px;
 }
+
+.row>* {
+	padding-left: calc(var(- -bs-gutter-x)/3) !important;
+}
 </style>
+
 </head>
 
 <body ng-app="myapp" ng-controller="Controller">
@@ -192,8 +197,9 @@
 											<div class="row p-2">
 												<div class="form-group col-11">
 													Tên Sản Phẩm <br> <input type="text"
-														class="form-control font-weight-bold"  id="exampleFormControlInput1"
-														name="name" ng-model="info.name">
+														class="form-control font-weight-bold"
+														id="exampleFormControlInput1" name="name"
+														ng-model="info.name">
 
 												</div>
 												<div class="form-group col-11">
@@ -227,7 +233,8 @@
 												<div class="form-group col-6">
 													Số Lượng Sản Phẩm <br> <input type="text"
 														class="form-control" id="exampleFormControlInput1"
-														name="in_stock">
+														name="in_stock" oninput="validateNumberInput(this)"
+														onkeydown="handleBackspace(event, this)">
 
 												</div>
 												<div class="form-group col-5">
@@ -255,14 +262,18 @@
 
 												<!--  color , size-->
 												<div class="row p-2">
+
 													<div class="col-5">
 														<label for="inputCostPerPrice" class="form-label">Màu
 															Sắc</label>
-														<div id="input-container" class="d-flex flex-wrap">
-															<!-- Thêm lớp CSS "flex-wrap" -->
-															<input class="w3-input w3-border w3-round" type="text"
-																name="color[]" ng-model="color"
-																placeholder="thêm màu sắc">
+														<div id="input-container" style="gap: 10px;"
+															class="d-flex flex-wrap">
+															<div class="input-wrapper">
+																<input class="w3-input w3-border w3-round" type="text"
+																	name="color[]" placeholder="thêm màu sắc"> <span
+																	class="delete-input" onclick="deleteInput(event)">&times;</span>
+															</div>
+
 														</div>
 														<br />
 														<button id="add-input" class="btn btn-success"
@@ -272,15 +283,26 @@
 													<div class="col-5" style="margin-left: 89px">
 														<label for="inputCostPerPrice" class="form-label">Chọn
 															Size</label>
-														<div id="input-size" class="d-flex flex-wrap">
-															<input class="w3-input w3-border w3-round" type="text"
-																name="sizes[]" placeholder="Chọn Size">
+														<div id="input-size" style="gap: 10px;"
+															class="d-flex flex-wrap">
+
+															<div class="input-wrapper">
+																<input class="w3-input w3-border w3-round" type="text"
+																	name="sizes[]" placeholder="Chọn Size"> <span
+																	class="delete-input" th:attr="data-index=${index}"
+																	onclick="deleteInputSize(event)">&times;</span>
+															</div>
 														</div>
 														<br />
 														<button id="add-size" class="btn btn-success"
 															type="button">Thêm Size</button>
 													</div>
+
+
+
 												</div>
+
+
 												<br />
 												<!-- proice -->
 												<div class="row">
@@ -288,7 +310,9 @@
 														Số Tiền <br> <input type="text" class="form-control"
 															id="exampleFormControlInput1" name="price"
 															ng-model="price" ng-model-options="{ updateOn: 'blur' }"
-															ng-change="calculateTotal('price')">
+															ng-change="calculateTotal('price')"
+															oninput="validateNumberInput(this)"
+															onkeydown="handleBackspace(event, this)">
 
 
 													</div>
@@ -305,8 +329,8 @@
 												<!-- -sale -->
 												<div class="mb-3">
 													<button type="button" class="btn btn-primary"
-														onclick="showInputs()" style="margin-left: 10px;">Thêm Giảm
-														Giá ? </button>
+														onclick="showInputs()" style="margin-left: 10px;">Thêm
+														Giảm Giá ?</button>
 													<br />
 													<div class="row" style="padding-top: 20px;">
 														<div class="col-md-6 hidden-input mt-3"
@@ -314,8 +338,8 @@
 															<label for="inputPrice" class="form-label">Giá
 																giảm</label> <input type="text" class="form-control"
 																id="inputCompareatprice" placeholder="00.00"
-																name="sale_price"
-																>
+																name="sale_price" oninput="validateNumberInput(this)"
+																onkeydown="handleBackspace(event, this)">
 
 														</div>
 
@@ -399,35 +423,44 @@
 					</div>
 					<!-- Column -->
 				</div>
-				<!-- Row -->
-				<!-- ============================================================== -->
-				<!-- End PAge Content -->
-				<!-- ============================================================== -->
-				<!-- ============================================================== -->
-				<!-- Right sidebar -->
-				<!-- ============================================================== -->
-				<!-- .right-sidebar -->
-				<!-- ============================================================== -->
-				<!-- End Right sidebar -->
-				<!-- ============================================================== -->
+
 			</div>
-			<!-- ============================================================== -->
-			<!-- End Container fluid  -->
-			<!-- ============================================================== -->
-			<!-- ============================================================== -->
-			<!-- footer -->
-			<!-- ============================================================== -->
+
 			<footer class="footer text-center">
 				2021 © Ample Admin brought to you by <a
 					href="https://www.wrappixel.com/">wrappixel.com</a>
 			</footer>
-			<!-- ============================================================== -->
-			<!-- End footer -->
-			<!-- ============================================================== -->
 		</div>
-		<!-- ============================================================== -->
-		<!-- End Page wrapper  -->
-		<!-- ============================================================== -->
+		<script type="text/javascript">
+			function validateNumberInput(input) {
+				var value = input.value;
+
+				// Xóa các ký tự không hợp lệ khỏi input (chỉ giữ lại số và dấu chấm)
+				var cleanedValue = value.replace(/[^\d.]/g, '');
+
+				// Chuyển giá trị đã làm sạch thành số
+				var numericValue = parseFloat(cleanedValue);
+
+				// Kiểm tra xem giá trị có phải là số hợp lệ hay không
+				if (!isNaN(numericValue)) {
+					// Đặt giá trị mới vào ô input
+					input.value = numericValue;
+				} else {
+					// Nếu không phải số hợp lệ, xóa toàn bộ giá trị trong ô input
+					input.value = '';
+				}
+			}
+
+			function handleBackspace(event, input) {
+				// Kiểm tra xem nút được nhấn có phải là nút "xóa back" (mã phím 8) hay không
+				if (event.keyCode === 8) {
+					// Xóa các ký tự không hợp lệ khỏi giá trị nhập vào, chỉ giữ lại số và dấu chấm
+					var cleanedValue = input.value.replace(/[^\d.]/g, '');
+					// Đặt giá trị mới sau khi xóa các ký tự không hợp lệ vào ô input
+					input.value = cleanedValue;
+				}
+			}
+		</script>
 	</div>
 	<script src="/admin_addProduct/js/admin.js"></script>
 	<script src="/controllers/addProController.js"></script>

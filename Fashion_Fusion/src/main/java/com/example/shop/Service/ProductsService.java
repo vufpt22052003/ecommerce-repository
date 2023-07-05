@@ -68,6 +68,11 @@ public interface ProductsService {
 	List<Products> findAll();
 
 
+	Page<Products> ByPriceASC(Pageable pageable, double price);
+
+	Page<Products> ByPriceDESC(Pageable pageable, double price);
+
+
 
 
 }

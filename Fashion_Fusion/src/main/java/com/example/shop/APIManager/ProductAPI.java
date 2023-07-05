@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.shop.DAO.CategoryDAO;
 import com.example.shop.DAO.SaleDAO;
+import com.example.shop.Service.OrderDetailsService;
+import com.example.shop.Service.OrderService;
+import com.example.shop.ServiceImp.AdminServiceImp;
 import com.example.shop.ServiceImp.ProductsServiceImp;
 import com.example.shop.model.Category;
 import com.example.shop.model.ProductDTO;
@@ -26,14 +30,24 @@ import com.example.shop.model.Products;
 import com.example.shop.model.Sale;
 import com.example.shop.model.Users;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 public class ProductAPI {
 	@Autowired
 	ProductsServiceImp productsServiceImp;
 	@Autowired
 	SaleDAO saleDAO;
-	
-	
+	@Autowired
+	OrderService orderService;
+	@Autowired
+	AdminServiceImp adminServiceImp;
+	@Autowired
+	OrderDetailsService orderDetailsService;
+	@Autowired
+	CategoryDAO categoryDAO;
+	@Autowired
+	HttpSession session;
 
 	// lấy ra sản phẩm nào đang sale
 	@GetMapping("/api/onSale")
@@ -42,9 +56,7 @@ public class ProductAPI {
 			@RequestParam(value = "type", defaultValue = "all") String type) throws ParseException {
 
 		List<Sale> list = null;
-
-		System.out.println(start + "sa");
-		// lấy ngày hiện tại
+ 		// lấy ngày hiện tại
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date currentDate = new Date();
 		String formattedDate = formatter.format(currentDate);
@@ -63,12 +75,21 @@ public class ProductAPI {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
+	// xoa sale
+	@RequestMapping("/api/delSale")
+	public ResponseEntity<Void> delSale(@RequestParam("id") int sid) {
+		System.out.println(sid + "sid");
+		saleDAO.deleteById(sid);
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
+
 	// api sản phẩm
 	@GetMapping("api/listProByUs/{i}")
 	public ResponseEntity<Page<Products>> finAllByUser(@PathVariable("i") Optional<Integer> i) {
 		Pageable pageable = PageRequest.of(i.orElse(0), 5);
 
-		Page<Products> list = productsServiceImp.finAllByUser(pageable , 1);
+		Page<Products> list = productsServiceImp.finAllByUser(pageable, 1);
 		// Xử lý dữ liệu và gán giá trị cho thuộc tính checkSale
 		for (Products product : list) {
 			boolean hasSale = product.checkSale() == false;
@@ -80,16 +101,16 @@ public class ProductAPI {
 	// lấy ra dannh sách product bao gôm ảnh và catogery theo id product
 	@GetMapping("/api/showPro")
 	public ResponseEntity<ProductDTO> showPro(@RequestParam("id") int id) {
-	    Optional<Products> productOptional = productsServiceImp.findById(id);
-	    List<Category> listCato = productsServiceImp.getListCato();
-	    List<String> imgRelateTos = productsServiceImp.ListImgRrelateTo(id);
+		Optional<Products> productOptional = productsServiceImp.findById(id);
+		List<Category> listCato = productsServiceImp.getListCato();
+		List<String> imgRelateTos = productsServiceImp.ListImgRrelateTo(id);
 
-	    if (productOptional.isPresent() && listCato != null && imgRelateTos != null) {
-	        ProductDTO proDTO = new ProductDTO(productOptional.get(), listCato, imgRelateTos);
-	        return ResponseEntity.ok(proDTO);
-	    } else {
-	        return ResponseEntity.notFound().build();
-	    }
+		if (productOptional.isPresent() && listCato != null && imgRelateTos != null) {
+			ProductDTO proDTO = new ProductDTO(productOptional.get(), listCato, imgRelateTos);
+			return ResponseEntity.ok(proDTO);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	// timf id sale
@@ -115,16 +136,20 @@ public class ProductAPI {
 		productsServiceImp.delProById(id);
 		return ResponseEntity.ok().build();
 	}
+
+	@GetMapping("/api/totalPrice")
+	public ResponseEntity<Double> getotalPrice() {
+		double total = orderDetailsService.getotalPrice();
+		return new ResponseEntity<>(total, HttpStatus.OK);
+	}
+
 	
-//
-//	@GetMapping("/getHotTrend")
-//	public ResponseEntity<Page<Products>> getHotTrend() {
-//		Pageable pageable = PageRequest.of(0, 999);
-//	    List<Category> listCato = productsServiceImp.getListCato();
-//
-//		Page<Products> listHotTrend = productsServiceImp.getHotTrendProducts(pageable);
-//
-//		return ResponseEntity.ok(listHotTrend);
-//	}
-	
+	// viet api cho catogery
+	@GetMapping("/api/category")
+	public ResponseEntity<List<Category>> getCategory() {
+
+		List<Category> listCato = adminServiceImp.listCategory();
+		return new ResponseEntity<>(listCato, HttpStatus.OK);
+	}
+
 }

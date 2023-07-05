@@ -57,15 +57,9 @@ public class Products {
 
 	private String target_audience;
 
-	@Transient
-	public int sale_percent; // biến lưu % giảm giá
-
-	@Transient
-	private double originalPrice; // Biến để lưu giá gốc
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_day;
-	
+
 //	public boolean checkProNew() {
 //	    if (this.getCreated_day() == null) {
 //	        return false; // hoặc giá trị mặc định khác tuỳ thuộc vào yêu cầu của bạn
@@ -109,6 +103,14 @@ public class Products {
 		return 0;
 	}
 
+
+
+	@Transient
+	public int sale_percent; // biến lưu % giảm giá
+
+	@Transient
+	private double originalPrice; // Biến để lưu giá gốc
+
 	// thiết lâpj giá khi đang sale
 	public boolean checkSale() {
 		boolean foundSale = false;
@@ -122,7 +124,9 @@ public class Products {
 			endDate.setTime(sale.getEnd_date());
 			Calendar currentTime = Calendar.getInstance();
 
-			if (currentTime.after(startDate) && currentTime.before(endDate) ) { // co khuyen mai
+			if (currentTime.after(startDate) && currentTime.before(endDate) && sale.getIs_sale() == true) { // co khuyen
+																											// mai
+				this.setOriginalPrice(this.price); // Lưu giá gốc
 				this.setPrice(sale.getPrice_sale()); // Áp dụng giá khuyến mãi
 
 				// tính phần trăm giảm
@@ -130,24 +134,26 @@ public class Products {
 				double price_sale = sale.getPrice_sale();
 
 				if (price_sale < price_product) {
-					double discountPercentage = ((price_product - price_sale) / price_product) * 100;
-					int discountPercentageInt = (int) Math.round(discountPercentage);
-					sale_percent = discountPercentageInt;
+					double discountPercentage = (price_product - price_sale) / price_product * 100;
+					sale_percent = (int) discountPercentage;
 				}
 
 				foundSale = true;
-//				System.out.println(originalPrice+"price");
 
 				break;
 			}
 		}
 
-		
 		if (!foundSale) {
 			this.setPrice(originalPrice); // Áp dụng giá gốc nếu không có khuyến mãi
 		}
 
 		return foundSale;
+	}
+
+	@Transient
+	public double getOriginalPrice() {
+		return originalPrice;
 	}
 
 	@ManyToOne

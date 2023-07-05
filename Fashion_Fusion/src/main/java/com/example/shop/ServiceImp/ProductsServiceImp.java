@@ -50,6 +50,11 @@ public class ProductsServiceImp implements ProductsService {
 	}
 
 	@Override
+	public Page<Products> ByPriceASC(Pageable pageable, double price) {
+		return productsDAO.ByPriceASC(pageable, price);
+	}
+
+	@Override
 	public Page<Products> PriceASC(Pageable pageable) {
 		return productsDAO.PriceASC(pageable);
 	}
@@ -60,11 +65,15 @@ public class ProductsServiceImp implements ProductsService {
 	}
 
 	@Override
+	public Page<Products> ByPriceDESC(Pageable pageable, double price) {
+		return productsDAO.ByPriceDESC(pageable, price);
+	}
+
+	@Override
 	public Page<Products> PriceRrange(Pageable pageable, double min, double max) {
 		return productsDAO.PriceRrange(pageable, min, max);
 	}
 
-	
 	@Override
 	public Optional<Products> findById(int id) {
 		return productsDAO.findById(id);
@@ -110,8 +119,7 @@ public class ProductsServiceImp implements ProductsService {
 
 			if (price_sale < price_product) {
 				double discountPercentage = ((price_product - price_sale) / price_product) * 100;
-				int discountPercentageInt = (int) Math.round(discountPercentage);
-
+				int discountPercentageInt = (int) Math.floor(discountPercentage);
 				return discountPercentageInt;
 			}
 		}
@@ -121,7 +129,7 @@ public class ProductsServiceImp implements ProductsService {
 
 	// lấy danh sách sp theo uses
 	@Override
-	public Page<Products> finAllByUser(Pageable pageable , int uid) {
+	public Page<Products> finAllByUser(Pageable pageable, int uid) {
 		return productsDAO.finAllByUser(pageable, uid);
 
 	}
@@ -150,31 +158,30 @@ public class ProductsServiceImp implements ProductsService {
 
 	@Override
 	public void delProById(int id) {
-	    Optional<Products> proOptional = productsDAO.findById(id);
-	    if (proOptional.isPresent()) {
-	        productsDAO.deleteById(proOptional.get().getId());
-	    }
+		Optional<Products> proOptional = productsDAO.findById(id);
+		if (proOptional.isPresent()) {
+			productsDAO.deleteById(proOptional.get().getId());
+		}
 	}
-	
+
 	@Override
-	public Page<Products> findByTargetAudience(Pageable pageable , String target_aud) {
-		return  productsDAO.findByTargetAudience(pageable , target_aud);
+	public Page<Products> findByTargetAudience(Pageable pageable, String target_aud) {
+		return productsDAO.findByTargetAudience(pageable, target_aud);
 	}
+
 	@Override
 	public List<Category> getListCato() {
 		return categoryDAO.findAll();
 	}
-	
-	@Override
-	public Page<Products> getProByCatoId(Pageable pageable , int id ) {
-		return productsDAO.getProByCatoId(pageable , id);
-	}
 
+	@Override
+	public Page<Products> getProByCatoId(Pageable pageable, int id) {
+		return productsDAO.getProByCatoId(pageable, id);
+	}
 
 	@Override
 	public List<Products> findAll() {
 		return productsDAO.findAll();
 	}
-	
 
 }

@@ -17,6 +17,12 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 	@Query(value = "select *  from Products ORDER BY price ASC", nativeQuery = true)
 	Page<Products> PriceASC(Pageable pageable);
 
+	@Query(value = "SELECT * FROM Products WHERE price <= ?;", nativeQuery = true)
+	Page<Products> ByPriceASC(Pageable pageable, double price);
+	
+	@Query(value = "select * from Products where price >= ?", nativeQuery = true)
+	Page<Products> ByPriceDESC(Pageable pageable, double price);
+
 	@Query(value = "select *  from Products ORDER BY price DESC", nativeQuery = true)
 	Page<Products> PriceDESC(Pageable pageable);
 
@@ -33,7 +39,7 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 	List<Products> findByName(String name);
 
 	// lấy danh sách sp theo uses
-	@Query("select p from Products p where p.user_id.id = ?1")
+	@Query("SELECT p FROM Products p WHERE p.user_id.id = ?1 ORDER BY p.id DESC")
 	Page<Products> finAllByUser(Pageable pageable, int uid);
 
 	// lấy danh sách khi tim kiếm
@@ -42,7 +48,7 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 
 	// lấy danh sách theo id catogery
 	@Query("SELECT p from Products p where p.category.id = ?1")
-	Page<Products> getProByCatoId(Pageable pageable ,int id);
+	Page<Products> getProByCatoId(Pageable pageable, int id);
 
 	@Query("SELECT p FROM Products p ORDER BY p.id DESC")
 	List<Products> findTop8Products(Pageable pageable);
@@ -50,10 +56,5 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 	// lấy danh sách với điều kiện danhf cho ai ( nam nữ trẻ em )
 	@Query(value = " select * from Products where target_audience = ?", nativeQuery = true)
 	Page<Products> findByTargetAudience(Pageable pageable, String target_aud);
-	
-
-
-
-	
 
 }

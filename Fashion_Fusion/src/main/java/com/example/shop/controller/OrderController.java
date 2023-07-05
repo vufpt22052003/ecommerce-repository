@@ -93,7 +93,6 @@ public class OrderController {
 
 		if (submitButton.equals("BuyNow")) {
 			Optional<Products> pro = productsServiceImp.findById(pid);
-			System.out.println(pid + "pridik");
 
 			// Orders ord = new Orders();
 			ord.setUser_id(acc);

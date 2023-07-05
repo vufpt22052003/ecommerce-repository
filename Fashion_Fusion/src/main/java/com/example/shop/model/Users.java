@@ -46,6 +46,18 @@ public class Users {
 	@Column(name = "birthday")
 	private String birthday;
 
+	@Column(name = "avt")
+	private String avt;
+
+	@Column(name = "sdt")
+	private int sdt;
+	
+	@Column(name = "link_instagram")
+	private String linkInstagram;
+	
+	@Column(name = "link_fb")
+	private String linkFb;
+
 	@OneToMany(mappedBy = "user_id")
 	@JsonIgnore
 	List<Products> product;

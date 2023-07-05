@@ -31,7 +31,15 @@
 <link href="
     OrderAdmin/css/style.min.css" rel="stylesheet">
 </head>
-
+<style>
+.txt-oflos {
+	max-width: 430px;
+	/* Độ rộng tối đa của cột, bạn có thể điều chỉnh theo ý muốn */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+</style>
 <body ng-app="MyApp">
 	<!-- ============================================================== -->
 	<!-- Preloader - style you can find in spinners.css -->
@@ -173,48 +181,56 @@
 				<!-- PRODUCTS YEARLY SALES -->
 				<!-- ============================================================== -->
 
-				<!-- ============================================================== -->
-				<!-- RECENT SALES -->
-				<!-- ============================================================== -->
-				<div class="row" ng-controller="statisticsCtrl">
-					<div class="col-md-12 col-lg-12 col-sm-12">
-						<div class="white-box">
-							<div class="d-md-flex mb-3">
-								<h3 class="box-title mb-0">Danh Sách Sản Phẩm Bán Chạy Nhất</h3>
 
-								<div class="col-md-3 col-sm-4 col-xs-6 ms-auto">
-									<select class="form-select shadow-none row border-top"
-										ng-model="selectedOption" ng-change="changeProductLimit()">
-										<option>Hiện 10 Sản Phẩm</option>
-										<option>Hiện 20 Sản Phẩm</option>
-										<option>Hiện 30 Sản Phẩm</option>
-										<option>Hiện Tất Cả</option>
-									</select>
+				<div ng-controller="statisticsCtrl">
+					<button type="button" class="btn btn-primary"
+						ng-click="ExcelExporter() ">Xuất File Excel</button>
+					<br /> <br />
+					<div class="row">
 
+						<div class="col-md-12 col-lg-12 col-sm-12">
+							<div class="white-box">
+								<div class="d-md-flex mb-3">
+									<h3 class="box-title mb-0">Danh Sách Sản Phẩm Bán Chạy
+										Nhất</h3>
+
+									<div class="col-md-3 col-sm-4 col-xs-6 ms-auto">
+										<select class="form-select shadow-none row border-top"
+											ng-model="selectedOption" ng-change="changeProductLimit()">
+											<option>Hiện 10 Sản Phẩm</option>
+											<option>Hiện 20 Sản Phẩm</option>
+											<option>Hiện 30 Sản Phẩm</option>
+											<option>Hiện Tất Cả</option>
+										</select>
+
+									</div>
 								</div>
-							</div>
-							<div class="table-responsive">
-								<table class="table no-wrap">
-									<thead>
-										<tr>
-											<th class="border-top-0">ID Sản Phẩm</th>
-											<th class="border-top-0">Name</th>
-											<!--<th class="border-top-0">Đơn Hàng Đã Bán</th>-->
-											<th class="border-top-0">Đơn Hàng Đã Bán</th>
-											<th class="border-top-0">Price</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="it in top10Order | limitTo: productLimit">
-											<td>{{it[0]}}</td>
-											<td class="txt-oflo">{{it[3]}}</td>
-											<td class="txt-oflo">{{it[1]}}</td>
+								<div class="table-responsive">
+									<table class="table no-wrap">
+										<thead>
+											<tr>
+												<th class="border-top-0">ID Sản Phẩm</th>
+												<th class="border-top-0">Name</th>
+												<!--<th class="border-top-0">Đơn Hàng Đã Bán</th>-->
+												<th class="border-top-0">Đơn Hàng Đã Bán</th>
+												<th class="border-top-0">Tổng Tiền Khách Đã Mua</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="it in top10Order | limitTo: productLimit">
+												<td>{{it[0]}}</td>
+												<td class="txt-oflos">{{it[3]}}</td>
 
-											<td><span class="text-success">${{it[2]}}</span></td>
-										</tr>
+												<td class="txt-oflo">{{it[1]}}</td>
 
-									</tbody>
-								</table>
+												<td><span class="text-success">${{ it[2] |
+														number:2 }}</span></td>
+												<!-- chuyển đôi thành tiền number:2 -->
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -236,18 +252,17 @@
 								<!-- Comment Row -->
 								<div class="d-flex flex-row comment-row p-3">
 									<div class="p-2">
-										<a ng-href="/shopUser/{{ it[0]}}" target="_blank"><img
-											src="plugins/images/users/ritesh.jpg" alt="user" width="50"
-											class="rounded-circle" /></a></a>
+										<a ng-href="/shopUser/{{ it[0] }}" target="_blank"> <img
+											ng-src="{{ it[2] ? 'images/' + it[2] : 'background/avartar.jpg' }}"
+											alt="user" width="50" class="rounded-circle" />
+										</a>
 									</div>
 									<div class="comment-text ps-2 ps-md-3 w-100">
 										<h5 class="font-medium">{{ it[1] }}</h5>
-										<span class="mb-3 d-block">Tổng Đơn Hàng Mua :
-											{{it[4]}} </span>
+										<span class="mb-3 d-block">Tổng Đơn Hàng Mua: {{ it[3]
+											}}</span>
 										<div class="comment-footer d-md-flex align-items-center">
-
 											<span class="badge rounded bg-danger">Rejected</span>
-
 											<div class="text-muted fs-2 ms-auto mt-2 mt-md-0">April
 												14, 2021</div>
 										</div>
@@ -255,176 +270,91 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-4 col-md-12 col-sm-12">
-						<div class="card white-box p-0">
-							<div class="card-heading">
-								<h3 class="box-title mb-0">Chat Listing</h3>
-							</div>
-							<div class="card-body">
-								<ul class="chatonline">
-									<li>
-										<div class="call-chat">
-											<button class="btn btn-success text-white btn-circle btn"
-												type="button">
-												<i class="fas fa-phone"></i>
-											</button>
-											<button class="btn btn-info btn-circle btn" type="button">
-												<i class="far fa-comments text-white"></i>
-											</button>
-										</div> <a href="javascript:void(0)"
-										class="d-flex align-items-center"><img
-											src="plugins/images/users/varun.jpg" alt="user-img"
-											class="img-circle">
-											<div class="ms-2">
-												<span class="text-dark">Varun Dhavan <small
-													class="d-block text-success d-block">online</small></span>
-											</div> </a>
-									</li>
-									<li>
-										<div class="call-chat">
-											<button class="btn btn-success text-white btn-circle btn"
-												type="button">
-												<i class="fas fa-phone"></i>
-											</button>
-											<button class="btn btn-info btn-circle btn" type="button">
-												<i class="far fa-comments text-white"></i>
-											</button>
-										</div> <a href="javascript:void(0)"
-										class="d-flex align-items-center"><img
-											src="plugins/images/users/genu.jpg" alt="user-img"
-											class="img-circle">
-											<div class="ms-2">
-												<span class="text-dark">Genelia Deshmukh <small
-													class="d-block text-warning">Away</small></span>
-											</div> </a>
-									</li>
-									<li>
-										<div class="call-chat">
-											<button class="btn btn-success text-white btn-circle btn"
-												type="button">
-												<i class="fas fa-phone"></i>
-											</button>
-											<button class="btn btn-info btn-circle btn" type="button">
-												<i class="far fa-comments text-white"></i>
-											</button>
-										</div> <a href="javascript:void(0)"
-										class="d-flex align-items-center"><img
-											src="plugins/images/users/ritesh.jpg" alt="user-img"
-											class="img-circle">
-											<div class="ms-2">
-												<span class="text-dark">Ritesh Deshmukh <small
-													class="d-block text-danger">Busy</small></span>
-											</div> </a>
-									</li>
-									<li>
-										<div class="call-chat">
-											<button class="btn btn-success text-white btn-circle btn"
-												type="button">
-												<i class="fas fa-phone"></i>
-											</button>
-											<button class="btn btn-info btn-circle btn" type="button">
-												<i class="far fa-comments text-white"></i>
-											</button>
-										</div> <a href="javascript:void(0)"
-										class="d-flex align-items-center"><img
-											src="plugins/images/users/arijit.jpg" alt="user-img"
-											class="img-circle">
-											<div class="ms-2">
-												<span class="text-dark">Arijit Sinh <small
-													class="d-block text-muted">Offline</small></span>
-											</div> </a>
-									</li>
-									<li>
-										<div class="call-chat">
-											<button class="btn btn-success text-white btn-circle btn"
-												type="button">
-												<i class="fas fa-phone"></i>
-											</button>
-											<button class="btn btn-info btn-circle btn" type="button">
-												<i class="far fa-comments text-white"></i>
-											</button>
-										</div> <a href="javascript:void(0)"
-										class="d-flex align-items-center"><img
-											src="plugins/images/users/govinda.jpg" alt="user-img"
-											class="img-circle">
-											<div class="ms-2">
-												<span class="text-dark">Govinda Star <small
-													class="d-block text-success">online</small></span>
-											</div> </a>
-									</li>
-									<li>
-										<div class="call-chat">
-											<button class="btn btn-success text-white btn-circle btn"
-												type="button">
-												<i class="fas fa-phone"></i>
-											</button>
-											<button class="btn btn-info btn-circle btn" type="button">
-												<i class="far fa-comments text-white"></i>
-											</button>
-										</div> <a href="javascript:void(0)"
-										class="d-flex align-items-center"><img
-											src="plugins/images/users/hritik.jpg" alt="user-img"
-											class="img-circle">
-											<div class="ms-2">
-												<span class="text-dark">John Abraham<small
-													class="d-block text-success">online</small></span>
-											</div> </a>
-									</li>
-								</ul>
+</div>
+						<div class="col-lg-4 col-md-12 col-sm-12">
+							<div class="card white-box p-0">
+								<div class="card-heading">
+									<h3 class="box-title mb-0">Chat Listing</h3>
+								</div>
+								<div class="card-body">
+									<ul class="chatonline">
+										<li>
+											<div class="call-chat">
+												<button class="btn btn-success text-white btn-circle btn"
+													type="button">
+													<i class="fas fa-phone"></i>
+												</button>
+												<button class="btn btn-info btn-circle btn" type="button">
+													<i class="far fa-comments text-white"></i>
+												</button>
+											</div> <a href="javascript:void(0)"
+											class="d-flex align-items-center"><img
+												src="background/avartar.jpg" alt="user-img"
+												class="img-circle">
+												<div class="ms-2">
+													<span class="text-dark">Varun Dhavan <small
+														class="d-block text-success d-block">online</small></span>
+												</div> </a>
+										</li>
+
+
+									</ul>
+								</div>
 							</div>
 						</div>
+						<!-- /.col -->
 					</div>
-					<!-- /.col -->
 				</div>
+				<!-- ============================================================== -->
+				<!-- End Container fluid  -->
+				<!-- ============================================================== -->
+				<!-- ============================================================== -->
+				<!-- footer -->
+				<!-- ============================================================== -->
+				<footer class="footer text-center">
+					2021 © Ample Admin brought to you by <a
+						href="https://www.wrappixel.com/">wrappixel.com</a>
+				</footer>
+				<!-- ============================================================== -->
+				<!-- End footer -->
+				<!-- ============================================================== -->
 			</div>
 			<!-- ============================================================== -->
-			<!-- End Container fluid  -->
-			<!-- ============================================================== -->
-			<!-- ============================================================== -->
-			<!-- footer -->
-			<!-- ============================================================== -->
-			<footer class="footer text-center">
-				2021 © Ample Admin brought to you by <a
-					href="https://www.wrappixel.com/">wrappixel.com</a>
-			</footer>
-			<!-- ============================================================== -->
-			<!-- End footer -->
+			<!-- End Page wrapper  -->
 			<!-- ============================================================== -->
 		</div>
-		<!-- ============================================================== -->
-		<!-- End Page wrapper  -->
-		<!-- ============================================================== -->
-	</div>
-	<script type="text/javascript">
-		// Khởi tạo ứng dụng Angular thứ hai
-		angular.element(document).ready(
-				function() {
-					angular.bootstrap(document.getElementById("productApp"),
-							[ "ProductApp" ]);
-				});
-	</script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-	<script
-		src=" OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
-	<!-- Bootstrap tether Core JavaScript -->
-	<script src=" OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src=" OrderAdmin/js/app-style-switcher.js"></script>
-	<script
-		src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-	<!--Wave Effects -->
-	<script src=" OrderAdmin/js/waves.js"></script>
-	<!--Menu sidebar -->
-	<script src=" OrderAdmin/js/sidebarmenu.js"></script>
-	<!--Custom JavaScript -->
-	<script src=" OrderAdmin/js/custom.js"></script>
-	<!--This page JavaScript -->
-	<!--chartis chart-->
-	<script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
-	<script
-		src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-	<script src="js/pages/dashboards/dashboard1.js"></script>
+		<script type="text/javascript">
+			// Khởi tạo ứng dụng Angular thứ hai
+			angular.element(document).ready(
+					function() {
+						angular.bootstrap(
+								document.getElementById("productApp"),
+								[ "ProductApp" ]);
+					});
+		</script>
+		<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+		<script
+			src=" OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+		<!-- Bootstrap tether Core JavaScript -->
+		<script src=" OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<script src=" OrderAdmin/js/app-style-switcher.js"></script>
+		<script
+			src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+		<!--Wave Effects -->
+		<script src=" OrderAdmin/js/waves.js"></script>
+		<!--Menu sidebar -->
+		<script src=" OrderAdmin/js/sidebarmenu.js"></script>
+		<!--Custom JavaScript -->
+		<script src=" OrderAdmin/js/custom.js"></script>
+		<!--This page JavaScript -->
+		<!--chartis chart-->
+		<script src="plugins/bower_components/chartist/dist/chartist.min.js"></script>
+		<script
+			src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+		<script src="js/pages/dashboards/dashboard1.js"></script>
 </body>
 
 </html>

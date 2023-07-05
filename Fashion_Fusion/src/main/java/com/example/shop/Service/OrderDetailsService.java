@@ -12,8 +12,6 @@ public interface OrderDetailsService {
 
 	void add_orderDetails(Order_details od);
 
-	void cancelOrder(int id);
-
 	void confim_order(int id);
 
 	double getotalPrice();
@@ -21,5 +19,7 @@ public interface OrderDetailsService {
 	List<Object[]> getTop10ProductsByTotalOrders();
 
 	Page<Object[]> getHotTrendProducts(Pageable pageable);
+
+	void cancelOrder(int id, String cancel);
 
 }

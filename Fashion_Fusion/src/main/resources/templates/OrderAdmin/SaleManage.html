@@ -199,6 +199,12 @@ h2 small {
 	outline: none;
 	box-shadow: 0 0 3px #2196f3;
 }
+
+  .ellipsis-text {
+    display: inline-block;
+    width: 350px;
+    white-space: pre-wrap;
+  }
 </style>
 </head>
 
@@ -234,9 +240,7 @@ h2 small {
 							<!-- dark Logo text --> <img src="plugins/images/logo-text.png"
 							alt="homepage" />
 					</span>
-					</a>
-
-					<a
+					</a> <a
 						class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
 						href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
 				</div>
@@ -310,9 +314,9 @@ h2 small {
 						<option value="onSale" selected>Sản Phẩm Đang Sale</option>
 						<option value="comingSoon">Sản Phẩm Sắp Sale</option>
 						<option value="noSale">Sản Phẩm Hết Giờ Sale</option>
-					</select> <br /> <br /> 	<a href="ManagerProduct">
-						<button style="margin-left: 35px;" class="btn btn-primary"
-							>➕Thêm Sản Phẩm Sale</button>
+					</select> <br /> <br /> <a href="ManagerProduct">
+						<button style="margin-left: 35px;" class="btn btn-primary">➕Thêm
+							Sản Phẩm Sale</button>
 					</a>
 				</div>
 				<br />
@@ -326,6 +330,7 @@ h2 small {
 										cellspacing="0" width="100%">
 										<thead>
 											<tr>
+												<th>Id Sản Phẩm</th>
 												<th>Tên Sản phẩm</th>
 												<th>Giá Sale</th>
 												<th>Ngày bắt đầu</th>
@@ -335,7 +340,9 @@ h2 small {
 										</thead>
 										<tbody>
 											<tr ng-repeat="it in dataSale">
-												<td>{{it.product_id.name}}</td>
+												<td>{{it.product_id.id}}</td>
+												<td><span class="ellipsis-text">{{ it.product_id.name }} </span></td>
+
 												<td>{{it.price_sale || curency}}</td>
 												<td>{{it.start_date | date:'yyyy-MM-dd HH:mm'}}</td>
 
@@ -344,9 +351,13 @@ h2 small {
 														class="btn btn-primary" data-toggle="modal"
 														data-target="#myModal" ng-click="getSaleById(it.id)">Thay
 														Đổi</button></td>
+												<td><button type="button" ng-click="delSale(it.id )"
+														class="btn btn-primary" ng-if="selectType == 'noSale' ">Xóa
+														Sale</button></td>
+
 											</tr>
 
-											<div class="modal" id="myModal">	
+											<div class="modal" id="myModal">
 												<div class="modal-dialog">
 													<div class="modal-content">
 														<div class="modal-header">
@@ -478,26 +489,39 @@ h2 small {
 	</div>
 
 	<script src="controllers/SaleController.js"></script>
-
+	<!-- Thư viện SweetAlert2 -->
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 	<script
-		src=" OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+		src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+	<!--toast-plugin  -->
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.0/jquery.toast.min.css">
+	<!--toast-plugin  -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.0/jquery.toast.min.js"
+		integrity="sha512-zv5L1hY+PMayrX2l0ojsUqem6AHpdSIVyDJBlDQH/fMLpH1JgaxPTjpum1b1AlLHdARVonrpomps+GgR0oN3MA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.0/jquery.toast.js"
+		integrity="sha512-CwEY0URPo9ZtMMCpiW/mUx4iW2AseRWTbCEJZNoVr18gbFVIGmwztqu50C0LWwUYpA7PRgBXWard2HO4uwZDfA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- Các thư viện và mã JavaScript khác của bạn -->
+
+	<!-- Đảm bảo jQuery chỉ được thêm một lần -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 	<script src="OrderAdmin/js/custom.js"></script>
-
-
-	<script src=" OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src=" OrderAdmin/js/app-style-switcher.js"></script>
+	<script src="OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="OrderAdmin/js/app-style-switcher.js"></script>
 	<script
 		src="plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
-	<!--Wave Effects -->
-	<script src=" OrderAdmin/js/waves.js"></script>
-	<!--Menu sidebar -->
-	<script src=" OrderAdmin/js/sidebarmenu.js"></script>
-	<!--Custom JavaScript -->
-
+	<script src="OrderAdmin/js/waves.js"></script>
+	<script src="OrderAdmin/js/sidebarmenu.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script
@@ -506,6 +530,7 @@ h2 small {
 	<script
 		src="plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
 	<script src="js/pages/dashboards/dashboard1.js"></script>
+
 </body>
 
 </html>

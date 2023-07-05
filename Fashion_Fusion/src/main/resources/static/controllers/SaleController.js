@@ -61,5 +61,41 @@ app.controller('SaleController', ['$http', '$scope', '$rootScope', function($htt
 		}
 	};
 
+	$scope.delSale = function(id) {
+		// Gọi hàm SweetAlert2 với nút Yes và No
+		Swal.fire({
+			title: 'Thông báo',
+			text: 'Bạn có muốn xóa Sale này không?',
+			icon: 'info',
+			showCancelButton: true,
+			confirmButtonText: 'Yes',
+			cancelButtonText: 'No'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$http({
+					method: 'GET',
+					url: 'api/delSale', // Thêm tham số id vào URL
+					params: { id: id }
+				}).then(function(response) {
+					$scope.loadSale($scope.selectType);
+					$.toast({
+						heading: 'Đơn Hàng Sale Xóa Thành Công',
+						text: 'Đơn Hàng Sale Đã Được Xóa.',
+						position: 'top-right',
+						icon: 'success'
+					})
+				}, function(error) {
+					// Xử lý lỗi (nếu có)
+					console.log(error);
+				});
+			} else if (result.isDismissed === Swal.DismissReason.cancel) {
+				console.log('No');
+			}
+		});
+	}
+
+
+
 }]);
                 /*+++++++++++++++++++++++*/
+

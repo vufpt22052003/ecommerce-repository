@@ -254,7 +254,7 @@ a:hover {
 																class="lazyload" th:src="@{'/images/' + ${item.img}}"
 																data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
 																alt="Áo khoác trẻ em"> <span class="sale-badge"
-																th:if="${item.checkSale}"
+																th:if="${item.checkSale()}"
 																th:text="${'-' + item.sale_percent + '%'}"></span>
 															</a>
 
@@ -275,8 +275,16 @@ a:hover {
 																<a href="/ao-khoac-tre-em" th:text="${item.name}"></a>
 															</h3>
 															<div class="price-box">
-																150.000₫&nbsp; <span class="compare-price">200.000₫</span>
+																<p th:if="${item.checkSale()}">
+																	<span th:text="${item.price}"></span>&nbsp;<span
+																		class="compare-price"
+																		th:text="${item.originalPrice } + 'đ'"></span>
+
+																</p>
+																<p th:unless="${item.checkSale()}"
+																	th:text="${item.price + 'đ'}"></p>
 															</div>
+
 														</div>
 
 
@@ -610,7 +618,6 @@ a:hover {
 		<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 		<link rel="stylesheet"
 			href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-		
 </body>
 
 </html>

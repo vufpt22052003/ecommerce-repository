@@ -76,7 +76,6 @@ public class AdminController {
 	OrderDetailsService orderDetailsService;
 	@Autowired
 	CategoryDAO categoryDAO;
-
 	@Autowired
 	SizeDAO sizeDAO;
 	@Autowired
@@ -107,13 +106,13 @@ public class AdminController {
 			product.setName(pro.getName());
 			product.setDescription(pro.getDescription());
 			product.setPrice(pro.getPrice());
+			System.out.println(pro.getIn_stock());
 			product.setIn_stock(pro.getIn_stock());
 			product.setOrigin(pro.getOrigin());
 			product.setTarget_audience(pro.getTarget_audience());
 			product.setCreated_day(created_day);
 			Users acc = (Users) session.getAttribute("acc");
 
-			
 			product.setUser_id(acc);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -161,8 +160,10 @@ public class AdminController {
 			@RequestParam(value = "color[]", required = false) String[] color,
 			@RequestParam(value = "Pid", required = false, defaultValue = "0") int Pid,
 			@RequestParam(value = "start_datetime", required = false) String start_datetime_str,
-			@RequestParam(value = "end_datetime", required = false) String end_datetime_str) {
+			@RequestParam(value = "end_datetime", required = false) String end_datetime_str,
+			@RequestParam(value = "fileNames", required = false) String[] files) {
 		Products product = new Products();
+		System.out.println(files + "---");
 		getForm(pro, product);
 		try {
 			// Xử lý và lưu giá trị category_id
@@ -184,8 +185,8 @@ public class AdminController {
 			Path filePath = path.resolve(image.getOriginalFilename());
 
 			Optional<Products> finByIdPro = productsDAO.findById(Pid);
-			if (!finByIdPro.isPresent()) { // nếu id k tồn tại
-
+			if (!finByIdPro.isPresent()) {
+				// nếu id k tồn tại thì thêm
 				try (InputStream inStream = image.getInputStream()) {
 					Files.copy(inStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 					product.setImg(image.getOriginalFilename().toLowerCase());
@@ -213,8 +214,27 @@ public class AdminController {
 						colorDAO.save(colorEntity);
 					}
 				}
+				// Đọc và lưu trữ các tệp tin ảnh
+				for (MultipartFile file : images) {
+					if (!file.isEmpty()) {
+						System.out.println(file.getOriginalFilename() + "-----");
+						String fileName = file.getOriginalFilename();
+						Path filePaths = path.resolve(fileName);
+
+						try (InputStream inputStream = file.getInputStream()) {
+							Files.copy(inputStream, filePaths, StandardCopyOption.REPLACE_EXISTING);
+							System.out.println(fileName);
+							ImgRelateTo imgRelateTo = new ImgRelateTo();
+							imgRelateTo.setImg_relate_to(fileName.toLowerCase());
+							imgRelateTo.setProduct_id(product);
+							imgRelateToDAO.save(imgRelateTo);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			} else {
-				System.out.println(Pid + "name");
+				// nếu id tồn tại thì đoạn này dùng edit
 				Products existingProduct = finByIdPro.get();
 				// Xử lý và lưu giá trị category_id
 				if (optionalCategory.isPresent()) {
@@ -238,51 +258,73 @@ public class AdminController {
 
 				// Lưu lại sản phẩm đã chỉnh sửa vào cơ sở dữ liệu
 				adminServiceImp.editProduct(existingProduct, Pid);
-//				if (sizes != null) {
-//					for (String size : sizes) {
-//						Size sizeEntity = new Size();
-//						sizeEntity.setSize(size);
-//						sizeEntity.setProduct_id(existingProduct);
-//						// sizeDAO.save(sizeEntity);
-//					}
+
+//				// size
+//				List<Size> size = sizeDAO.listSize(existingProduct.getId());
+//				// Xóa các bản ghi cũ
+//				for (Size colorItem : size) {
+//					sizeDAO.delete(colorItem);
 //				}
-//				// Lưu color (nếu có)
-//				if (color != null) {
-//					for (String clr : color) {
-//						Color colorEntity = new Color();
-//						colorEntity.setColor(clr);
-//						colorEntity.setProduct_id(existingProduct);
-//						int pid = existingProduct.getId();
-//						System.out.println(pid + "---");
-//						ArrayList<Color> listcol = (ArrayList<Color>) colorDAO.findAll();
-//						for (Color c : listcol) {
-//							if (c.getProduct_id().getId() == pid) {
-//								adminServiceImp.editColor(clr, pid);
+//				if (size != null && !size.isEmpty()) {
+//					if (sizes != null) {
+//						for (String sizeItem : sizes) {
+//							if (sizeItem != null && !sizeItem.isEmpty()) { // Kiểm tra size có giá trị hợp lệ không
+//
+//								Size sizeEntity = new Size();
+//								sizeEntity.setSize(sizeItem);
+//								sizeEntity.setProduct_id(existingProduct);
+//								sizeDAO.save(sizeEntity);
 //							}
 //						}
 //					}
+//				}
+				// edit size
+				adminServiceImp.updateSzie(Pid, sizes);
 
-			}
+				// edit color
+				adminServiceImp.updateColor(Pid, color);
+				// Lấy danh sách các bản ghi có product_id bằng existingProduct.getId()
+				List<ImgRelateTo> imgs = imgRelateToDAO.findByProductId(existingProduct.getId());
+				if (imgs != null && !imgs.isEmpty()) {
 
-			// Đọc và lưu trữ các tệp tin ảnh
-			for (MultipartFile file : images) {
-				if (!file.isEmpty()) {
-					String fileName = file.getOriginalFilename();
-					Path filePaths = path.resolve(fileName);
-					
+					// Xóa các bản ghi cũ
+					for (ImgRelateTo itemImg : imgs) {
+						imgRelateToDAO.delete(itemImg);
+					}
+
+					for (String file : files) {
+						if (!file.isEmpty()) {
+							// Path filePaths = path.resolve(file);
+							ImgRelateTo imgRelateTo = new ImgRelateTo();
+
+							imgRelateTo.setImg_relate_to(file.toLowerCase());
+							imgRelateTo.setProduct_id(existingProduct);
+							imgRelateToDAO.save(imgRelateTo);
+						}
+					}
+				}
+
+				for (MultipartFile file : images) {
+					if (!file.isEmpty()) {
+						System.out.println(file.getOriginalFilename() + "-----");
+						String fileName = file.getOriginalFilename();
+						Path filePaths = path.resolve(fileName);
+
 						try (InputStream inputStream = file.getInputStream()) {
 							Files.copy(inputStream, filePaths, StandardCopyOption.REPLACE_EXISTING);
 							System.out.println(fileName);
 							ImgRelateTo imgRelateTo = new ImgRelateTo();
 							imgRelateTo.setImg_relate_to(fileName.toLowerCase());
-							imgRelateTo.setProduct_id(product);
+							imgRelateTo.setProduct_id(existingProduct);
 							imgRelateToDAO.save(imgRelateTo);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					} 
+					}
 				}
-			
+
+			}
+
 			// Lưu sale (nếu ngày được nhập)
 			if (start_datetime_str != null && !start_datetime_str.isEmpty() && end_datetime_str != null
 					&& !end_datetime_str.isEmpty()) {
@@ -357,6 +399,7 @@ public class AdminController {
 
 	@GetMapping("saleManage")
 	public String sale() {
+
 		return "OrderAdmin/saleManage";
 	}
 
@@ -380,6 +423,7 @@ public class AdminController {
 	public String edit(@PathVariable("id") int id, Model model) {
 
 		Optional<Products> product = productsServiceImp.findById(id);
+
 		Optional<Category> catogery = productsServiceImp.getCategoryByPro(id);
 		// đổ list category
 		List<Category> listCato = productsServiceImp.getListCato();
@@ -389,7 +433,6 @@ public class AdminController {
 		List<Color> listColor = productsServiceImp.getListColor(id);
 		List<Size> listSize = productsServiceImp.getListSize(id);
 
-		System.out.println(product.get().getName());
 		model.addAttribute("product", product.orElse(new Products())); // Lưu product vào model
 		model.addAttribute("catogery", catogery.orElse(new Category())); // Lưu product vào model
 
@@ -402,36 +445,9 @@ public class AdminController {
 		return "OrderAdmin/editProduct";
 	}
 
-	// viet api cho catogery
-	@GetMapping("/api/category")
-	public ResponseEntity<List<Category>> getCategory() {
-		Users acc = (Users) session.getAttribute("acc");
-		int uid = 1;
-		List<Category> listCato = adminServiceImp.listCategory();
-		// m.addAttribute("listCato", listCato);
-		return new ResponseEntity<>(listCato, HttpStatus.OK);
-	}
-
 	@GetMapping("success")
 	public String sc() {
 		return "OrderAdmin/Success";
 	}
 
-	@GetMapping("/api/totalPrice")
-	public ResponseEntity<Double> getotalPrice() {
-		double total = orderDetailsService.getotalPrice();
-		return new ResponseEntity<>(total, HttpStatus.OK);
-	}
-
-	@GetMapping("/api/getTop10Order")
-	public ResponseEntity<List<Object[]>> getTop10Order() {
-		List<Object[]> top10 = orderDetailsService.getTop10ProductsByTotalOrders();
-		return new ResponseEntity<>(top10, HttpStatus.OK);
-	}
-
-	@GetMapping("/api/getTopUserByOder")
-	public ResponseEntity<List<Object[]>> getTopUserByOder() {
-		List<Object[]> top = orderService.getTopUserByOder();
-		return new ResponseEntity<>(top, HttpStatus.OK);
-	}
 }

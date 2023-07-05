@@ -17,6 +17,8 @@ import com.example.shop.model.Order_details;
 import com.example.shop.model.Orders;
 import com.example.shop.model.Products;
 
+import ch.qos.logback.classic.Logger;
+
 @Service
 public class OrderDetailsServiceImp implements OrderDetailsService {
 
@@ -39,25 +41,33 @@ public class OrderDetailsServiceImp implements OrderDetailsService {
 			Order_details od = odOptional.get();
 			if (pro.get().getIn_stock() >= odOptional.get().getQuantity()) {
 				pro.get().setIn_stock(pro.get().getIn_stock() - odOptional.get().getQuantity());
-				od.set_completed(true); // Cập nhật trường is_complete thành true
+				od.set_completed(true);
 				Calendar calendar = Calendar.getInstance();
 				Date currentDate = calendar.getTime();
 				od.setUpdated_at(currentDate);
+				order_detailsDAO.save(od);
 			} else {
-				System.out.println(" k dủ so luong");
+				throw new RuntimeException("Không đủ số lượng"); // Ném ra một ngoại lệ khi không đủ số lượng
 			}
-			order_detailsDAO.save(od);
+		} else {
+			throw new RuntimeException("Không tìm thấy đơn hàng"); // Ném ra ngoại lệ khi không tìm thấy đơn hàng
 		}
 	}
 
 	@Override
-	public void cancelOrder(int id) {
+	public void cancelOrder(int id, String cancel) {
 		Optional<Order_details> odOptional = order_detailsDAO.findById(id);
 
 		if (odOptional.isPresent()) {
 			Order_details od = odOptional.get();
+
+			if (cancel.equals("userCancel")) {
+				od.setCancelled_by("user");
+			}
+			if (cancel.equals("adminCancel")) {
+				od.setCancelled_by("seller");
+			}
 			od.setCancelled(true);
-			od.setCancelled_by("admin");
 			order_detailsDAO.save(od);
 		}
 	}
@@ -73,6 +83,7 @@ public class OrderDetailsServiceImp implements OrderDetailsService {
 		return order_detailsDAO.findTop10ProductsByTotalOrders(id);
 
 	}
+
 	@Override
 	public Page<Object[]> getHotTrendProducts(Pageable pageable) {
 		return order_detailsDAO.getHotTrendProducts(pageable);

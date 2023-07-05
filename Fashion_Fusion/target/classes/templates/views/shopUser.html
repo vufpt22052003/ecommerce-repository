@@ -122,7 +122,7 @@
 </style>
 </head>
 
-<body>
+<body ng-app="MyApp" ng-controller="ShopUserController">
 	<div th:replace="views/menu :: menu"></div>
 
 	<div class="header-menu">
@@ -144,7 +144,7 @@
 
 					<div class="col-2">
 						<div class="avatar" style="background-color: white;">
-							<img src="/images/avt.jpg" alt="Avatar">
+							<img th:src="@{'/images/' + ${user.get().avt}}" alt="Avatar">
 						</div>
 					</div>
 					<div class="col-5">
@@ -234,6 +234,7 @@
 									</th:block>
 								</div>
 							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -244,6 +245,8 @@
 
 	</div>
 
+<script 
+		src="/controllers/ShopUserController.js"></script>
 
 	<link rel="preload" as="script"
 		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/main.js?1676282094225">
@@ -254,24 +257,7 @@
 		src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/index.js?1676282094225"
 		type="text/javascript"></script>
 	<div id="popupCartModal" class="modal fade" role="dialog"></div>
-	<link rel="preload" as="style"
-		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/ajaxcart.scss.css?1676282094225"
-		type="text/css">
-	<link
-		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/ajaxcart.scss.css?1676282094225"
-		rel="stylesheet" type="text/css" media="all">
-	<div class="backdrop__body-backdrop___1rvky"></div>
 
-	<link rel="preload" as="style" type="text/css"
-		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.scss.css?1676282094225">
-	<link rel="preload" as="script"
-		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.js?1676282094225">
-	<link
-		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.scss.css?1676282094225"
-		rel="stylesheet" type="text/css" media="all">
-	<script
-		src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/jquery-ui-min.js?1676282094225"
-		type="text/javascript"></script>
 	<script type="text/javascript"
 		src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 	<link rel="preconnect" href="https://fonts.googleapis.com">

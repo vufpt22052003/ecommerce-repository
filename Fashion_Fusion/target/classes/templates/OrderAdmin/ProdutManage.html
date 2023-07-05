@@ -295,17 +295,20 @@ h2 small {
 								<div class="table-container">
 									<ul class="responsive-table">
 										<li class="table-header">
+											<div>ss</div>
 											<div>Hình Ảnh</div>
 											<div>Giá Tiền</div>
 											<div>Tên Sản Phẩm</div>
 											<div>Đã Thêm Ngày</div>
 											<div>Thao Tác</div>
+											<div></div>
 										</li>
 										<div class="table-info" ng-repeat="it in data">
 											<li class="table-row" data-toggle="collapse"
 												data-target="#details{{$index}}" aria-expanded="false"
 												aria-controls="details{{$index}}"
 												style="margin-bottom: 10px; font-size: 18px;">
+												<div class="conten">{{it.id }}</div>
 
 												<div class="image-container">
 													<img src="images/{{it.img}}" alt="" />
@@ -314,14 +317,13 @@ h2 small {
 													currency}}</div>
 												<div class="contenName" data-label="Payment Status">{{it.name}}</div>
 												<div class="conten" data-label="Payment Status">{{
-													it.on_date | date:'yyyy-MM-dd' }}</div>
+													it.created_day | date:'yyyy-MM-dd' }}</div>
 
 												<div class="conten">
-													<a class="btn btn-primary custom-button"
-														ng-href="/{{it.id}}">Chỉnh Sửa</a>
-													&nbsp;<a class="btn btn-primary"
-														ng-click="toggleDetails($index)">Xem Chi Tiết</a>
 
+													<a class="btn btn-primary" ng-click="toggleDetails($index)">Xem
+														Chi Tiết</a>&nbsp; <a class="btn btn-primary custom-button"
+														ng-href="/{{it.id}}">Chỉnh Sửa</a>
 												</div>
 											</li>
 
@@ -347,8 +349,7 @@ h2 small {
 													</div>
 													<div class="conten">
 														<a href="" ng-click="deleteProduct(it.id)">Xóa Sản
-															Phẩm</a> <br />
-														<br />
+															Phẩm</a> <br /> <br />
 														<div ng-if="it.idSale">
 															(Sản Phẩm <b>Đang</b> Sale) <a href=""
 																ng-click="getSaleById(it.idSale); showChangeContent = false"
@@ -362,7 +363,8 @@ h2 small {
 														</div>
 
 														<div ng-hide="it.daySale">
-															<div ng-if="it.checkIsSale">
+															<div ng-if="day == false && !it.idSale">
+																<!--day là scope bên controller -->
 																<button type="button" class="btn btn-primary"
 																	data-toggle="modal" data-target="#myModal"
 																	ng-click="update(it.id)">Sản phẩm không có
@@ -413,7 +415,7 @@ h2 small {
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h4 class="modal-title">Manage Sale Product</h4>
+								<h4 class="modal-title">Thêm Khuyến Mãi Cho Sản Phẩm</h4>
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 							</div>
 							<div class="modal-body">
@@ -502,6 +504,11 @@ h2 small {
 
 
 	<script src="controllers/Controller.js"></script>
+	<!-- Thư viện SweetAlert2 -->
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+	<script
+		src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 	<script
 		src="OrderAdmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
 

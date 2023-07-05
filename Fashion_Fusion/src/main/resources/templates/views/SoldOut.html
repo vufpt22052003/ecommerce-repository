@@ -61,7 +61,7 @@
 		<div class="container">
 			<br />
 			<div class="col-12">
-				<div class="row" style="background-color: #fff; padding: 15px;">
+				<div class="row" style="background-color: #ececec; padding: 15px;">
 					<div class="col-3">
 						<img th:src="@{'/images/' + ${product.get().img}}" alt="" />
 
@@ -97,7 +97,8 @@
 						<br />
 						<h4>Tên Shop</h4>
 						<br />
-						<button class="btn btn-success">Xem Shop</button>
+						
+						<a th:href="@{/shopUser/{id}(id=${product.get().user_id.id})}" class="btn btn-success">Xem Shop</a>
 					</div>
 				</div>
 				<br /> Sản Phẩm Tương Tự <br /> <br />

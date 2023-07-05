@@ -26,7 +26,7 @@ input, button {
 	overflow: hidden;
 	position: relative;
 	width: 900px;
-	height: 550px;
+	height: 640px;
 	margin: 0 auto 100px;
 	background: #fff;
 }
@@ -196,7 +196,7 @@ h2 {
 
 label {
 	display: block;
-	width: 260px;
+	width: 300px;
 	margin: 25px auto 0;
 	text-align: center;
 }

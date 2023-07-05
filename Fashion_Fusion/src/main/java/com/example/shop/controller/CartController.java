@@ -110,9 +110,10 @@ public class CartController {
 	public String checkBuyNow(@PathVariable("id") int pid, Model model) {
 		Optional<Products> pro = productsServiceImp.findById(pid);
 		session.removeAttribute("selectedProducts");
-
 		model.addAttribute("buyProduct", pro);
-
+		if (pro.get().checkSale()) {
+			model.addAttribute("price", pro.get().getPrice());
+		}
 		model.addAttribute("total", pro.get().getPrice());
 
 		// checkAdress(model);

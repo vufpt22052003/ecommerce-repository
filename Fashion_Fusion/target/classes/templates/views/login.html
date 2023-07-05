@@ -6,62 +6,151 @@
 <link rel='stylesheet'
 	href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="/view/css/login.css">
-
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </head>
-<body>
+<body ng-app="myapp" ng-controller="AcountController">
 
 
 	<!-- partial:index.partial.html -->
-	<p class="tip">Click on button in image container</p>
+	<p class="tip"></p>
 	<div class="cont">
 		<div class="form sign-in">
-			<h2>Welcome back,</h2>
-			<form action="/sign_in" method="post">
-				<label> <span>Usersname</span> <input type="text" name="us"
-					value="teo" />
-				</label> <label> <span>Password</span> <input type="pass"
-					name="pass" value="123" />
+
+
+			<h4 style="text-align: center;" th:text="${error}"></h4>
+			<!-- đăng nhập -->
+			<form action="/sign_in" method="post" ng-hide="formLogin">
+				<h2>Chào mừng trở lại</h2>
+				<label> <span>Số Điện Thoại</span> <input type="text"
+					name="sdt" value=377572916 />
+				</label><label> <span>Password</span> <input type="pass" name="pass"
+					value="123" />
 				</label>
-				<p class="forgot-pass">Forgot password?</p>
-				<button type="submit" class="submit">Sign In</button>
+				<p class="forgot-pass" ng-click="forgot_pass()">Quên Mật Khẩu?</p>
+				<button type="submit" class="submit">Đăng Nhập</button>
 			</form>
+
+			<!-- quen mk-->
+			<form action="/sign_up" method="post" ng-hide="!formLogin">
+				<h2>Lấy Lại Mật Khẩu</h2>
+				<label ng-show="!frEmail" style="display: flex;"> <span>Email</span>
+					<input type="email" ng-model="forgotEmail" />
+
+					<button type="button"
+						style="background-color: #dacccc; width: 150px;"
+						ng-click="sendEmail('forgot')">
+						<span ng-show="!isLoading" id="getCode" style="color: black">Nhận
+							Mã</span> <span ng-show="isLoading" style="color: black">Đang xử
+							lý...</span>
+					</button>
+				</label> <br /> <label style="display: flex;" ng-show="insert_otp">
+					<span>Nhập Mã</span> <input type="text" ng-model="insert_code" />
+					<button type="button"
+						style="background-color: #dacccc; width: 150px;"
+						ng-click="submitCode()">Xác Nhận</button>
+				</label> <label ng-show="newPass"> <span style="color: black;">Cập
+						Nhật Mật Khẩu Mới</span> <input type="password" ng-model="Passnew" /></label>
+				<div id="error" style="color: red"></div>
+
+				<p ng-show="!newPass && !btn_confirm" class="forgot-pass"
+					ng-click="login()">Quay Về Đăng Nhập</p>
+
+				<br />
+
+				<button type="button" ng-show="newPass && btn_confirm"
+					ng-disabled="!Passnew" ng-click="UpdatePass()" class="submit">Hoàn
+					Thành</button>
+
+				<button type="button" class="fb-btn" ng-hide="formLogin">
+					Join with <span>Google</span>
+				</button>
+			</form>
+
+
 			<button type="submit" class="fb-btn">
-				Connect with <span>facebook</span>
+				<a href="/index" style="text-decoration: none;">Quay Về <span>Trang
+						Chủ</span>
+				</a>
 			</button>
+			<br />
+			<button type="button" class="fb-btn" ng-hide="formLogin">
+				<a th:href="@{/oauth2/authorization/google}">Login with Google</a>
+ 
+			</button>
+			
 		</div>
+
+		<!-- dăng ký -->
 		<div class="sub-cont">
-			<div class="img">
+			<div class="img" style="cursor: pointer;">
 				<div class="img__text m--up">
-					<h2>New here?</h2>
+					<h2>Tạo Tài Khoản Mới?</h2>
 					<p>Sign up and discover great amount of new opportunities!</p>
 				</div>
 				<div class="img__text m--in">
-					<h2>One of us?</h2>
-					<p>If you already has an account, just sign in. We've missed
-						you!</p>
+					<h2>Bạn Đã Có Tài Khoản</h2>
+					<p>Nếu bạn đã có tài khoản, chỉ cần đăng nhập. Chúng tôi rất
+						nhớ bạn!</p>
 				</div>
 				<div class="img__btn">
-					<span class="m--up">Sign Up</span> <span class="m--in">Sign
-						In</span>
+					<span class="m--up" onclick="reg()">Đăng Ký</span> <span
+						class="m--in">Đăng Nhập</span>
+
 				</div>
 			</div>
 			<div class="form sign-up">
-				<h2>Time to feel like home,</h2>
-				<label> <span>Name</span> <input type="text" />
-				</label> <label> <span>Email</span> <input type="email" />
-				</label> <label> <span>Password</span> <input type="password" />
-				</label>
-				<button type="button" class="submit">Sign Up</button>
-				<button type="button" class="fb-btn">
-					Join with <span>facebook</span>
-				</button>
+				<h2>Nhập Thông Tin Để Đăng Ký</h2>
+				<form action="/sign_up" method="post">
+					<label> <span>Name</span> <input type="text"
+						ng-model="newName" />
+					</label><label> <span>Password</span> <input type="password"
+						ng-model="newPass" />
+					</label> <label> <span>Số Điện Thoại</span> <input type="text"
+						ng-model="newSdt" />
+					</label> <label style="display: flex;"> <span>Email</span> <input
+						type="email" ng-model="newEmail" />
+
+						<button type="button"
+							style="background-color: #dacccc; width: 150px;"
+							ng-click="sendEmail('sing_up')"
+							ng-disabled="!newEmail && !isLoading">
+							<span ng-show="!isLoading" id="getCode" style="color: black">Nhận
+								Mã</span> <span ng-show="isLoading" style="color: black">Đang xử
+								lý...</span>
+						</button>
+					</label>
+
+
+
+					<div id="otpInput">
+						<label ng-show="insert_otp"> <span>Nhập Mã </span> <input
+							type="text" ng-model="insert_code" />
+							<div id="error" style="color: red"></div>
+						</label>
+
+					</div>
+					</label>
+					<button type="button" ng-click="sign_up()" class="submit"
+						ng-disabled="!newName || !newSdt || !newPass">Đăng Kí</button>
+					<button type="button" class="fb-btn">
+						Join with <span>facebook</span>
+					</button>
+				</form>
 			</div>
 		</div>
 	</div>
 
-
+	<script type="text/javascript">
+		function reg() {
+			alert("jkasd")
+		}
+	</script>
 	<!-- partial -->
 	<script src="view/js/login.js"></script>
+	<script src="/controllers/Acount.js"></script>
 
 </body>
 </html>

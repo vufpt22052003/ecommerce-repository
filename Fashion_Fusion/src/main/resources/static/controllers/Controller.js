@@ -15,11 +15,18 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 
 
 	$rootScope.data = []
+	$scope.day = false
 	$scope.loadData = function() {
 		$http.get('api/listProByUs/' + $scope.currentPage)
 			.then(function(response) {
 				$rootScope.data = response.data.content; // Dữ liệu sản phẩm
 				$scope.totalItems = response.data.totalElements; // Cập nhật tổng số sản phẩm
+				for (var i = 0; i < $rootScope.data.length; i++) {
+					var item = $rootScope.data[i].checkIsSale;
+					if (item = false) {
+						$scope.day = true
+					}
+				}
 			})
 			.catch(function(error) {
 				console.error('Error:', error);
@@ -62,6 +69,7 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 			params: { id: id }
 		}).then(function(response) {
 			$scope.dataProDTO = response.data; // gán dử liệu bên edit
+			console.log(response.data)
 		}, function(error) {
 			console.log(error.data);
 		});
@@ -101,34 +109,49 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 	}
 
 	$scope.deleteProduct = function(id) {
-		$http({
-			method: 'GET',
-			url: '/deleteProduct',
-			params: { id: id }
-		}).then(function(response) {
-			// Tìm vị trí của sản phẩm trong danh sách hiện tại
-			var index = $scope.data.findIndex(function(product) {
-				return product.id === id;
-			});
+		Swal.fire({
+			title: 'Thông báo',
+			text: 'Bạn có muốn xóa Sale này không?',
+			icon: 'info',
+			showCancelButton: true,
+			confirmButtonText: 'Yes',
+			cancelButtonText: 'No'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				$http({
+					method: 'GET',
+					url: '/deleteProduct',
+					params: { id: id }
+				}).then(function(response) {
+					// Tìm vị trí của sản phẩm trong danh sách hiện tại
+					var index = $scope.data.findIndex(function(product) {
+						return product.id === id;
+					});
 
-			if (index !== -1) {
-				// Xóa sản phẩm khỏi danh sách
-				$scope.data.splice(index, 1);
+					if (index !== -1) {
+						// Xóa sản phẩm khỏi danh sách
+						$scope.data.splice(index, 1);
+					}
+
+					// Hiển thị thông báo thành công
+					$.toast({
+						heading: 'Xóa đơn hàng thành công',
+						text: 'Đơn hàng đã được xóa.',
+						position: 'top-right',
+						icon: 'success'
+					});
+				}, function(error) {
+					// Xử lý lỗi khi xóa không thành công
+					$.toast({
+						heading: 'Warning',
+						text: 'Đã có lỗi xảy ra khi xóa sản phẩm.',
+						icon: 'warning'
+					});
+				});
 			}
-			$.toast({
-				heading: 'Xóa đơn hàng thành công',
-				text: 'Đơn hàng đã được xóa.',
-				position: 'top-right',
-				icon: 'success'
-			})
-		}, function(error) {
-			$.toast({
-				heading: 'Warning',
-				text: 'Đã Có Lỗi Xảy Ra',
-				icon: 'warning'
-			})
 		});
 	};
+
 
 
 
@@ -164,11 +187,81 @@ app.controller('statisticsCtrl', ['$http', '$scope', '$rootScope', function($htt
 	};
 	$scope.loadTop10();
 
+	// xuất exel
+	$scope.ExcelExporter = function() {
+		// Create a clean copy of the top10Order array
+		var cleanData = angular.copy($scope.top10Order);
+
+		// Remove the $$hashKey property from the cleanData array
+		cleanData.forEach(function(item) {
+			delete item.$$hashKey;
+		});
+
+		// Create a new workbook
+		var workbook = XLSX.utils.book_new();
+
+		// Create a new worksheet from the clean data
+		var worksheet = XLSX.utils.json_to_sheet(cleanData);
+
+		// Define the column headers
+		var header = ["Mã đơn hàng", "Đã Bán", "Giá Tiền", "Sản phẩm", "Ngày ra hóa đơn"];
+
+		// Set the column headers in the worksheet
+		var headerRowIndex = 0;
+		var headerColumnIndex = 0;
+		for (var i = 0; i < header.length; i++) {
+			var cellAddress = XLSX.utils.encode_cell({ r: headerRowIndex, c: headerColumnIndex });
+			worksheet[cellAddress] = { v: header[i] };
+			headerColumnIndex++;
+		}
+
+		// Add the invoice date at the end of each row
+		var invoiceDateColumnIndex = header.indexOf("Ngày ra hóa đơn");
+		var currentDate = new Date();
+		var invoiceDate = currentDate.toISOString().slice(0, 10);
+		var dataRowIndex = 1; // Start from the first data row (excluding header)
+		cleanData.forEach(function(item) {
+			var cellAddress = XLSX.utils.encode_cell({ r: dataRowIndex, c: invoiceDateColumnIndex });
+			worksheet[cellAddress] = { v: invoiceDate };
+			dataRowIndex++;
+		});
+
+		// Auto-adjust column width for better visibility
+		var columns = Object.keys(worksheet);
+		var maxLengths = {};
+		columns.forEach(function(column) {
+			var columnLength = column.length;
+			if (maxLengths[columnLength] === undefined || columnLength > maxLengths[columnLength]) {
+				maxLengths[columnLength] = columnLength;
+			}
+		});
+		Object.keys(maxLengths).forEach(function(length) {
+			var width = { wch: maxLengths[length] + 2 };
+			var colRef = XLSX.utils.decode_range(worksheet['!ref']).e.c;
+			for (var i = 0; i <= colRef; i++) {
+				var column = XLSX.utils.encode_col(i);
+				worksheet[column + '1'] = Object.assign(worksheet[column + '1'], width);
+			}
+		});
+
+		// Append the worksheet to the workbook
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Top 10 Order");
+
+		// Export the workbook to an Excel file
+		var today = new Date();
+		var fileName = "Top Sản Phẩm Bán Chạy_" + today.toISOString().slice(0, 10) + ".xlsx";
+		XLSX.writeFile(workbook, fileName);
+	};
+
+
+
 	// lấy danh sách các người mua nhiều nhất
 	$scope.loadUserByOder = []
 	$scope.loadTopUser = function() {
 		$http.get("/api/getTopUserByOder")
 			.then(function(response) {
+				console.log(response.data)
+
 				$scope.loadUserByOder = response.data;
 			})
 	}
@@ -202,8 +295,13 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 	// phía ng dùng
 	$scope.information = 'pending';
 	$scope.data = [];
-
 	$scope.loadData = function(type) {
+		$scope.information = type
+		if (type === 'cancel') {
+			$scope.classify = false
+		} else {
+			$scope.classify = true
+		}
 		$http.get('/api/OrderStatus?type=' + type)
 			.then(function(response) {
 				$scope.data = response.data;
@@ -235,6 +333,8 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 		$http.get('/api/getOrderDetails?type=' + type)
 			.then(function(response) {
 				$scope.details = response.data;
+				$scope.details.reverse(); // Đảo ngược thứ tự của mảng details để lấy đơn hàng mới
+				console.log(response.data)
 				var currentDate = moment().format('YYYY-MM-DD HH:mm:ss');
 				for (var i = 0; i < response.data.length; i++) {
 					var createdDate = moment(response.data[i].created_at);
@@ -255,78 +355,101 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 
 	/////////////////////////////////////
 
-	// xác nhận
 	$scope.confirm = function(id) {
-		$.ajax({
-			url: "/order_confim",
-			type: "POST",
-			data: {
-				Oid: id,
-				Action: "confirm" // Thay đổi giá trị action tại đây
-			},
-			success: function(data) {
-				console.log(data)
+		// Hiển thị hộp thoại xác nhận
+		Swal.fire({
+			title: 'Xác nhận',
+			text: 'Bạn có muốn xác nhận đơn hàng này?',
+			icon: 'info',
+			showCancelButton: true,
+			confirmButtonText: 'Yes',
+			cancelButtonText: 'No'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Thực hiện ajax call khi người dùng chọn "Yes"
+				$.ajax({
+					url: "/order_confim",
+					type: "POST",
+					data: {
+						Oid: id,
+						Action: "confirm" // Thay đổi giá trị action tại đây nếu cần
+					},
+					success: function(data) {
+						console.log(data)
 
-				$scope.loadData($scope.selectedOption); // Gọi lại hàm loadData với selectedOption hiện tại
-				$scope.loadDetails($scope.selectType);
+						$scope.loadData($scope.selectedOption); // Gọi lại hàm loadData với selectedOption hiện tại
+						$scope.loadDetails($scope.selectType);
 
-				$.toast({
-					heading: 'Xác nhận thành công',
-					text: 'Đơn hàng đã được xác nhận.',
-					position: 'top-right',
-					icon: 'success'
-				})
-			},
-			error: function(xhr, status, error) {
-				$.toast({
-					heading: 'Error',
-					text: 'Đã Có Lỗi Xãy Ra, Không Thể Xác Nhận Đơn Hàng.',
-					position: 'top-right',
-					icon: 'error'
-				})
+						// Hiển thị thông báo xác nhận thành công
+						$.toast({
+							heading: 'Xác nhận thành công',
+							text: 'Đơn hàng đã được xác nhận.',
+							position: 'top-right',
+							icon: 'success'
+						});
+					},
+					error: function(xhr, status, error) {
+						var errorMessage = xhr.responseJSON.message
+						if (xhr.status === 400) {
+							errorMessage = "Đã có lỗi xảy ra, không thể xác nhận đơn hàng.";
+						}
 
-
+						// Hiển thị thông báo lỗi
+						$.toast({
+							heading: 'ERROR',
+							text: errorMessage,
+							position: 'top-right',
+							icon: 'error'
+						});
+					}
+				});
 			}
 		});
-	}
+	};
 
-	// hủy đơn 
-	$scope.cancel = function(id) {
 
-		$.ajax({
-			url: "/cancel_order",
-			type: "POST",
-			data: {
-				Oid: id,
-				Action: "cancel" // Thay đổi giá trị action tại đây
-			},
-			success: function(data) {
-				$scope.loadData($scope.selectedOption); // Gọi lại hàm loadData với selectedOption hiện tại
-				$scope.loadDetails($scope.selectType);
-				$scope.loadData($scope.information);
-				$.toast({
-					heading: 'Hủy Đơn Hàng thành công',
-					text: 'Đơn hàng đã được hủy.',
-					position: 'top-right',
-					icon: 'success'
-				})
-			},
-			error: function(xhr, status, error) {
-				// Xử lý lỗi nếu có
-				console.log(error);
+	$scope.cancel = function(id, cancel) {
+		// Hiển thị hộp thoại xác nhận
+		Swal.fire({
+			title: 'Hủy đơn hàng',
+			text: 'Bạn có muốn hủy đơn hàng này?',
+			icon: 'info',
+			showCancelButton: true,
+			confirmButtonText: 'Yes',
+			cancelButtonText: 'No'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// Thực hiện ajax call khi người dùng chọn "Yes"
+				$.ajax({
+					url: "/cancel_order",
+					type: "POST",
+					data: {
+						Oid: id,
+						Action: "cancel",
+						cancelBy: cancel
+						// Thay đổi giá trị action tại đây nếu cần
+					},
+					success: function(data) {
+						$scope.loadDetails($scope.selectType);
+						$scope.loadData($scope.information);
+
+						// Hiển thị thông báo hủy đơn hàng thành công
+						$.toast({
+							heading: 'Hủy Đơn Hàng thành công',
+							text: 'Đơn hàng đã được hủy.',
+							position: 'top-right',
+							icon: 'success'
+						});
+					},
+					error: function(xhr, status, error) {
+						// Xử lý lỗi nếu có
+						console.log(error);
+					}
+				});
 			}
 		});
+	};
 
-	}
 
-
-	$scope.s = function() {
-		$.toast({
-			heading: 'Hủy Đơn Hàng thành công',
-			text: 'Đơn hàng đã được hủy.',
-			position: 'top-right',
-			icon: 'success'
-		})
-	}
 
 }]);

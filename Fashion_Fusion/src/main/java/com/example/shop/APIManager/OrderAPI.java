@@ -54,14 +54,15 @@ public class OrderAPI {
 	}
 
 	// phía admin xử lý
-	@PostMapping({ "/order_confim", "cancel_order" })
-	public ResponseEntity<String> confim_order(@RequestParam("Oid") int oid, @RequestParam("Action") String action) {
+	@PostMapping({ "order_confim", "cancel_order" })
+	public ResponseEntity<String> confim_order(@RequestParam("Oid") int oid, @RequestParam("Action") String action,
+			@RequestParam(value = "cancelBy", required = false) String cancel) {
+
 		if (action.equals("confirm")) {
 			orderDetailsService.confim_order(oid);
-			
-		} else if (action.equals("cancel")) {
-			
-			orderDetailsService.cancelOrder(oid);
+		}
+		if (action.equals("cancel")) {
+			orderDetailsService.cancelOrder(oid, cancel);
 		}
 		return ResponseEntity.ok("xác nhận thành công");
 	}
@@ -82,6 +83,18 @@ public class OrderAPI {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	@GetMapping("/api/getTop10Order")
+	public ResponseEntity<List<Object[]>> getTop10Order() {
+		List<Object[]> top10 = orderDetailsService.getTop10ProductsByTotalOrders();
+		return new ResponseEntity<>(top10, HttpStatus.OK);
+	}
+
+	@GetMapping("/api/getTopUserByOder")
+	public ResponseEntity<List<Object[]>> getTopUserByOder() {
+		List<Object[]> top = orderService.getTopUserByOder();
+		return new ResponseEntity<>(top, HttpStatus.OK);
 	}
 
 //	@GetMapping("/api/O")

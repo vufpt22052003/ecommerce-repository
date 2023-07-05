@@ -68,31 +68,30 @@ public class ShopController {
 
 	@GetMapping({ "page", "/page/{i}" })
 	public String shop(@PathVariable("i") Optional<Integer> i, Model m) {
-		Pageable pageable = PageRequest.of(0, 999);
-		Page<Products> listTarget = productsServiceImp.getAllProduct(pageable);
-		;
+		Pageable pageable = PageRequest.of(i.orElse(0), 12);
+		Page<Products> getAll = productsServiceImp.getAllProduct(pageable);
 
-		List<Products> productList = new ArrayList<>(listTarget.getContent());
-		Collections.shuffle(productList);
+		// getAll.stream().map(p -> p.getId()).forEach(p2 -> System.out.println(p2));
 
-		Page<Products> shuffledPage = new PageImpl<>(productList, pageable, productList.size());
+//		List<Products> productList = new ArrayList<>(getAll.getContent());
+//		Collections.shuffle(productList);
 
-		session.setAttribute("listPro", shuffledPage);
+		/*
+		 * Page<Products> shuffledPage = new PageImpl<>(productList, pageable,
+		 * productList.size());
+		 */
+		session.setAttribute("listPro", getAll);
 		m.addAttribute("url", "page");
+
 		return "/views/shop";
 	}
 
 	@RequestMapping(value = { "/searchProduct", "/searchProduct/{i}" })
 	public String searchByName(@PathVariable("i") Optional<Integer> i, Model model,
 			@RequestParam("nameProduct") String name) {
-		Pageable pageable = PageRequest.of(i.orElse(0), 8);
+		Pageable pageable = PageRequest.of(i.orElse(0), 1);
 		Page<Products> page = productsServiceImp.searchByName(pageable, name);
-		System.out.println(i);
-		// Truyền giá trị đường dẫn vào model
 		session.setAttribute("listPro", page);
-		for (Products products : page) {
-			System.out.println(products.getId());
-		}
 		model.addAttribute("query", "nameProduct=" + name);
 
 		model.addAttribute("url", "searchProduct");
@@ -116,31 +115,13 @@ public class ShopController {
 			}
 		}
 
-		Pageable pageable = PageRequest.of(0, 8);
+		Pageable pageable = PageRequest.of(0, 12);
 		Page<Products> saleProducts = new PageImpl<>(saleProductsList, pageable, saleProductsList.size());
 
 		model.addAttribute("title", "Sản Phẩm Giảm Giá");
 		session.setAttribute("listPro", saleProducts);
 
 		return "/views/shop";
-	}
-
-	// lọc giá
-	@GetMapping("/PriceFilter")
-	public String PriceFilter(@RequestParam("price") String price) {
-		Pageable pageable = PageRequest.of(0, 9);
-		System.out.println(price);
-		if (price.equals("ASC")) {
-			Page<Products> pageASC = productsServiceImp.PriceASC(pageable);
-			session.setAttribute("listPro", pageASC);
-		}
-		if (price.equals("DESC")) {
-			Page<Products> pageDESC = productsServiceImp.PriceDESC(pageable);
-			session.setAttribute("listPro", pageDESC);
-
-		}
-		return "/views/shop";
-
 	}
 
 	@GetMapping("index")
@@ -168,7 +149,7 @@ public class ShopController {
 
 		List<Products> hotTrendList = new ArrayList<>();
 
-		Pageable pageable = PageRequest.of(0, 8);
+		Pageable pageable = PageRequest.of(0, 12);
 		Page<Object[]> page = orderDetailsServiceImp.getHotTrendProducts(pageable);
 
 		for (Object[] obj : page) {
@@ -183,22 +164,6 @@ public class ShopController {
 		return "/views/index";
 	}
 
-	@RequestMapping({ "/price_range", "/price_range/{i}" })
-	public String price_range(@RequestParam(name = "min", required = true) double min, @RequestParam("max") double max,
-			Model m, @PathVariable("i") Optional<Integer> i) {
-		Pageable pageable = PageRequest.of(i.orElse(0), 8);
-
-//		// Mã hóa các tham số min và max trong đường dẫn
-//		String encodedMin = URLEncoder.encode(String.valueOf(min), StandardCharsets.UTF_8);
-//		String encodedMax = URLEncoder.encode(String.valueOf(max), StandardCharsets.UTF_8);
-
-		Page<Products> page = productsServiceImp.PriceRrange(pageable, min, max);
-		session.setAttribute("listPro", page);
-		m.addAttribute("url", "price_range");
-		m.addAttribute("query", "min=" + min + "&max=" + max);
-		return "/views/shop";
-	}
-
 	@GetMapping("shop2")
 	public String shop2(Model m) {
 		Pageable pageable = PageRequest.of(0, 9);
@@ -207,21 +172,27 @@ public class ShopController {
 		return "/views/shop2";
 	}
 
-	@GetMapping("shopUser/{uid}")
-	public String getProductByUser(@PathVariable("uid") int uid, Model m) {
-		Pageable pageable = PageRequest.of(0, 999);
+	@GetMapping("/shopUser/{uid}")
+	public ResponseEntity<List<Products>> getProductByUser(@PathVariable("uid") int uid, Model m) {
+		Pageable pageable = PageRequest.of(1, 8);
 		Page<Products> pageASC = productsServiceImp.finAllByUser(pageable, uid);
 		m.addAttribute("listProUser", pageASC);
 
 		Optional<Users> user = loginDAO.findById(uid);
 		m.addAttribute("user", user);
 		m.addAttribute("totalPro", pageASC.getTotalElements());
-		return "/views/shopUser";
+
+		List<Products> productList = pageASC.getContent();
+		return ResponseEntity.ok(productList);
 	}
 
-	@GetMapping("audiences/{target}")
-	public String getProductByUser(@PathVariable("target") String target, Model m) {
-		Pageable pageable = PageRequest.of(0, 999);
+	@GetMapping("/audiences/{index}/{target}")
+
+	public String getProductByUser(@PathVariable("target") String target, Model m,
+			@PathVariable(value = "index", required = false) Optional<Integer> i) {
+		session.removeAttribute("listPro");
+		System.out.println(target + "jasd");
+		Pageable pageable = PageRequest.of(i.orElse(0), 8);
 		Page<Products> listTarget = productsServiceImp.findByTargetAudience(pageable, target);
 
 		List<Products> productList = new ArrayList<>(listTarget.getContent());
@@ -229,9 +200,9 @@ public class ShopController {
 
 		Page<Products> shuffledPage = new PageImpl<>(productList, pageable, productList.size());
 
-		session.setAttribute("listPro", shuffledPage);
+		session.setAttribute("listPro", listTarget);
 
-		m.addAttribute("query", "target=" + target);
+		m.addAttribute("queryPath", target);
 		m.addAttribute("url", "audiences");
 
 		if (target.equals("nữ")) {
@@ -247,23 +218,29 @@ public class ShopController {
 		return "/views/shop";
 	}
 
-	@GetMapping("getCatogery/{id}")
-	public String getProByCatoId(@PathVariable("id") int id, Model m) {
+	@GetMapping({"/getCatogery/{i}/{id}" })
+	public String getProByCatoId(@PathVariable(value="i" , required = false) Optional<Integer> i, @PathVariable("id") int id, Model m) {
 		if (id > 0) {
-			Pageable pageable = PageRequest.of(0, 999);
+			System.out.println(id + "i");
+			Pageable pageable = PageRequest.of(i.orElse(0), 12);
 			Page<Products> page = productsServiceImp.getProByCatoId(pageable, id);
-			List<Products> productList = new ArrayList<>(page.getContent());
-			Collections.shuffle(productList);
-			page = new PageImpl<>(productList, pageable, productList.size());
+//			List<Products> productList = new ArrayList<>(page.getContent());
+//			Collections.shuffle(productList);
+//			page = new PageImpl<>(productList, pageable, productList.size());
 
+			m.addAttribute("queryPath", id);
+			m.addAttribute("url", "getCatogery");
 			session.setAttribute("listPro", page);
 		}
 		return "/views/shop";
 	}
 
-	@GetMapping("/getHotTrend")
-	public String getHotTrend(Model m) {
-		Pageable pageable = PageRequest.of(0, 999);
+	@GetMapping({ "/getHotTrend", "/getHotTrend/{i}" })
+	public String getHotTrend(Model m, @PathVariable("i") Optional<Integer> i) {
+		int pageNumber = i.orElse(0); // Lấy số trang từ Optional, mặc định là 0 nếu không có giá trị
+		int pageSize = 10; // Kích thước trang mong muốn, bạn có thể thay đổi theo ý muốn
+
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
 		Page<Object[]> hotTrendProductIds = (Page<Object[]>) orderDetailsServiceImp.getHotTrendProducts(pageable);
 
 		List<Products> productList = productsServiceImp.findAll();
@@ -281,7 +258,7 @@ public class ShopController {
 
 		Page<Products> PageHotTrend = new PageImpl<>(hotTrendList, pageable, hotTrendList.size());
 		m.addAttribute("title", "Sản Phẩm Bán Chạy");
-
+		System.out.println(PageHotTrend.getTotalElements());
 		session.setAttribute("listPro", PageHotTrend);
 		return "/views/shop";
 	}
@@ -289,5 +266,107 @@ public class ShopController {
 	@GetMapping("orderSucess")
 	public String orderSucess() {
 		return "views/Success";
+	}
+
+	// Khoảng Giá
+	@RequestMapping({ "/PriceRange", "/PriceRange/{i}" })
+	public String price_range(@RequestParam(name = "min", required = true) String min, @RequestParam("max") String max,
+			Model m, @PathVariable("i") Optional<Integer> i) {
+		Pageable pageable = PageRequest.of(i.orElse(0), 12);
+
+		if (min.contains(",")) {
+			min = min.replaceAll(",", "");
+		}
+		if (max.contains(",")) {
+			max = max.replaceAll(",", "");
+		}
+		Double priceMin = Double.parseDouble(min);
+		Double priceMax = Double.parseDouble(max);
+
+//		// Mã hóa các tham số min và max trong đường dẫn
+//		String encodedMin = URLEncoder.encode(String.valueOf(min), StandardCharsets.UTF_8);
+//		String encodedMax = URLEncoder.encode(String.valueOf(max), StandardCharsets.UTF_8);
+
+		m.addAttribute("min", priceMin);
+		m.addAttribute("max", priceMax);
+		Page<Products> page = productsServiceImp.PriceRrange(pageable, priceMin, priceMax);
+		session.setAttribute("listPro", page);
+		m.addAttribute("url", "price_range");
+		m.addAttribute("query", "min=" + priceMin + "&max=" + priceMax);
+		return "/views/shop";
+	}
+
+	// lọc giá
+	@GetMapping({ "/PriceFilter", "/PriceFilter/{i}" })
+	public String PriceFilter(@RequestParam(name = "price", required = false) String price, Model m,
+			@PathVariable("i") Optional<Integer> i) {
+		Pageable pageable = PageRequest.of(i.orElse(0), 12);
+
+		if (price != null && price.equals("ASC")) {
+			Page<Products> pageASC = productsServiceImp.PriceASC(pageable);
+			session.setAttribute("listPro", pageASC);
+			pageASC.stream().map(p -> p.getPrice()).forEach(item -> System.out.println(item));
+
+		} else if (price != null && price.equals("DESC")) {
+			Page<Products> pageDESC = productsServiceImp.PriceDESC(pageable);
+			session.setAttribute("listPro", pageDESC);
+
+		}
+
+		m.addAttribute("filterSelect", price);
+		m.addAttribute("url", "PriceFilter");
+		m.addAttribute("query", "price=" + price);
+		return "/views/shop";
+
+	}
+
+	// gioi hạn giá
+	@GetMapping({ "/PriceLimit", "/PriceLimit/{i}" })
+	public String PriceRange(@RequestParam(name = "price", required = false) String price,
+			@PathVariable("i") Optional<Integer> i, Model m) {
+
+		String cleanPrice = price.replace(",", "").replaceAll("\\s", "").toLowerCase();
+		Page<Products> pagePro = null;
+
+		int priceMin = 0;
+		int priceMax = 0;
+		if (cleanPrice.contains("trên")) {
+			Pageable pageable = PageRequest.of(i.orElse(0), 12);
+			String[] priceRangeMin = cleanPrice.split("trên");
+			// chuổi phía trc là chữ 'trên' chuổi 2 là 500000
+			priceMax = Integer.parseInt(priceRangeMin[1]);
+			System.out.println(i + "sd");
+			pagePro = productsServiceImp.ByPriceDESC(pageable, priceMax);
+			// do tham số đọc lần đầu bằng @requesparam là 1 chuổi nên trả về lại 1 chuổi
+			String priceQuery = String.valueOf(priceMax);
+			m.addAttribute("query", "price=Trên " + priceQuery);
+		}
+		if (cleanPrice.contains("dưới")) {
+			Pageable pageable = PageRequest.of(i.orElse(0), 12);
+			String[] priceRangeMin = cleanPrice.split("dưới");
+			priceMin = Integer.parseInt(priceRangeMin[1]);
+			pagePro = productsServiceImp.ByPriceASC(pageable, priceMin);
+			String priceQuery = String.valueOf(priceMin);
+			m.addAttribute("query", "price=Dưới " + priceQuery);
+		}
+
+		else {
+			Pageable pageable = PageRequest.of(i.orElse(0), 12);
+
+			String[] priceRange = cleanPrice.split("-");
+			if (priceRange.length == 2) { // độ dài đủ 2 mảng
+				priceMin = Integer.parseInt(priceRange[0]);
+				priceMax = Integer.parseInt(priceRange[1]);
+				pagePro = productsServiceImp.PriceRrange(pageable, priceMin, priceMax);
+				m.addAttribute("query", "priceMin=" + priceMin + "&priceMax=" + priceMax);
+			}
+
+			// pagePro.stream().map(Products::getPrice).forEach(item ->
+			// System.out.println(item));
+		}
+		session.setAttribute("listPro", pagePro);
+		m.addAttribute("url", "PriceLimit");
+
+		return "/views/shop";
 	}
 }

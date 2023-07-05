@@ -176,14 +176,15 @@
 }
 
 .event-schedule-area-two .tab-content .table thead {
-	background-color: #007bff;
+	background-color: #f2f8ff;
 	color: #fff;
-	font-size: 20px;
 }
 
 .event-schedule-area-two .tab-content .table thead tr th {
+	color: black;
 	padding: 20px;
 	border: 0;
+	padding: 20px;
 }
 
 .event-schedule-area-two .tab-content .table tbody tr.inner-box {
@@ -337,6 +338,14 @@
 	word-wrap: break-word;
 	white-space: normal;
 }
+
+.btn {
+	margin-bottom: 10px;
+}
+
+a {
+	text-decoration: none !important;
+}
 </style>
 <body style="background-color: #f5f5f5" ng-app="MyApp"
 	ng-controller="OrderController">
@@ -364,7 +373,7 @@
 						<li class="nav-item"><a class="nav-link" id="contact-tab"
 							data-toggle="tab" href="#contact" role="tab"
 							aria-controls="contact" aria-selected="false"
-							ng-click="loadData('cancel')">Đơn Hàng Đã Hủy</a></li>
+							ng-click="loadData('cancel' )">Đơn Hàng Đã Hủy</a></li>
 
 					</ul>
 					<div class="tab-content" id="myTabContent">
@@ -372,16 +381,15 @@
 							<div class="table-responsive">
 								<table class="table">
 									<thead>
-										<!-- 	<tr>
+										<tr>
 											<th></th>
 											<th scope="col">Tên Sản Phẩm</th>
 											<th scope="col">Giá Tiền</th>
 											<th scope="col">Tổng Tiền</th>
 											<th scope="col">Thao Tác</th>
-										</tr> -->
+										</tr>
 									</thead>
 									<tbody>
-										<div ng-show="data === null">K</div>
 
 										<tr ng-repeat="item in data" class="inner-box">
 											<td>
@@ -393,19 +401,27 @@
 											<td>
 												<div class="event-wrap">
 													<h3>
-														<a href="#">{{item.product_id.name}}</a>
+														<a style="direction: none"
+															title="{{item.product_id.name}}" href="#">
+															{{item.product_id.name.length > 30 ?
+															(item.product_id.name | limitTo: 30) + '...' :
+															item.product_id.name}} </a>
 													</h3>
+
 													<div class="meta">
 														<div>
 															<a href="#">x{{item.quantity}}</a>
 														</div>
 													</div>
 													<div class="meta">
-														<div>
+														<div ng-show="classify">
 															<p>Phân Loại Hàng</p>
 														</div>
+														<div ng-show="!classify">
+															Đã Hủy Bởi <b> {{item.cancelled_by === 'user'? 'Bạn'
+																: 'Người Bán'}}</b>
+														</div>
 													</div>
-												</div>
 											</td>
 											<td>
 												<div class="r-no">
@@ -415,16 +431,20 @@
 											<td>${{item.price * item.quantity}}</td>
 											<td>
 												<p ng-if="information == 'pending' ">
-													<button class="btn btn-primary" ng-click="cancel(item.id)">Hủy
-														Đơn Hàng</button>
-													<button disabled class="btn btn-light">Đang Chờ</button>
+													<button class="btn btn-info" style="margin-top: 10px"
+														ng-click="cancel(item.id , 'userCancel')">Hủy Đơn
+														Hàng</button>
+													<button disabled class="btn btn-info"
+														style="margin-top: 10px">Đang Chờ</button>
 												</p>
 												<p ng-if="information == 'confirm' ">
-													<button class="btn btn-primary" ng-click="cancel(item.id)">Hủy
-														Đơn Hàng</button>
-													<button disabled class="btn btn-light">Đang Chờ</button>
+
+													<a ng:href="/checkBuyNow/{{item.product_id.id}}"
+														style="margin-top: 10px" class="btn btn-info">Mua Lại
+													</a>
 												</p>
-												<p ng-if="information == 'confirm' ">Thành Công</p>
+												<p style="margin-top: 10px" ng-if="information == 'cancel' ">Đơn
+													Hàng Đã Bị Hủy</p>
 											</td>
 
 										</tr>
@@ -444,4 +464,9 @@
 </body>
 <script src="/controllers/Controller.js"></script>
 <script src="/details/js/bootstrap.min.js"></script>
+<!-- Thư viện SweetAlert2 -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 </html>

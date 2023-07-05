@@ -16,7 +16,8 @@
 	href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="/view/css/bootstrap.min.css"
-	type="text/css"><link rel="stylesheet" href="/view/css/font-awesome.min.css"
+	type="text/css">
+<link rel="stylesheet" href="/view/css/font-awesome.min.css"
 	type="text/css">
 <link rel="stylesheet" href="/view/css/elegant-icons.css"
 	type="text/css">
@@ -129,13 +130,17 @@ textarea.form-control {
 	padding: 8px 15px; /* Điều chỉnh padding tùy ý */
 	border: 1px solid #ccc; /* Tạo viền cho ô input */
 }
+
+a {
+	text-decoration: none !important;
+}
 </style>
 <body>
 	<div th:replace="views/menu :: menu"></div>
 
 	<!-- modal -->
 	<form action="/add_order" method="post" ng-app="MyApp"
-		ng-controller="adressController">
+		ng-controller="adressController" onsubmit="return validateForm()">
 
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -162,7 +167,7 @@ textarea.form-control {
 									</div>
 									<div class="content">
 										{{it.name}} | {{it.phone}} <br /> {{it.adress}}
-									
+
 									</div>
 								</div>
 							</div>
@@ -244,8 +249,7 @@ textarea.form-control {
 							&nbsp;&nbsp;&nbsp; Địa Chỉ Nhận Hàng <br /> <br /> <b>{{info}}</b>
 							<a data-toggle="modal" data-target="#exampleModal"
 								data-whatever="@mdo"><b style="color: blue">Click</b> Vào
-								Đây Để Thay Đổi</a>
-									<input hidden="" ng-value="id" name="id_adres">
+								Đây Để Thay Đổi</a> <input hidden="" id="id_adres" ng-value="id" name="id_adres">
 						</h6>
 
 
@@ -281,8 +285,8 @@ textarea.form-control {
 											</div>
 										</td>
 										<td class="cart__price">
-											<h5 th:text="${buyProduct.get().price +'$'}"></h5> <input
-											hidden name="price" th:value="${buyProduct.get().price}" />
+											<h5 th:text="${price +'$'}"></h5> <input
+											hidden name="price" th:value="${price}" />
 											<input hidden name="productId"
 											th:value="${buyProduct.get().id}">
 										</td>
@@ -377,7 +381,17 @@ textarea.form-control {
 	</form>
 	<!-- Shopping Cart Section End -->
 
+	<script type="text/javascript">
+		function validateForm() {
+			var nameValue = document.getElementById('id_adres').value
+			if (nameValue === "" || nameValue === null) {
+				alert('Vui lòng chọn địa chỉ giao hàng');
+				return false; // Ngăn chặn submit form
+			}
+			return true; // Cho phép submit form
 
+		}
+	</script>
 
 	<!-- Search Begin -->
 	<div class="search-model">

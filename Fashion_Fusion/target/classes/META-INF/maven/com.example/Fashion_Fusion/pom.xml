@@ -46,7 +46,10 @@
     <artifactId>jackson-databind</artifactId>
     <version>2.14.2</version>
 </dependency>
-
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-mail</artifactId>
+</dependency>
 
 	<!-- JPA/Hibernate dependencies -->
 <dependency>
@@ -64,13 +67,12 @@
 			<version>8.2.2.jre11</version>
 		</dependency>
 
-
-	<!-- Servlet/JSP dependencies -->
-	<dependency>
-		<groupId>javax.servlet</groupId>
-		<artifactId>jstl</artifactId>
-		<version>1.2</version>
-	</dependency>
+ <!-- OAuth2 Client dependency -->
+<!--  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+-->
 	<dependency>
 		<groupId>org.apache.tomcat.embed</groupId>
 		<artifactId>tomcat-embed-jasper</artifactId>

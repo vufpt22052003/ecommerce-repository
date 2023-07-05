@@ -67,11 +67,15 @@
 }
 
 a {
-	direction: none !important;
+	text-decoration: none !important;
 }
 
 .plus-icon {
 	font-size: 22px;
+}
+
+.btn {
+	margin-bottom: 10px;
 }
 </style>
 <body ng-app="MyApp" ng-controller="adressController">
@@ -116,9 +120,10 @@ a {
 
 						&nbsp;&nbsp;&nbsp;&nbsp;<a href="" data-toggle="modal"
 							data-target="#exampleModal" data-whatever="@mdo" type="button"
-							class="btn-update" ng-click="finById(it.id); " style="direction: none">Cập nhật</a>
-						&nbsp; <a href="" class="btn-delete"
-							ng-click="deleteAddress(it.id  )" style="direction: none">Xóa</a><br /> <br />
+							class="btn-update" ng-click="finById(it.id); "
+							style="direction: none">Cập nhật</a> &nbsp; <a href=""
+							class="btn-delete" ng-click="deleteAddress(it.id  )"
+							style="direction: none">Xóa</a><br /> <br />
 						<!-- neu bằng disable -->
 						<button type="button" class="btn btn-light"
 							ng-disabled="it.id == id ? true : false"
@@ -136,7 +141,8 @@ a {
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
-					<div class="modal-content" style="width: 580px; height: 650px;background-color: lavenderblush">
+					<div class="modal-content"
+						style="width: 580px; height: 650px; background-color: lavenderblush">
 						<div class="modal-header">
 
 							<h5 class="modal-title" id="exampleModalLabel">Địa Chỉ Giao
@@ -174,14 +180,14 @@ a {
 
 											<div class="col-md-12" ng-if="showAddress">
 												<p>Địa Chỉ Cũ</p>
-												<input readonly  class="custom-input" name="old_adres"
+												<input readonly class="custom-input" name="old_adres"
 													ng-value="objectAdres.adress"
-													style="width: 100%; margin-bottom: 10px;background-color:#f3f3f3">
+													style="width: 100%; margin-bottom: 10px; background-color: #f3f3f3">
 											</div>
 											<input type="hidden" name="idAdres" ng-value="objectAdres.id" />
 
 											<div class="col-md-12 " style="gap: 10px; overflow-y: auto;">
-												<p> Cập nhật Địa Chỉ Mới</p>
+												<p>Cập nhật Địa Chỉ Mới</p>
 												<select id="city" name="province">
 													<option value="" selected>Chọn tỉnh thành</option>
 												</select> <select id="district" name="district">
@@ -197,7 +203,7 @@ a {
 
 										<div class="row">
 											<div class="col-lg-12">
-											<p>  Địa Chỉ Cụ Thể</p>
+												<p>Địa Chỉ Cụ Thể</p>
 												<textarea class="form-control"
 													id="exampleFormControlTextarea1" rows="4"
 													style="width: 100%"

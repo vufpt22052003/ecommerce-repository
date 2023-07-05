@@ -155,14 +155,37 @@ h2 small {
 	margin-bottom: 15px; /* Khoảng cách dọc giữa các ảnh */
 }
 
+.horizontal-images {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.image-container {
+	position: relative;
+	margin-right: 40px; /* Khoảng cách ngang giữa các ảnh */
+	margin-bottom: 10px; /* Khoảng cách dọc giữa các ảnh */
+}
+
+.delete-button {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: red;
+	color: white;
+	border: none;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
 .delete-button {
 	position: absolute;
 	top: 0px;
-	left: 55px;
+	left: 64px;
 	background-color: transparent;
 	color: red;
 	border: none;
-	font-size: 16px;
 	cursor: pointer;
 }
 
@@ -175,7 +198,6 @@ h2 small {
 	border: none;
 	color: red;
 	cursor: pointer;
-	font-size: 16px;
 	/* Tùy chỉnh các thuộc tính khác cho nút X */
 }
 </style>
@@ -308,8 +330,8 @@ h2 small {
 										<div class="form-group col-11">
 											Danh Mục <br> <select class="form-control"
 												name="category_id">
-												<option th:text="${catogery.name}"></option>
-												<option>----Danh Mục Khác---</option>	
+												<option th:value="${catogery.id}" th:text="${catogery.name}"></option>
+												<option>----Danh Mục Khác---</option>
 												<option th:each="category : ${listCato}"
 													th:value="${category.id}" th:text="${category.name}"></option>
 											</select>
@@ -320,7 +342,9 @@ h2 small {
 										<div class="form-group col-6">
 											Số Lượng Sản Phẩm <br> <input type="text"
 												class="form-control" id="exampleFormControlInput1"
-												name="in_stock" th:value="${product.in_stock}">
+												name="in_stock" th:value="${product.in_stock}"
+												oninput="validateNumberInput(this)"
+												onkeydown="handleBackspace(event, this)">
 
 										</div>
 										<div class="form-group col-6">
@@ -331,8 +355,7 @@ h2 small {
 
 										<div class="form-group col-6">
 											Sản Phẩm Có Tại <br> <select class="form-control">
-												<option ng-repeat="it in location" value="{{ it.id }}">{{
-													it.results.code }}</option>
+												<option ng-repeat="it in location" value="{{ it.id }}"></option>
 											</select>
 										</div>
 
@@ -350,7 +373,9 @@ h2 small {
 											<div class="form-group col-6">
 												Số Tiền <br> <input type="text" class="form-control"
 													id="exampleFormControlInput1" name="price"
-													th:value="${product.price}">
+													th:value="${product.price}"
+													oninput="validateNumberInput(this)"
+													onkeydown="handleBackspace(event, this)">
 
 
 											</div>
@@ -364,17 +389,22 @@ h2 small {
 
 										<div class="row p-2">
 
+
 											<div class="col-5">
 												<label for="inputCostPerPrice" class="form-label">Màu
 													Sắc</label>
-												<div id="input-container" class="d-flex flex-wrap">
+												<div id="input-container" style="gap: 10px;"
+													class="d-flex flex-wrap">
 													<p th:if="${listColor == null}"
-														th:text="${'Sản Phẩm K Có Màu'}">
-													<p></p>
-													<th:block th:each="it: ${listColor}">
-														<input class="w3-input w3-border w3-round" style=""
-															type="text" name="color[]" th:value="${it.color}"
-															placeholder="thêm màu sắc">
+														th:text="${'Sản Phẩm K Có Màu'}"></p>
+													<th:block th:each="it, stat : ${listColor}">
+														<div class="input-wrapper">
+															<input class="w3-input w3-border w3-round" type="text"
+																name="color[]" th:value="${it.color}"
+																placeholder="thêm màu sắc"> <span
+																class="delete-input" th:attr="data-index=${stat.index}"
+																onclick="deleteInput(event)">&times;</span>
+														</div>
 													</th:block>
 												</div>
 												<br />
@@ -383,23 +413,26 @@ h2 small {
 											</div>
 
 
-
-
-
 											<div class="col-5" style="margin-left: 89px">
 												<label for="inputCostPerPrice" class="form-label">Chọn
 													Size</label>
-												<div id="input-size" class="d-flex flex-wrap">
-													<th:block th:each="it : ${listSize}">
-														<input class="w3-input w3-border w3-round" type="text"
-															name="sizes[]" th:value="${it.size}"
-															placeholder="Chọn Size">
+												<div id="input-size" style="gap: 10px;"
+													class="d-flex flex-wrap">
+													<th:block th:each="it, stat : ${listSize}">
+														<div class="input-wrapper">
+															<input class="w3-input w3-border w3-round" type="text"
+																name="sizes[]" th:value="${it.size}"
+																placeholder="Chọn Size"> <span
+																class="delete-input" th:attr="data-index=${stat.index}"
+																onclick="deleteInputSize(event)">&times;</span>
+														</div>
 													</th:block>
 												</div>
 												<br />
 												<button id="add-size" class="btn btn-success" type="button">Thêm
 													Size</button>
 											</div>
+
 										</div>
 										<br /> <br />
 										<!-- -sale -->
@@ -433,19 +466,22 @@ h2 small {
 														type="file" accept="image/*" name="images[]" multiple>
 												</div>
 												<div class="horizontal-images">
-
 													<th:block th:each="img : ${listImg}">
-														<img th:src="@{'/images/' + ${img}}" class="contain"
-															alt="" />
+														<div class="image-container">
 
+															<img th:src="@{'/images/' + ${img}}" class="contain"
+																alt=""> <input type="text" th:value="${img}"
+																name="fileNames" class="image-value" hidden>
+
+
+															<button type="button" class="delete-button"
+																onclick="deleteImage(this)">&times;</button>
+														</div>
 													</th:block>
 												</div>
 												<div id="image-preview"></div>
-
-
-
-
 											</div>
+
 										</div>
 
 
@@ -476,33 +512,14 @@ h2 small {
 			</div>
 
 
-			<!-- Modal -->
 
-			<!-- Row -->
-			<!-- ============================================================== -->
-			<!-- End PAge Content -->
-			<!-- ============================================================== -->
-			<!-- ============================================================== -->
-			<!-- Right sidebar -->
-			<!-- ============================================================== -->
-			<!-- .right-sidebar -->
-			<!-- ============================================================== -->
-			<!-- End Right sidebar -->
-			<!-- ============================================================== -->
 		</div>
-		<!-- ============================================================== -->
-		<!-- End Container fluid  -->
-		<!-- ============================================================== -->
-		<!-- ============================================================== -->
-		<!-- footer -->
-		<!-- ============================================================== -->
+
 		<footer class="footer text-center">
 			2021 © Ample Admin brought to you by <a
 				href="https://www.wrappixel.com/">wrappixel.com</a>
 		</footer>
-		<!-- ============================================================== -->
-		<!-- End footer -->
-		<!-- ============================================================== -->
+
 	</div>
 	<script>
 		$(document).ready(function() {
@@ -514,7 +531,47 @@ h2 small {
 				$(this).next('.table-details').collapse('show');
 			});
 		});
+		function deleteImage(button) {
+			var imageContainer = button.parentElement;
+
+			// Lấy đường dẫn tới ảnh từ thuộc tính src của thẻ img
+			var imagePath = imageContainer.querySelector("img").getAttribute(
+					"src");
+
+			imageContainer.remove();
+		}
+		//chỉ cho nhập số
+		function validateNumberInput(input) {
+			var value = input.value;
+
+			// Xóa các ký tự không hợp lệ khỏi input (chỉ giữ lại số và dấu chấm)
+			var cleanedValue = value.replace(/[^\d.]/g, '');
+
+			// Chuyển giá trị đã làm sạch thành số
+			var numericValue = parseFloat(cleanedValue);
+
+			// Kiểm tra xem giá trị có phải là số hợp lệ hay không
+			if (!isNaN(numericValue)) {
+				// Đặt giá trị mới vào ô input
+				input.value = numericValue;
+			} else {
+				// Nếu không phải số hợp lệ, xóa toàn bộ giá trị trong ô input
+				input.value = '';
+			}
+		}
+
+		function handleBackspace(event, input) {
+			// Kiểm tra xem nút được nhấn có phải là nút "xóa back" (mã phím 8) hay không
+			if (event.keyCode === 8) {
+				// Xóa các ký tự không hợp lệ khỏi giá trị nhập vào, chỉ giữ lại số và dấu chấm
+				var cleanedValue = input.value.replace(/[^\d.]/g, '');
+				// Đặt giá trị mới sau khi xóa các ký tự không hợp lệ vào ô input
+				input.value = cleanedValue;
+			}
+		}
 	</script>
+
+
 	</div>
 
 

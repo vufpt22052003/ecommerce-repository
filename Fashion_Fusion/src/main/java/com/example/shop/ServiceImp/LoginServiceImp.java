@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.shop.DAO.LoginDAO;
 import com.example.shop.Service.LoginService;
 import com.example.shop.model.Users;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,10 +25,11 @@ public class LoginServiceImp implements LoginService {
 	HttpServletResponse response;
 
 	@Override
-	public Users checkLogin(String name, String pass) {
-		Users acc = logindao.checkLogin(name, pass);
-		if (acc != null) {
-			Cookie usernameCookie = new Cookie("us", name);
+	public Users checkLogin(String pass , int sdt) {
+		Users acc = logindao.checkLogin(pass ,  sdt);
+		if (acc != null) {	
+			String phone = String.valueOf(false);
+			Cookie usernameCookie = new Cookie("sdt", phone);
 			Cookie passCookie = new Cookie("pass", pass);
 
 			usernameCookie.setMaxAge(3600); // Thời gian tồn tại cookie là 1 giờ
@@ -37,6 +39,7 @@ public class LoginServiceImp implements LoginService {
 			response.addCookie(usernameCookie);
 			response.addCookie(passCookie);
 		}
+		
 		return acc;
 	}
 

@@ -51,12 +51,12 @@ public class ShopDetailsCtrl {
 			ArrayList<Products> listByName = (ArrayList<Products>) productsServiceImp.findByName(pro.get().getName());
 			m.addAttribute("listByName", listByName);
 			m.addAttribute("price", pro.get().getPrice());
+			System.out.println((pro.get().getPrice() + "]]]")	);
 			List<Products> filteredList = new ArrayList<>();
 
 			for (Products products : listByName) {
-				if (products.getId() != id) {
+				if (products.getId() != id) { // loại bỏ sp đang xem để k trùng
 					filteredList.add(products);
-
 				}
 			}
 			if (filteredList == null || filteredList.isEmpty()) {
@@ -89,7 +89,6 @@ public class ShopDetailsCtrl {
 		// lấy list ảnh có liên quan
 		List<String> ListImgRrelateTo = productsServiceImp.ListImgRrelateTo(id);
 		for (String string : ListImgRrelateTo) {
-			System.out.println(string);
 		}
 		m.addAttribute("ListImg", ListImgRrelateTo);
 

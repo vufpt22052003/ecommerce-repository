@@ -475,11 +475,11 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 													<a th:href="@{/checkBuyNow/{id}(id=${product.get().id})}"
 														class="button no-underline"> <span class="icon">&#x1F4B8;</span>
 														Mua ngay
-													</a>  <a th:href="@{/add-to-cart/{id}(id=${product.get().id})}"
+													</a> <a th:href="@{/add-to-cart/{id}(id=${product.get().id})}"
 														class="button"> <span class="icon">&#128722;</span>
 														Thêm vào giỏ hàng
 													</a>
-												</div> 
+												</div>
 											</div>
 											<div class="product-wish">
 												<a href="javascript:void(0)" class="setWishlist"
@@ -600,7 +600,8 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 								<div class="row" style="background-color: white;">
 									<div class="col-2" style="margin-bottom: 20px;">
 										<div class="avatar" style="background-color: white;">
-											<img src="/images/avt.jpg" alt="Avatar">
+											<img th:src="@{'/images/'+${product.get().user_id.avt}}"
+												alt="Avatar">
 										</div>
 
 									</div>
@@ -697,20 +698,22 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 														alt="Đầm bé gái">
 												</a>
 													<h4 class="title_cate_">
-														<a href="/dam-be-gai" title="Đầm bé gái">Đầm bé gái</a>
+														<a th:href="@{/audiences/{target}(target='nữ')}"
+															title="Bé gái">Đầm bé gái</a>
 													</h4></li>
 												<li class="cate-item swiper-slide swiper-slide-next"
 													role="group" aria-label="2 / 8"
 													style="-webkit-box-ordinal-group: 1; order: 1; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Bộ bé gái" style="height: 119px;"> <img
+													<a class="image image_thumb radius-12"
+													th:href="@{/audiences/{target}(target='nữ')}"
+													style="height: 119px;"> <img
 														class="image_cate_thumb lazyload" width="140" height="140"
 														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
 														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-gai-80.png?v=1657182638380"
 														alt="Bộ bé gái">
 												</a>
 													<h4 class="title_cate_">
-														<a href="/bo-be-gai" title="Bộ bé gái">Bộ bé gái</a>
+														<a href="/bo-be-gai" title="Bộ bé gái">Đồ Bộ Nữ</a>
 													</h4>
 												</li>
 												<li class="cate-item swiper-slide" role="group"
@@ -730,8 +733,9 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												<li class="cate-item swiper-slide" role="group"
 													aria-label="4 / 8"
 													style="-webkit-box-ordinal-group: 5; order: 5; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Bộ bé trai" style="height: 119px;"> <img
+													<a class="image image_thumb radius-12"
+													th:href="@{/audiences/{target}(target='trẻ_em')}"
+													style="height: 119px;"> <img
 														class="image_cate_thumb lazyload" width="140" height="140"
 														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
 														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-trai-80.png?v=1657182685220"
@@ -744,8 +748,9 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												<li class="cate-item swiper-slide" role="group"
 													aria-label="5 / 8"
 													style="-webkit-box-ordinal-group: 2; order: 2; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Quần bé trai" style="height: 119px;"> <img
+													<a class="image image_thumb radius-12"
+													th:href="@{/audiences/{target}(target='trẻ_em')}"
+													style="height: 119px;"> <img
 														class="image_cate_thumb lazyload" width="140" height="140"
 														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
 														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-trai-80.png?v=1657182701517"
@@ -773,8 +778,9 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												<li class="cate-item swiper-slide" role="group"
 													aria-label="7 / 8"
 													style="-webkit-box-ordinal-group: 6; order: 6; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Quần bé gái" style="height: 119px;"> <img
+													<a class="image image_thumb radius-12"
+													th:href="@{/audiences/{target}(target='trẻ_em')}"
+													style="height: 119px;"> <img
 														class="image_cate_thumb lazyload" width="140" height="140"
 														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
 														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-gai-80.png?v=1657182733363"
@@ -787,8 +793,9 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												<li class="cate-item swiper-slide" role="group"
 													aria-label="8 / 8"
 													style="-webkit-box-ordinal-group: 7; order: 7; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Giày dép" style="height: 119px;"> <img
+													<a class="image image_thumb radius-12"
+													th:href="@{/getCatogery/{cato}(cato='2')}" title="Giày dép"
+													qstyle="height: 119px;"> <img
 														class="image_cate_thumb lazyload" width="140" height="140"
 														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
 														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/giay-be-gai-80.png?v=1657184995837"

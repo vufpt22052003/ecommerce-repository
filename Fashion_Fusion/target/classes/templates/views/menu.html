@@ -74,7 +74,7 @@
 									placeholder="Tìm sản phẩm bạn mong muốn"
 									class="input-group-field st-default-search-input search-text"
 									autocomplete="off" required=""> <span
-									class="input-group-btn">
+									class="input-group-btn custom-span">
 									<button type="submit" class="btn icon-fallback-text">
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 											<path
@@ -163,45 +163,54 @@
 									<li><a class="caret-down" href="" title="Sản phẩm nổi bật">
 											Sản phẩm nổi bật </a> <i class="fa fa-caret-down"></i>
 										<ul>
-											<li><a th:href="@{/getCatogery/{cato}(cato='1')}"
-												title="Quần áo" class="a3">Quần áo</a></li>
+											<li><a
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='1')}"
+												title="Quần áo" class="a3"> Quần áo </a></li>
 
 											<li><a href="/giay-dep"
-												th:href="@{/getCatogery/{cato}(cato='2')}" title="Giày dép"
-												class="a3">Giày dép</a></li>
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='2')}"
+												title="Giày dép" class="a3"> Giày dép </a></li>
+
 											<li><a href="/be-gai"
-												th:href="@{/getCatogery/{cato}(cato='16')}" title="Bé gái"
-												class="a3">Mũ Nón</a></li>
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='16')}"
+												title="Bé gái" class="a3">Mũ Nón</a></li>
 											<li><a href="/be-trai"
-												th:href="@{/getCatogery/{cato}(cato='17')}" title="Bé trai"
-												class="a3">Ba Lô Túi Xách</a></li>
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='17')}"
+												title="Bé trai" class="a3">Ba Lô Túi Xách</a></li>
 										</ul></li>
-									<li><a class="" href="/getHotTrend" title="Sản phẩm hot trend">
-											Sản phẩm hot trend </a></li>
+									<li><a class="" href="/getHotTrend"
+										title="Sản phẩm hot trend"> Sản phẩm hot trend </a></li>
 									<li><a class="" href="/ProductSale"
 										title="Sản phẩm khuyến mãi"> Sản phẩm khuyến mãi </a></li>
 								</ul></li>
 							<li class="nav-item "><a class="a-img" th:href="@{/page}">Shop</a></li>
-
+							<!-- i.isPresent() kiểm tra có nulll hay k -->
 							<li class="nav-item "><a class="a-img" href="/be-trai"
-								title="Bé trai" th:href="@{/audiences/{target}(target='nam')}">Thời
+								title="Bé trai"
+								th:href="@{/audiences/__${(i != null && i.isPresent()) ? 0 : '0'}__/nam}">Thời
 									Trang Nam </a></li>
 							<li class="nav-item "><a class="a-img"
-								th:href="@{/audiences/{target}(target='nữ')}" title="Bé gái">Thời
-									Trang Nữ</a></li>
-							<li class="nav-item "><a class="a-img"
-								th:href="@{/audiences/{target}(target='trẻ_em')}" title="Bé gái">
-									Trẻ Em</a></li>
-							<li class="nav-item "><a class="a-img caret-down" href=""
-								title="Sản phẩm"> Tài Khoản</a>
+								th:href="@{/audiences/__${(i != null && i.isPresent()) ? 0 : '0'}__/nữ}"
+								title="Nữ">Thời Trang Nữ</a></li>
+
+							<li class="nav-item"><a class="a-img"
+								th:href="@{/audiences/__${(i != null && i.isPresent()) ? 0 : '0'}__/trẻ_em}"
+								title="Bé gái"> Trẻ Em </a></li>
+
+							<li th:if="${session.acc != null}" class="nav-item "><a
+								class="a-img caret-down" href="" title="Sản phẩm"> Tài Khoản</a>
 								<ul class="item_small">
 									<li class="nav-item "><a class="a-img" href="/adres">Địa
 											Chỉ</a></li>
 									<li class="nav-item "><a class="a-img" href="/MyOrders">Quản
 											Lý Đơn Hàng</a></li>
 
-									<li class="nav-item "><a class="a-img" href="/homeAdmin" target="_blank">Kênh Người Bán</a></li>
-								</ul>
+
+									<li class="nav-item "><a class="a-img"
+										href="/manageAcount">Tài Khoản Của Tôi</a></li>
+									<li class="nav-item "><a class="a-img" href="/homeAdmin"
+										target="_blank">Kênh Người Bán</a></li>
+								</ul></li>
 					</nav>
 				</div>
 				<div class="col-lg-3 col-search-cart">
