@@ -42,37 +42,38 @@ public interface ProductsService {
 
 	List<Products> findByName(String name);
 
-
 	List<Sale> findSalesByIsSale();
 
 	Page<Products> searchByName(Pageable pageable, String name);
 
-
-	List<Products> findTop8Products(Pageable pageable);
+	Page<Products> finAllByUser(Pageable pageable);
 
 	void delProById(int id);
 
 	Page<Products> finAllByUser(Pageable pageable, int uid);
 
-
 	List<Category> getListCato();
 
 	Optional<Category> getCategoryByPro(int id);
 
-
 	Page<Products> getProByCatoId(Pageable pageable, int id);
-
 
 	Page<Products> findByTargetAudience(Pageable pageable, String target_aud);
 
 	List<Products> findAll();
 
-
 	Page<Products> ByPriceASC(Pageable pageable, double price);
 
 	Page<Products> ByPriceDESC(Pageable pageable, double price);
 
+	Optional<Category> findByCategoryId(int id);
 
+	List<Products> findTop8Products();
 
+	Page<Products> getProNew(Pageable pageable);
+
+	List<Object[]> ListImgCmt(int id);
+
+	List<Products> getProductByUs(int uid, int offset, int limit);
 
 }

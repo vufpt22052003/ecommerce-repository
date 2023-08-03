@@ -2,7 +2,7 @@ package com.example.shop.model;
 
 import java.util.Date;
 
-import javax.persistence.Table;
+import jakarta.persistence.Table;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

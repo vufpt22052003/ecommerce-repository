@@ -7,7 +7,7 @@
 body {
 	font-family: "Open Sans", Helvetica, Arial, sans-serif;
 background-image:
-		url("https://demoda.vn/wp-content/uploads/2022/01/hinh-nen-vu-tru-dep.jpg");}
+		url("https://img5.thuthuatphanmem.vn/uploads/2022/01/05/anh-dep-ve-thien-ha-vu-tru_023158835.jpg");}
 
 input, button {
 	border: none;
@@ -85,7 +85,7 @@ button {
 	width: 900px;
 	height: 100%;
 	background-image:
-		url("https://demoda.vn/wp-content/uploads/2022/01/hinh-nen-vu-tru-dep.jpg");
+		url("https://img5.thuthuatphanmem.vn/uploads/2022/01/05/anh-dep-ve-thien-ha-vu-tru_023158835.jpg");
 	background-size: cover;
 	transition: transform 1.2s ease-in-out;
 }

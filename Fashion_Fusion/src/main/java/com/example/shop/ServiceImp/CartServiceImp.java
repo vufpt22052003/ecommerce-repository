@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.shop.DAO.CartDAO;
 import com.example.shop.DAO.ProductsDAO;
@@ -16,7 +17,6 @@ import com.example.shop.model.Products;
 import com.example.shop.model.Users;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 @Service
 public class CartServiceImp implements CartService {
@@ -31,21 +31,39 @@ public class CartServiceImp implements CartService {
 	HttpSession session;
 
 	@Override
-	public Cart addCart(int idProduct) {
+	public Cart addCart(int idProduct, Integer quantity, String color, String size) {
 		Optional<Products> pro = Optional.ofNullable(productsDAO.findById(idProduct).orElse(null));
 		List<Cart> list = cartDAO.findAll();
 		for (Cart cart : list) {
 			if (cart.getProduct_id().getId() == pro.get().getId()) {
-				cart.setQuantity(cart.getQuantity() + 1);
+				if (quantity == null) {
+					cart.setQuantity(cart.getQuantity() + 1);
+				} else {
+					cart.setQuantity(cart.getQuantity() + quantity);
+				}
+				if (color != null && (cart.getColor() == null || !cart.getColor().equals(color))) {
+				    cart.setColor(color);
+				}
+				if (size != null && (cart.getSize() == null || !cart.getSize().equals(size))) {
+				    cart.setSize(size);
+				}
 				return cartDAO.save(cart);
 			}
 		}
+
 		Cart cart = new Cart();
 		cart.setProduct_id(pro.get());
-		cart.setQuantity(1);
+		cart.setColor(color);
+		cart.setSize(size);
+		if (quantity == null || quantity == 0) {
+			cart.setQuantity(1);
+		} else {
+			cart.setQuantity(quantity);
+
+		}
 
 		Users acc = (Users) session.getAttribute("acc");
-		
+
 		cart.setUser_id(acc);
 		return cartDAO.save(cart);
 	}

@@ -148,6 +148,18 @@ public class AdminController {
 		sale.setProduct_id(pro.get());
 		sale.setStart_date(start_datetime);
 		sale.setEnd_date(end_datetime);
+		List<Sale> list = saleDAO.findAll();
+
+		List<Sale> itemsToDelete = new ArrayList<>();
+
+		for (Sale saleItem : list) {
+			if (sale.getProduct_id().getId() == saleItem.getProduct_id().getId()) {
+				itemsToDelete.add(saleItem);
+			}
+		}
+		for (Sale saleItem : itemsToDelete) {
+			saleDAO.deleteById(saleItem.getId());
+		}
 
 		saleDAO.save(sale);
 		return "redirect:/saleManage";
@@ -357,7 +369,6 @@ public class AdminController {
 
 	@PostMapping("/editSale")
 	public String editSale(@ModelAttribute Sale sale) {
-		System.out.println("----");
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
@@ -371,10 +382,20 @@ public class AdminController {
 			Date endDatetime = formatter.parse(endDatetimeStr);
 			sale.setEnd_date(endDatetime);
 
-			// productsDAO.findById(id);
-			// sale.setProduct_id(sale.getProduct_id().getId());
-			saleDAO.save(sale);
+			List<Sale> list = saleDAO.findAll();
 
+			List<Sale> itemsToDelete = new ArrayList<>();
+
+			for (Sale saleItem : list) {
+				if (sale.getProduct_id().getId() == saleItem.getProduct_id().getId()) {
+					itemsToDelete.add(saleItem);
+				}
+			}
+			for (Sale saleItem : itemsToDelete) {
+				saleDAO.deleteById(saleItem.getId());
+			}
+
+			saleDAO.save(sale);
 			ProductAPI api = new ProductAPI();
 			api.getSaleById(sale.getId());
 
@@ -397,23 +418,29 @@ public class AdminController {
 //		return "/Admin/edit-product";
 //	}
 
-	@GetMapping("saleManage")
+	@GetMapping("Admin/saleManage")
 	public String sale() {
 
 		return "OrderAdmin/saleManage";
 	}
 
-	@GetMapping("/homeAdmin")
+	@GetMapping("/Admin/ManagerProduct")
+	public String ManagerProduct() {
+
+		return "OrderAdmin/ProdutManage";
+	}
+	
+	@GetMapping("/Admin/homeAdmin")
 	public String OrderAdmin() {
-		return "OrderAdmin/home";
+		return "/OrderAdmin/home";
 	}
 
-	@GetMapping("/Manager")
+	@GetMapping("Admin/OderManager")
 	public String table() {
 		return "OrderAdmin/AdminOdManager";
 	}
 
-	@GetMapping("/addPro")
+	@GetMapping("Admin/addPro")
 	public String form() {
 		return "OrderAdmin/ProductCreator";
 	}
@@ -450,4 +477,9 @@ public class AdminController {
 		return "OrderAdmin/Success";
 	}
 
+	// quản lý đánh giá
+	@GetMapping("Admin/Evaluate")
+	public String Evaluate() {
+		return "OrderAdmin/EvaluateManager";
+	}
 }

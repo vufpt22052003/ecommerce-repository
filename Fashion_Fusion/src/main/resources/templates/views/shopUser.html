@@ -114,16 +114,28 @@
 	overflow: hidden;
 }
 
-.avatar img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+table.table .avatar {
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.roundeds {
+	border-radius: 10px;
+}
+
+@media ( min-width : 992px) {
+	.col-lg-9 {
+		-ms-flex: 0 0 75%;
+		flex: 0 0 75%;
+		max-width: 70%;
+		margin-left: 35px;
+	}
 }
 </style>
 </head>
 
 <body ng-app="MyApp" ng-controller="ShopUserController">
-	<div th:replace="views/menu :: menu"></div>
 
 	<div class="header-menu">
 		<div class="containers">
@@ -135,37 +147,45 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="bodywrap" style="background-color: #f5f5f5">
-	<br />
+	<div th:replace="views/menu :: menu"></div>
+
+	<div class="bodywrap" style="background-color: #fff3f3">
+		<br />
 		<div class="layout-collection">
 			<div class="container">
 				<div class="row" style="background-color: #fff; padding: 15px;">
-
 					<div class="col-2">
-						<div class="avatar" style="background-color: white;">
-							<img th:src="@{'/images/' + ${user.get().avt}}" alt="Avatar">
+						<div class="avatar text-center" style="background-color: white;">
+
+							<th:block th:if="${user.get().avt != null}">
+								<img th:src="@{'/images/' + ${user.get().avt}}" alt="Avatar">
+							</th:block>
+
+							<th:block th:unless="${user.get().avt != null}">
+								<img
+									src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+									alt="" style="border-radius: 100%;">
+
+							</th:block>
+
 						</div>
 					</div>
-					<div class="col-5">
+					<div class="col-5 align-self-center">
 						<br />
 						<h2 th:text="${user.get().us}"></h2>
 						<h5 th:text="${user.get().email}"></h5>
 					</div>
 					<div class="col-4">
-						<br />
-						Ngày Tham Gia : 11 tháng trước <br />
-						<i class="fas fa-store"></i><b th:text="${'Tổng Sản Phẩm : '+totalPro}"></b>
-
+						<br /> Ngày Tham Gia: 11 tháng trước <br /> <br /> <i
+							class="fas fa-store"></i><b
+							th:text="${'Tổng Sản Phẩm: '+totalPro}"></b>
 					</div>
-					
-					<div class="col-4">
+					<div class="col-1 mt-auto">
 						<br /> <br /> <br />
-
 					</div>
-					
 				</div>
 			</div>
+
 			<br /> <br />
 			<div class="container">
 				<div class="row">
@@ -187,22 +207,24 @@
 									src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/sortby.js?1676282094225"
 									type="text/javascript"></script>
 							</div>
+
 							<div class="products-view products-view-grid list_hover_pro">
-								<div class="row">
+
+								<div class="row" id="productList">
 									<th:block th:each="item, iteration : ${listProUser}">
-										<div class="col-lg-2 col-md-4 col-sm-6 mb-4">
+										<div class="col-lg-2 col-md-4 col-sm-6 mb-4"
+											style="margin-top: 9px;">
 											<div class="item_product_main" style="width: 200px;">
 												<form action="/cart/add" method="post"
 													class="variants product-action" data-cart-form=""
 													data-id="product-actions-26182932"
 													enctype="multipart/form-data">
-													<div class="product-thumbnail"
-														style="background-color: white;">
+													<div class="product-thumbnail">
 														<a class="image_thumb scale_hover"
 															th:href="@{/shop_info/{id}(id=${item.id})}"
 															title="${item.name}" style="height: 218px;"> <img
 															class="lazyload" th:src="@{'/images/' + ${item.img}}"
-															data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
+															data-src=""
 															alt="${item.name}">
 														</a>
 														<div class="action d-xl-flex d-none">
@@ -215,17 +237,22 @@
 																	class="btn-cart btn-views" title="Tùy chọn"
 																	th:href="@{/add-to-cart/{id}(id=${item.id})}"> Thêm
 																	Vào Giỏ Hàng </a>
-
 															</div>
 														</div>
 													</div>
 													<div class="product-info">
 														<h3 class="product-name">
-															<a href="/ao-khoac-tre-em" title="Áo khoác trẻ em"
-																th:text="${item.name}"></a>
+															<a th:href="@{/shop_info/{id}(id=${item.id})}"
+																title="${item.name}" th:text="${item.name}"></a>
 														</h3>
 														<div class="price-box">
-															150.000₫&nbsp;<span class="compare-price">200.000₫</span>
+															<p th:if="${item.checkSale()}">
+																<span th:text="${item.price}"></span>&nbsp;<span
+																	class="compare-price"
+																	th:text="${item.getOriginalPrice()} + 'đ'"></span>
+															</p>
+															<p th:unless="${item.checkSale()}"
+																th:text="${item.price + 'đ'}"></p>
 														</div>
 													</div>
 												</form>
@@ -233,20 +260,27 @@
 										</div>
 									</th:block>
 								</div>
+
+
 							</div>
-							
 						</div>
+						<input type="hidden" id="uid" th:value="${user.get().id}"/>
+						<button class="btn btn-primary" 
+							id="loadMoreBtn" style="margin-left: 570px;">Xem Thêm</button>
+
 					</div>
 				</div>
 			</div>
 
 		</div>
 
-
+		<br /> <br /> <br />
+		<div th:replace="views/footer :: footer"></div>
 	</div>
 
-<script 
-		src="/controllers/ShopUserController.js"></script>
+
+	<script src="/controllers/ShopUserController.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	<link rel="preload" as="script"
 		href="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/main.js?1676282094225">

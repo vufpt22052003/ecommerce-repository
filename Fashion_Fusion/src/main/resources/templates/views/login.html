@@ -17,16 +17,16 @@
 	<!-- partial:index.partial.html -->
 	<p class="tip"></p>
 	<div class="cont">
-		<div class="form sign-in">
+		<div class="form sign-in" style="background-color: #f5f4f4">
 
 
 			<h4 style="text-align: center;" th:text="${error}"></h4>
 			<!-- đăng nhập -->
-			<form action="/sign_in" method="post" ng-hide="formLogin">
+			<form action="/login" method="post" ng-hide="formLogin">
 				<h2>Chào mừng trở lại</h2>
 				<label> <span>Số Điện Thoại</span> <input type="text"
-					name="sdt" value=377572916 />
-				</label><label> <span>Password</span> <input type="pass" name="pass"
+					name="username" value=035909999 />
+				</label><label> <span>Password</span> <input type="text" name="password"
 					value="123" />
 				</label>
 				<p class="forgot-pass" ng-click="forgot_pass()">Quên Mật Khẩu?</p>
@@ -88,7 +88,7 @@
 			<div class="img" style="cursor: pointer;">
 				<div class="img__text m--up">
 					<h2>Tạo Tài Khoản Mới?</h2>
-					<p>Sign up and discover great amount of new opportunities!</p>
+					<p>Hãy tạo tài khoản mới để trải nghiệm những tính năng và ưu đãi độc quyền!</p>
 				</div>
 				<div class="img__text m--in">
 					<h2>Bạn Đã Có Tài Khoản</h2>

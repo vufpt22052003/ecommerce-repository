@@ -2,6 +2,7 @@ package com.example.shop.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -24,18 +25,26 @@ public class Order_details {
 	private int quantity;
 
 	@ManyToOne
+    //@JsonBackReference
 	@JoinColumn(name = "order_id")
 	private Orders order_id;
 	
 	private double price;
 
-	private boolean is_completed;
 
 	private Date created_at;
 
+	private String color ;
+	private String size ;
+	
 	private Date updated_at;
+	
+	private String order_status;
 
-	private boolean cancelled;
 	
 	private String cancelled_by ;
+	
+	private boolean has_review;
+	
+	
 }

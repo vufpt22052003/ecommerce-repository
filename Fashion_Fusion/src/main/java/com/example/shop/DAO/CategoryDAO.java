@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.shop.model.Category;
+import com.example.shop.model.Products;
 
 public interface CategoryDAO extends JpaRepository<Category, Integer> {
 
@@ -26,4 +27,7 @@ public interface CategoryDAO extends JpaRepository<Category, Integer> {
 	@Query("SELECT c FROM Category c JOIN c.products p WHERE p.id = ?1")
 	Category getCategoryByIdPro(int id);
 
+	// lấy đối tượng theo id catogery
+	@Query("SELECT p from Category p where p.id = ?1")
+	Category findByCategoryId(int id);
 }

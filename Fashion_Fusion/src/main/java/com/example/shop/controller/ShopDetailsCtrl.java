@@ -16,9 +16,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.shop.DAO.CommentDAO;
 import com.example.shop.DAO.SaleDAO;
+import com.example.shop.ServiceImp.CommentServiceImp;
 import com.example.shop.ServiceImp.ProductsServiceImp;
+import com.example.shop.ServiceImp.UserVoucherServiceImp;
 import com.example.shop.model.Color;
+import com.example.shop.model.Comment;
 import com.example.shop.model.ImgRelateTo;
 import com.example.shop.model.Products;
 import com.example.shop.model.Sale;
@@ -35,6 +39,11 @@ public class ShopDetailsCtrl {
 	HttpSession session;
 	@Autowired
 	SaleDAO saleDAO;
+	@Autowired
+	CommentServiceImp commentServiceImp;
+
+	@Autowired
+	UserVoucherServiceImp userVoucherServiceImp;
 
 	@GetMapping("shop_info/{id}")
 	public String ShopInfo(@PathVariable("id") int id, Model m) {
@@ -51,7 +60,7 @@ public class ShopDetailsCtrl {
 			ArrayList<Products> listByName = (ArrayList<Products>) productsServiceImp.findByName(pro.get().getName());
 			m.addAttribute("listByName", listByName);
 			m.addAttribute("price", pro.get().getPrice());
-			System.out.println((pro.get().getPrice() + "]]]")	);
+			System.out.println((pro.get().getPrice() + "]]]"));
 			List<Products> filteredList = new ArrayList<>();
 
 			for (Products products : listByName) {
@@ -61,8 +70,7 @@ public class ShopDetailsCtrl {
 			}
 			if (filteredList == null || filteredList.isEmpty()) {
 				Pageable pageable = PageRequest.of(0, 10);
-				ArrayList<Products> findTop8Products = (ArrayList<Products>) productsServiceImp
-						.findTop8Products(pageable);
+				ArrayList<Products> findTop8Products = (ArrayList<Products>) productsServiceImp.findTop8Products();
 				Collections.shuffle(findTop8Products); // random
 
 				m.addAttribute("listByName", findTop8Products);
@@ -88,9 +96,43 @@ public class ShopDetailsCtrl {
 
 		// lấy list ảnh có liên quan
 		List<String> ListImgRrelateTo = productsServiceImp.ListImgRrelateTo(id);
-		for (String string : ListImgRrelateTo) {
-		}
 		m.addAttribute("ListImg", ListImgRrelateTo);
+		// list cmt
+		ArrayList<Comment> listCmt = (ArrayList<Comment>) commentServiceImp.getCmt(id);
+		m.addAttribute("listCmt", listCmt);
+
+		// tính số sao 
+		int[] listCountRating = new int[5]; // Mảng để lưu số lượng đánh giá từ rating 1 đến 5
+
+		for (Comment comment : listCmt) {
+		    int rating = comment.getRating();
+		    if (rating >= 1 && rating <= 5) {
+		    	listCountRating[rating - 1]++; // Tăng số lượng đánh giá cho rating tương ứng
+		    }
+		}
+		m.addAttribute("listCountRating",listCountRating);
+
+		int sum = 0;
+		List<Integer> listRating = new ArrayList<>(); // Khởi tạo danh sách đánh giá
+		for (Comment itemCmt : listCmt) {
+			int rating = itemCmt.getRating();
+			listRating.add(rating);
+			sum += rating;
+		}
+
+		double averageRating = (double) sum / listRating.size();
+
+		String formattedRating = String.format("%.1f", averageRating);
+
+		m.addAttribute("countRating", formattedRating);
+		m.addAttribute("listRating", listRating);
+
+		// list ảnh cmt
+		List<Object[]> ListImgCmt = productsServiceImp.ListImgCmt(id);
+		m.addAttribute("ListImgCmt", ListImgCmt);
+		for (Object[] objects : ListImgCmt) {
+			System.out.println(objects[1]);
+		}
 
 		return "views/shop-details2";
 	}

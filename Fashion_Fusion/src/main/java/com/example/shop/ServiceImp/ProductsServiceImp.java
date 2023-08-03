@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.example.shop.DAO.CategoryDAO;
 import com.example.shop.DAO.ColorDAO;
+import com.example.shop.DAO.ComentPhotoDAO;
 import com.example.shop.DAO.ProductsDAO;
 import com.example.shop.DAO.SaleDAO;
 import com.example.shop.DAO.SizeDAO;
@@ -21,6 +23,7 @@ import com.example.shop.model.Order_details;
 import com.example.shop.model.Products;
 import com.example.shop.model.Sale;
 import com.example.shop.model.Size;
+import com.example.shop.model.Users;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -32,6 +35,8 @@ public class ProductsServiceImp implements ProductsService {
 
 	@Autowired
 	CategoryDAO categoryDAO;
+	@Autowired
+	ComentPhotoDAO comentPhotoDAO;
 
 	@Autowired
 	SizeDAO sizeDAO;
@@ -43,6 +48,20 @@ public class ProductsServiceImp implements ProductsService {
 	ColorDAO colorDAO;
 	@Autowired
 	HttpSession session;
+
+	@Override
+	public List<Products> getProductByUs(int uid, int offset, int limit) {
+		List<Products> productPage = productsDAO.getProductByUser(uid, offset, limit);
+		return productPage;
+
+	}
+
+	// lấy danh sách sp theo uses
+	@Override
+	public Page<Products> finAllByUser(Pageable pageable) {
+		Users acc = (Users) session.getAttribute("acc");
+		return productsDAO.finAllByUser(pageable, acc.getId());
+	}
 
 	@Override
 	public Page<Products> getAllProduct(Pageable pageable) {
@@ -99,6 +118,12 @@ public class ProductsServiceImp implements ProductsService {
 		return saleDAO.findAll(pageable);
 	}
 
+	// list ảnh liên quan
+	@Override
+	public List<Object[]> ListImgCmt(int id) {
+		return comentPhotoDAO.ListImgCmt(id);
+	}
+
 	@Override
 	public Optional<Sale> finByOptionalSale(int id) {
 		Sale sale = saleDAO.finByIdSale(id);
@@ -127,13 +152,6 @@ public class ProductsServiceImp implements ProductsService {
 		return 0;
 	}
 
-	// lấy danh sách sp theo uses
-	@Override
-	public Page<Products> finAllByUser(Pageable pageable, int uid) {
-		return productsDAO.finAllByUser(pageable, uid);
-
-	}
-
 	// lây category theo id product
 	@Override
 	public Optional<Category> getCategoryByPro(int id) {
@@ -152,8 +170,8 @@ public class ProductsServiceImp implements ProductsService {
 	}
 
 	@Override
-	public List<Products> findTop8Products(Pageable pageable) {
-		return productsDAO.findTop8Products(pageable);
+	public List<Products> findTop8Products() {
+		return productsDAO.findTop8Products();
 	}
 
 	@Override
@@ -180,8 +198,24 @@ public class ProductsServiceImp implements ProductsService {
 	}
 
 	@Override
+	public Optional<Category> findByCategoryId(int id) {
+		return Optional.ofNullable(categoryDAO.findByCategoryId(id));
+	}
+
+	@Override
 	public List<Products> findAll() {
 		return productsDAO.findAll();
+	}
+
+	@Override
+	public Page<Products> getProNew(Pageable pageable) {
+		return productsDAO.getProNew(pageable);
+	}
+
+	@Override
+	public Page<Products> finAllByUser(Pageable pageable, int uid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

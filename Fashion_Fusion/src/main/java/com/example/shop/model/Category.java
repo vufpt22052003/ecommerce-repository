@@ -2,7 +2,7 @@ package com.example.shop.model;
 
 import java.util.List;
 
-import javax.persistence.Table;
+import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

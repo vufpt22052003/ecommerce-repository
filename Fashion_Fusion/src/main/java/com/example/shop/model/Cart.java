@@ -3,7 +3,7 @@ package com.example.shop.model;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.persistence.Table;
+import jakarta.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,6 +35,8 @@ public class Cart {
 	@JoinColumn(name = "product_id")
 	private Products product_id;
 
+	private String color;
+	private String size;
 	private int quantity;
 
 	@ManyToOne

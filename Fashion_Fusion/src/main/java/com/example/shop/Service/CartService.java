@@ -11,7 +11,6 @@ public interface CartService {
 
 	List<Cart> findByIds(int pid);
 
-	Cart addCart(int idProduct);
 	
 	void updateNumber(int id, int quantity);
 
@@ -20,6 +19,12 @@ public interface CartService {
 	void delCarts(int[] ids);
 
 	List<Cart> getCartByUserId();
+
+
+
+
+
+	Cart addCart(int idProduct, Integer quantity, String color, String size);
 
 
 //	Cart updateNumber(int id);

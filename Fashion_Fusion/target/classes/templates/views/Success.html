@@ -10,46 +10,48 @@
 <link rel="stylesheet" href="/details/css/bootstrap.min.css"
 	type="text/css">
 <style>
-
-@keyframes robot-animation {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
+.input-group-btn {
+    bottom: 3px;
 }
+
 
 .robot img {
-  animation: robot-animation 2s infinite;
+	animation: robot-animation 2s infinite;
 }
+
 a {
 	text-decoration: none !important;
 }
 </style>
 <body>
-		<div th:replace="views/menu :: menu"></div>
-<br /><br />
-<div class="container" style="background-color: f5f5f5">
-<div class="row">
-					<div class="col-md-12 col-lg-12 col-sm-12" >
-						<div class="white-box" style="text-align: center;">
-							<div class="robot">
-								<img src="background/iconSucces.jpg" alt="Robot" />
-							</div>
-
-							<div class="js-container container"></div><br />
-							<div class="foo">
-								<h1 style="color: red; text-align: center;">Đặt Hàng Thành Công ✔</h1>
-								<a href="ManagerProduct"><a href="/index">Quay Về Trang Chủ</a> / <a href="/MyOrders">Xem Đơn Hàng</a></a>
-							</div>
-
-						</div>
+	<div th:replace="views/menu :: menu"></div>
+	<br />
+	<br />
+	<div class="container" style="background-color: f5f5f5">
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-sm-12">
+				<div class="white-box" style="text-align: center;">
+					<div class="robot">
+						<img src="/background/iconSucces.jpg" alt="Robot" />
 					</div>
+
+					<div class="js-container container"></div>
+					<br />
+					<div class="foo">
+						<h1 style="color: red; text-align: center;">Đặt Hàng Thành
+							Công ✔</h1>
+						<a href="ManagerProduct"><a href="/index">Quay Về Trang
+								Chủ</a> / <a href="/MyOrders">Xem Đơn Hàng</a></a>
+					</div>
+
 				</div>
-				</div>
+			</div>
+		</div>
+	</div>
+<br />
+<br />
+<br />
+<br />
+	<div th:replace="views/footer :: footer"></div>
 </body>
 </html>

@@ -32,109 +32,11 @@
 <link href="/index/css/main.scss.css" rel="stylesheet" type="text/css"
 	media="all">
 <link rel="stylesheet" href="/view/css/style.css" type="text/css">
-<link rel="stylesheet" href="/details/css/bootstrap.min.css"
-	type="text/css">
+<link rel="stylesheet" href="/view/css/checkout.css" type="text/css">
+
+
 </head>
-<style>
-.contain {
-	object-fit: contain;
-}
 
-.item {
-	display: flex;
-	align-items: center;
-	padding: 10px;
-}
-
-.checkbox {
-	margin-right: 10px;
-}
-
-.content {
-	padding-left: 20px;
-}
-
-.btn {
-	margin-bottom: 10px;
-	margin-left: 20px;
-}
-
-.form-container {
-	padding: 20px;
-	background-color: #f2f2f2;
-	border-radius: 5px;
-	height: 400px
-}
-
-.form-group {
-	margin-bottom: 15px;
-}
-
-.form-group label {
-	font-weight: bold;
-}
-
-.form-control {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-.btn-group {
-	display: flex;
-	gap: 3px;
-	padding-left: 13px;
-}
-
-textarea.form-control {
-	height: 100px;
-}
-
-.button-container {
-	text-align: right;
-}
-
-.button-container button {
-	background-color: #4CAF50;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-.button-container button:hover {
-	background-color: #45a049;
-}
-
-.add-button {
-	background-color: #4CAF50;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	cursor: pointer;
-}
-
-.add-button:hover {
-	background-color: #45a049;
-}
-
-.plus-icon {
-	font-size: 22px;
-}
-
-.round-input {
-	border-radius: 50px;
-	/* Đặt bán kính của viền input để tạo hình dạng tròn */
-	padding: 8px 15px; /* Điều chỉnh padding tùy ý */
-	border: 1px solid #ccc; /* Tạo viền cho ô input */
-}
-
-a {
-	text-decoration: none !important;
-}
-</style>
 <body>
 	<div th:replace="views/menu :: menu"></div>
 
@@ -249,7 +151,8 @@ a {
 							&nbsp;&nbsp;&nbsp; Địa Chỉ Nhận Hàng <br /> <br /> <b>{{info}}</b>
 							<a data-toggle="modal" data-target="#exampleModal"
 								data-whatever="@mdo"><b style="color: blue">Click</b> Vào
-								Đây Để Thay Đổi</a> <input hidden="" id="id_adres" ng-value="id" name="id_adres">
+								Đây Để Thay Đổi</a> <input hidden="" id="id_adres" ng-value="id"
+								name="id_adres">
 						</h6>
 
 
@@ -275,18 +178,24 @@ a {
 											</div>
 											<div class="product__cart__item__text">
 												<h6 th:text="${buyProduct.get().name}"></h6>
+												<span th:text="${color == null ? '' : 'Màu : '+color}"></span><br />
+												<span th:text="${size == null ? ''  : 'Kích Cở : '+size}"></span>
+												<input type="hidden" th:value="${size}" name="size" /> <input
+													type="hidden" th:value="${color}" name="color" />
 											</div>
 										</td>
 										<td class="quantity__item">
 											<div class="quantity">
 												<div class="pro-qty-2">
-													<input type="text" th:value="1" name="quantity">
+													<input type="text" th:value="${quantity}" name="quantity">
 												</div>
 											</div>
 										</td>
 										<td class="cart__price">
-											<h5 th:text="${price +'$'}"></h5> <input
-											hidden name="price" th:value="${price}" />
+											<h5
+												th:text="${price != null ? price : buyProduct.get().price* quantity +'$'}"></h5>
+											<input hidden name="price"
+											th:value="${price != null ? price : buyProduct.get().price* quantity}" />
 											<input hidden name="productId"
 											th:value="${buyProduct.get().id}">
 										</td>
@@ -307,6 +216,7 @@ a {
 											<div class="product__cart__item__text">
 												<h6 th:text="${product.product_id.name}"></h6>
 												<h5 th:text="${product.product_id.price}"></h5>
+
 											</div>
 										</td>
 										<td class="quantity__item">
@@ -319,8 +229,7 @@ a {
 										</td>
 										<td class="cart__price">
 											<p th:text="${product.product_id.price * product.quantity}"></p>
-											<input hidden name="price"
-											th:value="${product.product_id.price * product.quantity}" />
+
 										</td>
 									</tr>
 								</tbody>
@@ -328,7 +237,7 @@ a {
 							</table>
 
 							<br /> <br /> <br />
-							</table>
+
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6">
@@ -342,57 +251,162 @@ a {
 					<div class="col-lg-4">
 						<div class="cart__discount">
 							<h6>Discount codes</h6>
+							<div class="input-group">
+								<input type="text" class="form-control" id="couponInput"
+									placeholder="Coupon code" readonly="readonly">
+								<div class="input-group-append">
+									<button class="btn btn-primary" id="apply" type="button"
+										onclick="applyCoupon()">Apply</button>
+								</div>
+							</div>
+							<div class="btn-group mt-3" style="">
+								<button
+									class="btn btn-danger dropdown-toggle dropdown-toggle-left"
+									type="button" id="voucherDropdown" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false"
+									style="margin-right: 35px;">Sử Dụng Mã Giảm Giá</button>
+								<div class="dropdown-menu dropdown-menu-right voucher-menu"
+									aria-labelledby="voucherDropdown" style="width: 350px;">
 
-							<input type="text" placeholder="Coupon code">
-							<button type="submit">Apply</button>
+									<th:block th:each="it : ${listVch}">
+										<th:block th:if="${listVch != null}">
 
+											<div class="dropdown-item"
+												onclick="checkCode(this.getAttribute('data-code'))"
+												th:attr="data-code=${it.voucher.code}">
+
+
+												<input hidden name="idVouch" id="idVouch" />
+
+
+
+												<div class="col-md-6">
+													<span th:text="${it.voucher.code}"></span>
+												</div>
+												<div class="col-md-6">
+													<span class="discount-text"
+														th:text="'Giảm ' + 
+													${#numbers.formatDecimal(it.voucher.discount, 2, 'POINT', 0, 'COMMA')} + ' Cho
+													Đơn HàngTừ ' + ${#numbers.formatDecimal(it.voucher.order_threshold, 2, 'POINT', 0, 'COMMA')}"></span>
+
+												</div>
+
+												<hr />
+											</div>
+
+										</th:block>
+									</th:block>
+									<th:block th:each="it : ${listVch}"
+										th:if="${it.Status == false}">
+										<p th:text="${'
+										Bạn Chưa Có voucher'}"></p>
+
+									</th:block>
+								</div>
+							</div>
+
+							<div class="cart__total">
+								<h6>Cart total</h6>
+								<ul>
+									<li th:if="${session.selectedProducts != null}">Tổng Sản
+										Phẩm <span th:text="${session.selectedProducts.size()}"></span>
+									</li>
+									<li th:if="${buyProduct != null}">Tổng Sản Phẩm <span
+										th:text="${'1'}"></span>
+									</li>
+									<!--<li>Thành Tiền <span
+										th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
+									<li>Được Giảm <span id="reduction">0</span></li>-->
+									<li>Thành Tiền <span
+										th:text="${#numbers.formatDecimal(total, 3,  'POINT', 0 , 'COMMA')}"></span></li>
+									<li>Được Giảm <span id="reduction">0</span></li>
+									<li>Tiền Ship <span id="priceShip">0</span></li>
+									<li>Tổng Tiền <span id="total"
+										th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
+
+									<!-- biến lưu giá gốc -->
+									<input hidden id="originalContent" th:value="${total}">
+
+									<!-- tồngr giá tiền -->
+									<input hidden name="priceTotal" id="priceTotal"
+										th:value="${total}" />
+
+									<!-- biến lưu giá được giảm -->
+									<input hidden id="priceSaleInvoucher" />
+
+									<!--  giữ giá vận chuyển -->
+									<input hidden type="text" id="priceTransprot" />
+
+								</ul>
+								<div class="delivery-method">
+									<h6>Chọn hình thức giao hàng</h6>
+									<label> <input type="radio" name="delivery"
+										value="Giao Hàng Nhanh" checked> <span>Giao
+											Hàng Nhanh (1-2 ngày) - 45k</span>
+									</label> <label> <input type="radio" name="delivery"
+										value="Giao Hàng Tiết Kiệm"> <span>Giao Hàng
+											Tiết Kiệm (3-5 ngày) - 30k</span>
+									</label>
+								</div>
+
+
+
+								<div class="order-note">
+									<h6>Ghi chú cho người bán</h6>
+									<textarea name="Note" rows="3"
+										placeholder="Nhập ghi chú của bạn tại đây..."></textarea>
+								</div>
+								<br />
+								<div style="display: flex; gap: 10px;">
+									<th:block th:if="${session.selectedProducts != null}">
+										<button type="submit" name="submitButton" class="primary-btn"
+											value="BuyInCart" onclick="getData()">Đặt Hàng</button>
+									</th:block>
+									<th:block th:if="${buyProduct != null}">
+										<button type="submit" name="submitButton" class="primary-btn"
+											value="BuyNow" onclick="getData()">Đặt Hàng</button>
+									</th:block>
+
+									<button type="submit" name="submitButton" class="primary-btn"
+										value="PayNow" style="background-color: #6565ed">Thanh
+										Toán Bằng VNPAY</button>
+								</div>
+
+							</div>
 						</div>
-						<div class="cart__total">
-							<h6>Cart total</h6>
-							<ul>
-								<li th:if="${session.selectedProducts != null}">Tổng Sản
-									Phẩm <span th:text="${session.selectedProducts.size()}"></span>
-								</li>
-								<li th:if="${buyProduct != null}">Tổng Sản Phẩm <span
-									th:text="${'1'}"></span>
-								</li>
-								<li>Thành Tiền <span
-									th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
 
-								<li>Tổng Tiền <span
-									th:text="${#numbers.formatDecimal(total, 2,  'POINT', 0 , 'COMMA')}"></span></li>
-								<input hidden name="total_price" th:value="${total}" />
-							</ul>
-							<th:block th:if="${session.selectedProducts != null}">
-								<button type="submit" name="submitButton" class="primary-btn"
-									value="BuyInCart">Đặt Hàng</button>
-							</th:block>
-							<th:block th:if="${buyProduct != null}">
-								<button type="submit" name="submitButton" class="primary-btn"
-									value="BuyNow">Đặt Hàng</button>
-							</th:block>
-						</div>
+
 					</div>
-
-
 				</div>
-			</div>
 		</section>
 	</form>
 	<!-- Shopping Cart Section End -->
+	<div th:replace="views/footer :: footer"></div>
+	<script
+		src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
 
-	<script type="text/javascript">
-		function validateForm() {
-			var nameValue = document.getElementById('id_adres').value
-			if (nameValue === "" || nameValue === null) {
-				alert('Vui lòng chọn địa chỉ giao hàng');
-				return false; // Ngăn chặn submit form
-			}
-			return true; // Cho phép submit form
+	<script>
+	 // Sử dụng sự kiện DOMContentLoaded để đảm bảo DOM đã tải hoàn toàn trước khi thêm sự kiện
+    	
+	
+	function getData() {
+	    fetch('/add_order', {
+	        method: 'GET'
+	    })
+	    .then(response => response.text())
+	    .then(data => {
+	        if (data === '/orderSuccess') {
+	            console.log(data); // In ra "Data received and processed successfully!"
+	            window.location.href = '/orderSuccess';
+	        }
+	    })
+	    .catch(error => {
+	        console.error('An error occurred:', error);
+	    });
+	}
 
-		}
-	</script>
-
+	
+</script>
 	<!-- Search Begin -->
 	<div class="search-model">
 		<div class="h-100 d-flex align-items-center justify-content-center">
@@ -403,8 +417,17 @@ a {
 		</div>
 	</div>
 	<!-- Search End -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 	<!-- Js Plugins -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	<script
@@ -427,6 +450,8 @@ a {
 	<script src="/view/js/mixitup.min.js"></script>
 	<script src="/view/js/owl.carousel.min.js"></script>
 	<script src="/view/ajax/ajax.js"></script>
+	<script src="/view/ajax/voucher.js"></script>
+
 </body>
 
 </html>

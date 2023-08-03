@@ -1,4 +1,4 @@
-ư
+
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -16,7 +16,7 @@
 	integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<link href="OrderAdmin/css/style.min.css" rel="stylesheet">
+<link href="/OrderAdmin/css/style.min.css" rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
@@ -29,12 +29,11 @@
 	crossorigin="anonymous" />
 
 
-<script src="controllers/Controller.js"></script>
+<script src="/controllers/Controller.js"></script>
 </head>
 <style>
 .modal.fade.show {
 	padding-right: 650px !important;
-	padding-top: 80px !important;
 } /* Hiệu ứng mờ dần */
 .fade-out {
 	opacity: 0;
@@ -49,111 +48,134 @@
 a {
 	direction: none !important;
 }
+
+.fade {
+	/* -webkit-transition: opacity 0.15s linear; */
+	-o-transition: opacity 0.15s linear none;
+	transition: opacity 0.15s linear none;
+}
+/* Định dạng header */
+
+/* Định dạng phần chính (main) của trang */
+main {
+	padding: 20px;
+}
+
+main h2 {
+	border-bottom: 2px solid #333;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 2px solid #f6e2e2;
+	padding: 8px;
+}
+
+table th {
+	background-color: #f2f2f2;
+}
+
+/* Định dạng phần chi tiết đơn hàng */
+.order-details {
+	margin-top: 20px;
+	background-color: #f2f2f2;
+	border: 1px solid #ddd;
+	padding: 15px;
+}
+
+.order-details label {
+	font-weight: bold;
+}
+
+.print-button {
+	display: inline-block;
+	padding: 10px 20px;
+	font-size: 16px;
+	background-color: #74889f;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+/* Định dạng biểu tượng in */
+.print-button i {
+	margin-right: 5px; /* Khoảng cách giữa biểu tượng và văn bản */
+} /* CSS cho combobox */
+.custom-combobox {
+	position: relative;
+	border: 1px solid #ccc;
+	padding: 8px;
+}
+
+select {
+	padding: 5px;
+	font-size: 14px;
+	outline: none;
+	background-color: transparent;
+	cursor: pointer;
+}
+/* CSS cho nút xác nhận */
+.confirm-button {
+	background-color: #4caf50; /* Màu nền */
+	color: #fff; /* Màu chữ */
+	border: none;
+	padding: 10px 20px;
+	font-size: 14px;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+/* Hiệu ứng khi di chuột qua nút */
+.confirm-button:hover {
+	background-color: #45a049;
+} /* CSS cho đoạn mã đơn hàng */
+.order-summary {
+	margin-left: 850px;
+	display: flex;
+	flex-direction: column;
+}
+
+.order-summary>div {
+	margin-bottom: 10px;
+}
+
+.summary-label {
+	font-weight: bold;
+}
+
+.summary-value {
+	margin-left: 10px;
+}
 </style>
+
 <body ng-app="MyApp" ng-controller="OrderController">
-	<!-- ============================================================== -->
-	<!-- Preloader - style you can find in spinners.css -->
-	<!-- ============================================================== -->
+
 	<div class="preloader">
 		<div class="lds-ripple">
 			<div class="lds-pos"></div>
 			<div class="lds-pos"></div>
 		</div>
 	</div>
-	<!-- ============================================================== -->
-	<!-- Main wrapper - style you can find in pages.scss -->
-	<!-- ============================================================== -->
+
 	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5"
 		data-sidebartype="full" data-sidebar-position="absolute"
 		data-header-position="absolute" data-boxed-layout="full">
-		<!-- ============================================================== -->
-		<!-- Topbar header - style you can find in pages.scss -->
-		<!-- ============================================================== -->
-		<header class="topbar" data-navbarbg="skin5">
-			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
-				<div class="navbar-header" data-logobg="skin6">
-					<!-- ============================================================== -->
-					<!-- Logo -->
-					<!-- ============================================================== -->
-					<a class="navbar-brand" href="dashboard.html"> <!-- Logo icon -->
-						<b class="logo-icon"> <!-- Dark Logo icon --> <img
-							src="plugins/images/logo-icon.png" alt="homepage" />
-					</b> <!--End Logo icon --> <!-- Logo text --> <span class="logo-text">
-							<!-- dark Logo text --> <img src="plugins/images/logo-text.png"
-							alt="homepage" />
-					</span>
-					</a>
-					<!-- ============================================================== -->
-					<!-- End Logo -->
-					<!-- ============================================================== -->
-					<!-- ============================================================== -->
-					<!-- toggle and nav items -->
-					<!-- ============================================================== -->
-					<a
-						class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
-						href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-				</div>
-				<!-- ============================================================== -->
-				<!-- End Logo -->
-				<!-- ============================================================== -->
-				<div class="navbar-collapse collapse" id="navbarSupportedContent"
-					data-navbarbg="skin5">
-					<ul class="navbar-nav d-none d-md-block d-lg-none">
-						<li class="nav-item"><a
-							class="nav-toggler nav-link waves-effect waves-light text-white"
-							href="javascript:void(0)"><i class="ti-menu ti-close"></i></a></li>
-					</ul>
-					<!-- ============================================================== -->
-					<!-- Right side toggle and nav items -->
-					<!-- ============================================================== -->
-					<ul class="navbar-nav ms-auto d-flex align-items-center">
 
-						<!-- ============================================================== -->
-						<!-- Search -->
-						<!-- ============================================================== -->
-						<li class=" in">
-							<form role="search" class="app-search d-none d-md-block me-3">
-								<input type="text" placeholder="Search..."
-									class="form-control mt-0"> <a href="" class="active">
-									<i class="fa fa-search"></i>
-								</a>
-							</form>
-						</li>
-						<!-- ============================================================== -->
-						<!-- User profile and search -->
-						<!-- ============================================================== -->
-						<li><a class="profile-pic" href="#"> <img
-								src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-								class="img-circle"><span class="text-white font-medium">Steave</span></a>
-						</li>
-						<!-- ============================================================== -->
-						<!-- User profile and search -->
-						<!-- ============================================================== -->
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<!-- ============================================================== -->
-		<!-- End Topbar header -->
-		<!-- ============================================================== -->
-		<!-- ============================================================== -->
-		<!-- Left Sidebar - style you can find in sidebar.scss  -->
-		<!-- ============================================================== -->
-
+		<div th:replace="OrderAdmin/topBar :: topBar"></div>
 
 		<div th:replace="OrderAdmin/menu :: menu"></div>
 
 
-		<!-- ============================================================== -->
-		<!-- End Left Sidebar - style you can find in sidebar.scss  -->
-		<!-- ============================================================== -->
-		<!-- ============================================================== -->
-		<!-- Page wrapper  -->
-		<!-- ============================================================== -->
+
 		<div class="page-wrapper">
-			<!-- ============================================================== -->
-			<!-- Bread crumb and right sidebar toggle -->
-			<!-- ============================================================== -->
+
 			<div class="page-breadcrumb bg-white">
 				<div class="row align-items-center">
 					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
@@ -191,15 +213,19 @@ a {
 								<label for="cars">Xem Theo &nbsp;&nbsp;&nbsp;&nbsp;</label><select
 									name="cars" id="cars" ng-model="selectType"
 									ng-change="loadDetails(selectType)">
-									<option value="all" selected>Đơn Hàng Đang Chờ</option>
-									<option value="confirmed">Đơn Hàng Đã Chấp Nhận</option>
-									<option value="cancelled">Đơn Hàng Đã Hủy</option>
+									<option value="DangCho" selected>Đơn Hàng Đang Chờ</option>
+									<option value="ChuanBi">Đơn Hàng Đang Chuẩn Bị</option>
+									<option value="BanGiaoVanChuyen">Đơn Hàng Bàn Giao Cho
+										Vận Chuyển</option>
+									<option value="HoanThanh">Đơn Hàng Thành Công</option>
+									<option value="HuyDon">Đơn Hàng Đã Hủy</option>
 								</select>
 
 
 							</p>
 
 							<div class="table-responsive">
+
 								<table class="table text-nowrap">
 									<thead>
 										<tr>
@@ -209,7 +235,7 @@ a {
 											<th class="border-top-0">Số Lượng</th>
 											<th class="border-top-0">Tổng Tiền</th>
 											<th class="border-top-0">Thao Tác</th>
-											<th></th>
+
 										</tr>
 									</thead>
 									<tbody>
@@ -223,28 +249,30 @@ a {
 											</td>
 											<td>{{ item.quantity }}</td>
 											<td>{{ item.price }}</td>
-											<td><span ng-if="selectType === 'all'"><span
-													class="fa-stack" data-toggle="modal" data-target="#myModal"
-													ng-click="openModal(item)"> <i
-														class="fa fa-square fa-stack-2x"></i> <i
-														class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
-												</span><span ng-click="confirm(item.id)" class="fa-stack"> <i
+											<td><span class="fa-stack" data-toggle="modal"
+												data-target="#myModal"
+												ng-click="openModal(item , 'itemAll')"> <i
+													class="fa fa-square fa-stack-2x"></i> <i
+													class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+											</span> <!-- <span ng-click="confirm(item.id)" class="fa-stack"> <i
 														class="fa fa-square fa-stack-2x"></i> <i
 														class="fa fa-check fa-stack-1x fa-inverse"></i>
-												</span> <!-- Biểu tượng hủy đơn --> <span
+												</span> Biểu tượng hủy đơn <span
 													ng-click="cancel(item.id , 'adminCancel')" class="fa-stack">
 														<i class="fa fa-square fa-stack-2x"></i> <i
 														class="fa fa-times fa-stack-1x fa-inverse"></i>
-												</span> </span> </span> <span ng-if="selectType === 'confirmed'">Đã Xác
-													Nhận</span><span ng-if="selectType === 'cancelled'">Đã Hủy
-													Đơn</span></td> 
-											<td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-if="selectType === 'cancelled'">Đã
-													Hủy Bởi <b> {{item.cancelled_by === 'seller' ? 'Bạn' :
-														'Người Dùng'}}</b>
+												</span> </span> --> &nbsp;&nbsp; </span> <span
+												ng-if="selectType === 'cancelled'"> <span
+													ng-if="selectType === 'cancelled'"> <span
+														class="fa-stack" data-toggle="modal"
+														data-target="#myModal"
+														ng-click="openModal(item, 'cancel')"> <i
+															class="fa fa-square fa-stack-2x"></i> <i
+															class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+													</span> Đã Hủy Bởi <b> {{item.cancelled_by === 'seller' ?
+															'Bạn' : 'Người Dùng'}}</b></span></span></td>
 
 
-
-											</span></td>
 										</tr>
 									</tbody>
 								</table>
@@ -270,119 +298,162 @@ a {
 
 					<div class="modal-dialog" role="document">
 						<div class="modal-content" style="width: 1140px;">
-							<div class="modal-header">
-								<h5 class="modal-title" id="myModalLabel">Thông tin sản
-									phẩm</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<!-- Hiển thị thông tin sản phẩm ở đây -->
+							<main>
+								<section>
+									<h2>Chi tiết đơn hàng</h2>
+									<button class="print-button" onclick="window.print()">
+										<i class="fas fa-print"></i> In Hóa Đơn
+									</button>
+									<br /> <br />
+									<table>
+										<thead>
+											<tr>
+												<th></th>
+												<th>Tên Sản Phẩm</th>
+												<th>Người Mua</th>
+												<th>Số Lượng</th>
+												<th>Tổng Giá</th>
+												<th>Đã Đặt Ngày</th>
+												<th>Địa Chỉ Giao Hàng</th>
+												<th>Trạng Thái</th>
+												<th>Thanh Toán</th>
+											</tr>
 
-								<!-- Các trường thông tin khác -->
-								<table>
-									<tr>
-										<th style="padding: 0 20px;"></th>
-										<th style="padding: 0 20px;">Id Sản Phẩm</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td><img
+													style="object-fit: contain; width: 100px; height: 100px;"
+													src="/images/{{ selectedProduct.product_id.img }}"
+													alt="Ảnh sản phẩm"></td>
+												<td style="word-wrap: break-word;">{{
+													selectedProduct.product_id.name }}</td>
+												<td style="word-wrap: break-word;">{{
+													selectedProduct.order_id.adres_id.name }}</td>
+												<td style="word-wrap: break-word;">{{
+													selectedProduct.quantity }}</td>
+												<td style="">{{ selectedProduct.product_id.price *
+													selectedProduct.quantity }}</td>
+												<td style="word-wrap: break-word; width: 115px">{{
+													selectedProduct.created_at | date: 'yyyy-MM-dd' }}</td>
 
-										<th style="padding: 0 20px;">Tên Sản Phẩm</th>
-										<th style="padding: 0 20px;">Người Mua</th>
-										<th style="padding: 0 20px;">Số Lượng</th>
-										<th style="padding: 0 20px;">Tổng Giá</th>
-										<th style="padding: 0 20px;">Đã Đặt Ngày</th>
-										<th></th>
-										<th style="padding: 0 20px;">Địa Chỉ Giao Hàng</th>
-									</tr>
-									<tr>
-										<td style="padding: 0 20px;"><img
-											style="object-fit: contain; width: 100px; height: 100px;"
-											src="images/{{ selectedProduct.product_id.img }}"
-											alt="Ảnh sản phẩm"></td>
 
-										<td>&nbsp; &nbsp; &nbsp;
-											&nbsp;{{selectedProduct.product_id.id}}</td>
 
-										<td style="padding: 0 20px; word-wrap: break-word;">{{
-											selectedProduct.product_id.name }}</td>
 
-										<td style="padding: 0 20px; word-wrap: break-word;">{{
-											selectedProduct.order_id.user_id.us }}</td>
-										<td style="padding: 0 20px; word-wrap: break-word;">{{
-											selectedProduct.quantity }}</td>
-										<td style="padding: 0 20px;">{{
+												<td style="word-wrap: break-word;">{{selectedProduct.order_id.adres_id.adress}}</td>
+
+												<td><span ng-if="selectType === 'DangCho'">Đang
+														Chờ </span><span ng-if="selectType === 'XacNhan'">Đã Xác
+														Nhận Giao Hàng</span> <span ng-if="selectType === 'ChuanBi'">Đang
+														Chuẩn Bị </span><span ng-if="selectType === 'HoanThanh'">Đơn
+														Hàng Thành Công</span><span ng-if="selectType === 'HuyDon'">Đơn
+														Hàng Bị Hủy </span></td>
+												<td style="word-wrap: break-word;">{{
+													selectedProduct.order_id.payment_status === false ? 'Chưa
+													Thanh Toán' : 'Đã Thanh Toán'}}</td>
+											</tr>
+											<!-- Thêm các hàng đơn hàng khác nếu cần -->
+										</tbody>
+									</table>
+								</section>
+								<br />
+								<hr />
+								<div class="order-summary"
+									>
+									<div>
+										<span class="summary-label">Tổng Tiền:</span> <span
+											class="summary-value">{{
 											selectedProduct.product_id.price * selectedProduct.quantity
-											}}</td>
-										<td style="padding: 0 20px; word-wrap: break-word;">{{
-											selectedProduct.created_at | date: 'yyyy-MM-dd' }}</td>
+											}}</span>
+									</div>
+
+								</div>
+
+								<hr />
+								<div
+									ng-show="selectedProduct.order_status === 'DangCho' || selectedProduct.order_status === 'ChuanBi'"
+									style="display: flex;">
+									<select ng-model="selectedStatus" style="margin-left: 757px;"
+										name="order_status">
+										<option value="" disabled selected>{{status}}</option>
+										<option value="ChuanBi">Chuẩn Bị Hàng</option>
+										<option value="HuyDon">Hủy Đơn Hàng</option>
+										<option value="BanGiaoVanChuyen">Bàn Giao Cho Vận
+											Chuyển</option>
+										<!--<option >Hoàn Thành Đơn Hàng</option>-->
+									</select> &nbsp;&nbsp;
+									<button class="confirm-button"
+										ng-click="update_status(selectedProduct.id)"
+										ng-disabled="!selectedStatus" data-dismiss="modal">
+										<i class="fas fa-check"></i> Cập Nhật
+									</button>
+								</div>
 
 
 
-										<td style="padding: 0 20px; word-wrap: break-word;"><span
-											ng-if="selectedOption === 'pending'"> <!-- Biểu tượng xác nhận đơn -->
-												<span ng-click="confirm(selectedProduct.id)"
-												class="fa-stack"> <i class="fa fa-square fa-stack-2x"></i>
-													<i class="fa fa-check fa-stack-1x fa-inverse"></i>
-											</span> <!-- Biểu tượng hủy đơn --> <span
-												ng-click="cancel(selectedProduct.id)"
-												class="fa-stack cancel-icon"> <i
-													class="fa fa-square fa-stack-2x"></i> <i
-													class="fa fa-times fa-stack-1x fa-inverse"></i>
-											</span>
-										</span> </span> <span ng-if="selectedOption === 'confirm'">Đã Xác
-												Nhận</span><span ng-if="selectedOption === 'cancel'">Đã Hủy
-												Đơn</span></td>
-										<td style="padding: 0 20px; word-wrap: break-word;">{{selectedProduct.order_id.adres_id.adress}}</td>
+								<div class="message" style="    font-size: 20px;
+    color: darkgreen;">
+									<span 
+										ng-if="selectedProduct.order_status === 'BanGiaoVanChuyen'">
+										Đơn hàng của bạn đã được bàn giao cho vận chuyển. Chúng tôi sẽ
+										cập nhật thông tin vận chuyển của bạn trong thời gian sớm
+										nhất. </span> <span ng-if="selectedProduct.order_status === 'HuyDon'">
+										Đơn hàng của bạn đã bị hủy. </span> <span
+										ng-if="selectedProduct.order_status === 'HoanThanh'">
+										Đơn hàng của đã giao thành công. </span>
+								</div>
 
-									</tr>
-								</table>
 
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal">Đóng</button>
-							</div>
+
+
+
+
+								<br />
+								<div class="order-details">
+									<label for="order-id">Mã đơn hàng:</label> <span id="order-id">{{selectedProduct.id}}</span>
+									&nbsp;<label for="customer">Khách hàng:</label> <span
+										id="customer">{{
+										selectedProduct.order_id.user_id.adres_id.name }}</span> <label
+										for="order-date">Tổng Tiền:</label> <span id="order-date">{{
+										selectedProduct.product_id.price * selectedProduct.quantity }}</span>
+									<label for="status">Trạng thái:</label> <span id="status"><span
+										ng-if="selectType === 'DangCho'">Đang Chờ </span><span
+										ng-if="selectType === 'XacNhan'">Đã Xác Nhận Giao Hàng</span>
+										<span ng-if="selectType === 'ChuanBi'">Đang Chuẩn Bị </span> <span>
+											/ <b>Trạng thái thanh toán : </b>{{
+											selectedProduct.order_id.payment_status === false ? 'Chưa
+											Thanh Toán ' : ' Đã Thanh Toán'}}
+									</span> <!-- Thêm các thông tin khác của đơn hàng -->
+								</div>
+								</section>
+							</main>
+
+
 						</div>
 					</div>
 				</div>
 
-				<!-- ============================================================== -->
-				<!-- End PAge Content -->
-				<!-- ============================================================== -->
-				<!-- ============================================================== -->
-				<!-- Right sidebar -->
-				<!-- ============================================================== -->
-				<!-- .right-sidebar -->
-				<!-- ============================================================== -->
-				<!-- End Right sidebar -->
-				<!-- ============================================================== -->
 			</div>
-			<!-- ============================================================== -->
-			<!-- End Container fluid  -->
-			<!-- ============================================================== -->
-			<!-- ============================================================== -->
-			<!-- footer -->
-			<!-- ============================================================== -->
+
 			<footer class="footer text-center">
 				2021 © Ample Admin brought to you by <a
 					href="https://www.wrappixel.com/">wrappixel.com</a>
 			</footer>
-			<!-- ============================================================== -->
-			<!-- End footer -->
-			<!-- ============================================================== -->
-		</div>
-		<!-- ============================================================== -->
-		<!-- End Page wrapper  -->
-		<!-- ============================================================== -->
-	</div>
-	<!-- ============================================================== -->
-	<!-- End Wrapper -->
-	<!-- ============================================================== -->
-	<!-- ============================================================== -->
-	<!-- All Jquery -->
-	<!-- ============================================================== -->
 
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.fade').css({
+				'transition' : 'none',
+				'-webkit-transition' : 'none',
+				'-moz-transition' : 'none',
+				'-o-transition' : 'none'
+			});
+		});
+	</script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script
@@ -407,14 +478,14 @@ a {
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 	<!-- Bootstrap tether Core JavaScript -->
-	<script src="OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="OrderAdmin/js/app-style-switcher.js"></script>
+	<script src="/OrderAdmin/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="/OrderAdmin/js/app-style-switcher.js"></script>
 	<!--Wave Effects -->
-	<script src="OrderAdmin/js/waves.js"></script>
+	<script src="/OrderAdmin/js/waves.js"></script>
 	<!--Menu sidebar -->
-	<script src="OrderAdmin/js/sidebarmenu.js"></script>
+	<script src="/OrderAdmin/js/sidebarmenu.js"></script>
 	<!--Custom JavaScript -->
-	<script src="OrderAdmin/js/custom.js"></script>
+	<script src="/OrderAdmin/js/custom.js"></script>
 
 	<!--toast-plugin  -->
 	<script

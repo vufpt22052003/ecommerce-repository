@@ -399,4 +399,10 @@ function incrementValue() {
 	if (!isNaN(qty)) {
 		qtyInput.value = qty + 1;
 	}
+}function toggleButton(button) {
+    button.classList.toggle('selected');
+    button.focus();
+    
+     var checkbox = document.getElementById("myCheckbox");
+    checkbox.checked = !checkbox.checked;
 }

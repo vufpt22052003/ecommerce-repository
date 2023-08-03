@@ -22,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.shop.DAO.CartDAO;
+import com.example.shop.DAO.Order_detailsDAO;
 import com.example.shop.DAO.SaleDAO;
 import com.example.shop.ServiceImp.AdresServiceImp;
 import com.example.shop.ServiceImp.CartServiceImp;
+import com.example.shop.ServiceImp.OrderDetailsServiceImp;
 import com.example.shop.ServiceImp.ProductsServiceImp;
+import com.example.shop.ServiceImp.UserVoucherServiceImp;
 import com.example.shop.model.Address;
 import com.example.shop.model.Cart;
+import com.example.shop.model.Order_details;
 import com.example.shop.model.Products;
 import com.example.shop.model.Sale;
 import com.example.shop.model.Users;
@@ -49,33 +53,83 @@ public class CartController {
 	HttpSession session;
 	@Autowired
 	HttpServletRequest request;
-
+	@Autowired
+	Order_detailsDAO order_detailsDAO;
 	@Autowired
 	AdresServiceImp adressServiceImp;
+	@Autowired
+	UserVoucherServiceImp userVoucherServiceImp;
+	public void buyNow(int pid, Model model, int quantity, String color, String size) {
 
-	@RequestMapping("/add-to-cart/{Pid}")
-	public String addCart(@PathVariable("Pid") int id, HttpSession session, HttpServletRequest request) {
-		// Kiểm tra đăng nhập
-		Users acc = (Users) session.getAttribute("acc");
-		if (acc == null) {
-//	// Xây dựng URL đăng nhập với query parameter returnUrl
-//	String returnUrl = request.getRequestURL().append("?returnUrl=/cart").toString();
-//
-//	System.out.println(returnUrl);
-			return "views/login";
+		Optional<Products> pro = productsServiceImp.findById(pid);
+		session.removeAttribute("selectedProducts");
+		model.addAttribute("buyProduct", pro);
+		model.addAttribute("quantity", quantity);
+		model.addAttribute("color", color);
+		model.addAttribute("size", size);
+		if (pro.get().checkSale()) {
+			model.addAttribute("price", pro.get().getPrice() * quantity);
 		}
+
+		model.addAttribute("total", pro.get().getPrice() * quantity);
+
+	}
+
+	public void addToCart(int quantity, int id, String color, String size) {
 		Optional<Products> findById = productsServiceImp.findById(id);
 		if (findById.isPresent()) {
 			int Pid = findById.get().getId();
-			cartServiceImp.addCart(Pid);
+			cartServiceImp.addCart(Pid, quantity, color, size);
+		}
+	}
+
+	@RequestMapping({ "/add-to-cart", "/add-to-cart/{Pid}" })
+	public String addCart(@PathVariable(value = "Pid", required = false) Integer pid,
+			@RequestParam(value = "quantity", required = false) Integer quantity,
+			@RequestParam(value = "productId", required = false) Integer productId, HttpSession session, Model model,
+			@RequestParam(value = "type", required = false) String type,
+			@RequestParam(value = "color", required = false) String color,
+			@RequestParam(value = "size", required = false) String size) {
+		// Kiểm tra đăng nhập
+		Users acc = (Users) session.getAttribute("acc");
+		if (acc == null) {
+			return "views/login";
+		}
+
+		int id = 0;
+		if (pid != null) {
+			id = pid;
+		} else if (productId != null) {
+			id = productId;
+		}
+
+		// form them vào giỏ hàng
+		if (type != null && type.equals("addCart")) {
+			if (quantity != null) {
+				addToCart(quantity, id, color, size);
+			}
+			return "redirect:/cart";
+		}
+		// form mua ngay
+		if (type != null && type.equals("buyNow")) {
+			buyNow(id, model, quantity, color, size);
+			return "views/checkout";
+		}
+
+		// thêm vào giỏ hàng bằng link
+		if (pid != null) {
+			addToCart(1, id, color, size);
 		}
 		return "redirect:/cart";
-
 	}
 
 // chọn trong giỏ hàng các món mua
 	@GetMapping("/checkout")
-	public String checkout(@RequestParam(value = "check[]") int[] Pid, Model model) {
+	public String checkout(@RequestParam(value = "check[]" , required = false) int[] Pid, Model model) {
+		Users acc = (Users) session.getAttribute("acc");
+		if (acc == null) {
+			return "views/login";
+		}
 		ArrayList<Cart> selectedProducts = new ArrayList<>();
 		int total = 0;
 
@@ -96,27 +150,27 @@ public class CartController {
 			}
 		}
 
+		
 		session.setAttribute("selectedProducts", selectedProducts);
 		model.addAttribute("total", total);
-		System.out.println(total);
-
+		
+		List<com.example.shop.model.UserVoucher> listVch = userVoucherServiceImp.getVoucherByUs();
+		model.addAttribute("listVch", listVch);
+		
 		// checkAdress(model);
 
 		return "views/checkout";
 	}
 
 	// check Mua ngay
-	@GetMapping("/checkBuyNow/{id}")
-	public String checkBuyNow(@PathVariable("id") int pid, Model model) {
-		Optional<Products> pro = productsServiceImp.findById(pid);
-		session.removeAttribute("selectedProducts");
-		model.addAttribute("buyProduct", pro);
-		if (pro.get().checkSale()) {
-			model.addAttribute("price", pro.get().getPrice());
-		}
-		model.addAttribute("total", pro.get().getPrice());
+	@RequestMapping("/checkBuyNow")
+	public String checkBuyNow(@RequestParam("productId") int pid, Model model,
+			@RequestParam(value = "color", required = false) String color,
+			@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "quantity", required = false) int quantity) {
 
-		// checkAdress(model);
+
+		buyNow(pid, model, quantity, color, size);
 		return "views/checkout";
 
 	}

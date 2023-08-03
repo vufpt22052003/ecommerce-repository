@@ -29,7 +29,7 @@ public class CartAPI {
 			@RequestParam(value = "selectedIds[]", required = false) int[] selectedIds) {
 		for (int i = 0; i < selectedIds.length; i++) {
 			int id = selectedIds[i];
-			System.out.println(id);
+			System.out.println(id + "iod");
 			cartServiceImp.delCart(id);
 		}
 		return ResponseEntity.ok("Sản phẩm đã được xóa thành công");
@@ -70,5 +70,9 @@ public class CartAPI {
 		adresServiceImp.updateDefault(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+	@GetMapping("PaymentSuccess")
+	public String PaymentSuccess() {
+		return "views/PaymentSuccess";
+	}
+	
 }

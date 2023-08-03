@@ -27,8 +27,8 @@ app.controller('Controller', ['$http', '$scope', function($http, $scope) {
 				console.error('Error:', error);
 			});
 	};
-	
-	
+
+
 	$scope.location = function() {
 
 		$http.get('https://api.mysupership.vn/v1/partner/areas/province')

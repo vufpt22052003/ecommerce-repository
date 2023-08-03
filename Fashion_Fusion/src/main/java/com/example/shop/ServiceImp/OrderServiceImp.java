@@ -33,49 +33,52 @@ public class OrderServiceImp implements OrderService {
 		orderDAO.save(od);
 	}
 
-	@Override
-	public List<Order_details> listoder() {
+//	// lấy đơn hàng đang cbi
+//	@Override
+//	public List<Order_details> getOderPrepare() {
 //		Users acc = (Users) session.getAttribute("acc");
 //		int uid = acc.getId();
-		return (List<Order_details>) order_detailsDAO.listOder(1);
-	}
-
-	@Override
-	public List<Order_details> getConfirmedOrders() {
-		return (List<Order_details>) order_detailsDAO.getConfirmedOrders();
-	}
-
-	@Override
-	public List<Order_details> getCancelledOrders() {
-		return (List<Order_details>) order_detailsDAO.getCancelledOrders();
-	}
+//		return (List<Order_details>) order_detailsDAO.getOderPrepare(uid);
+//	}
 
 	// người dùng chờ đợi
 
 	@Override
 	public List<Order_details> Orders_Awaiting() {
-		return (List<Order_details>) order_detailsDAO.Orders_Awaiting(1);
+		Users acc = (Users) session.getAttribute("acc");
+		int uid = acc.getId();
+		return (List<Order_details>) order_detailsDAO.Orders_AwaitingAndCancelled(uid);
 	}
 
 	// người dùng coi đơn dã tahnh cong
 
 	@Override
 	public List<Order_details> Orders_confim() {
-		return (List<Order_details>) order_detailsDAO.Orders_confim(1);
+		Users acc = (Users) session.getAttribute("acc");
+		int uid = acc.getId();
+		return (List<Order_details>) order_detailsDAO.Orders_confirmed(uid);
 	}
 	// người dùng coi đơn dã bị hủy
 
 	@Override
 	public List<Order_details> Orders_cancel() {
-		return (List<Order_details>) order_detailsDAO.Orders_cancel(1);
+		Users acc = (Users) session.getAttribute("acc");
+		int uid = acc.getId();
+		return (List<Order_details>) order_detailsDAO.Orders_cancel(uid);
+	}
+
+	@Override
+	public List<Object[]> getTopUserByOder() {
+		Users acc = (Users) session.getAttribute("acc");
+		int uid = acc.getId();
+		return orderDAO.getTopAccountsByOrder(uid);
+
 	}
 	
 	@Override
-	public List<Object[]> getTopUserByOder(){
-		return orderDAO.getTopAccountsByOrder(1);
-		
+	public List<Orders> getOderStatus(String status) {
+		return (List<Orders>) orderDAO.getOderStatus(status);
 	}
-	
-	
 
+	
 }

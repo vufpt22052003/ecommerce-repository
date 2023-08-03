@@ -12,11 +12,7 @@ public interface OrderService {
 
 	void add_order(Orders od);
 
-	List<Order_details> listoder( );
 
-	List<Order_details> getConfirmedOrders( );
-
-	List<Order_details> getCancelledOrders( );
 
 	List<Order_details> Orders_Awaiting( );
 
@@ -25,6 +21,11 @@ public interface OrderService {
 	List<Order_details> Orders_confim( );
 
 	List<Object[]> getTopUserByOder();
+
+
+
+	List<Orders> getOderStatus(String status);
+
 
 
 }

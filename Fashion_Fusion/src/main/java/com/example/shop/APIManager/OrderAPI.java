@@ -12,43 +12,50 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shop.DAO.Order_detailsDAO;
 import com.example.shop.Service.OrderDetailsService;
 import com.example.shop.Service.OrderService;
+import com.example.shop.ServiceImp.CommentServiceImp;
+import com.example.shop.model.Comment;
+import com.example.shop.model.OrderStatusDTO;
 import com.example.shop.model.Order_details;
 
 @RestController
 public class OrderAPI {
+		@Autowired
+		OrderService orderService;
+	
+		@Autowired
+		OrderDetailsService orderDetailsService;
+		@Autowired
+		Order_detailsDAO order_detailsDAO;
 	@Autowired
-	OrderService orderService;
-
-	@Autowired
-	OrderDetailsService orderDetailsService;
-	@Autowired
-	Order_detailsDAO order_detailsDAO;
+	CommentServiceImp commentServiceImp;
 
 	// lấy danh sách để ad sử lý
 	@GetMapping("api/getOrderDetails")
 	public ResponseEntity<List<Order_details>> getOrderDetails(@RequestParam("type") String type) {
 		List<Order_details> list;
-
-		if (type.equals("all")) {
-			// lấy tất cả
-			list = orderService.listoder();
-
-		} else if (type.equals("confirmed")) {
-			// lấy danh sách đã chấp nhận
-			list = orderService.getConfirmedOrders();
-		} else if (type.equals("cancelled")) {
-			// lấy danh sách đã hủy
-			list = orderService.getCancelledOrders();
-		} else {
-			// Loại yêu cầu không hợp lệ
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		System.out.println(type);
+		list = orderDetailsService.getOderStatus(type);
+		for (Order_details order_details : list) {
+			System.out.println(order_details.getId());
 		}
+		/*
+		 * if (type.equals("all")) { // lấy tất cả list = orderService.listoder(); }
+		 * else if (type.equals("confirmed")) { // lấy danh sách đã chấp nhận list =
+		 * orderService.getConfirmedOrders();
+		 * 
+		 * } else if (type.equals("cancelled")) { // lấy danh sách đã hủy list =
+		 * orderService.getCancelledOrders(); } else if (type.equals("prepare")) { //
+		 * lấy danh đang chuẩn bị hàng list = orderService.getOderPrepare(); } else if
+		 * (type.equals("prepare")) { // lấy danh đang chuẩn bị hàng } else { // Loại
+		 * yêu cầu không hợp lệ return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
+		 */
 
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
@@ -70,19 +77,26 @@ public class OrderAPI {
 	// phía người dùng
 	@GetMapping("/api/OrderStatus")
 	public ResponseEntity<List<Order_details>> listoder(@RequestParam("type") String type) {
-		List<Order_details> list = null;
+		// OrderStatusDTO orderStatusDTO = new OrderStatusDTO();
+		List<Order_details> orderList = null;
+		// List<Comment> commentList = null;
 
 		if (type.equals("pending")) {
-			list = orderService.Orders_Awaiting();
+			orderList = orderService.Orders_Awaiting();
+			// commentList = commentServiceImp.getCmtByUserId();
 		} else if (type.equals("confirm")) {
-			list = orderService.Orders_confim();
+			orderList = orderService.Orders_confim();
 		} else if (type.equals("cancel")) {
-			list = orderService.Orders_cancel();
+			orderList = orderService.Orders_cancel();
 		} else {
 			// Xử lý trường hợp không có điều kiện nào khớp
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(list, HttpStatus.OK);
+
+//		orderStatusDTO.setOrderList(orderList);
+//		orderStatusDTO.setCommentList(commentList);
+
+		return ResponseEntity.ok(orderList);
 	}
 
 	@GetMapping("/api/getTop10Order")
@@ -97,6 +111,13 @@ public class OrderAPI {
 		return new ResponseEntity<>(top, HttpStatus.OK);
 	}
 
+	@RequestMapping("/api/update_status")
+	public ResponseEntity<Void> update_status(@RequestParam("selectedStatus") String selectedStatus,
+			@RequestParam("orderId") int orderId) {
+		System.out.println(selectedStatus);
+		orderDetailsService.update_status(selectedStatus, orderId);
+		return ResponseEntity.ok().build();
+	}
 //	@GetMapping("/api/O")
 //	public ResponseEntity<List<Order_details>> list() {
 //		List<Order_details> list = order_detailsDAO.ProductIdDesc();

@@ -1,4 +1,6 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 
 <head>
 <meta charset="UTF-8">
@@ -25,6 +27,8 @@
 	type="text/css" media="all">
 
 <link href="/index/css/index.scss.css" rel="stylesheet" type="text/css"
+	media="all">
+<link href="/index/css/chat.css" rel="stylesheet" type="text/css"
 	media="all">
 <link rel="stylesheet" href="/view/css/style.css" type="text/css">
 <link rel="stylesheet" href="/details/css/bootstrap.min.css"
@@ -80,7 +84,7 @@ a:hover {
 
 .sale-badge {
 	position: absolute;
-	top: 10px;
+	top: 6px;
 	right: 10px;
 	padding: 5px 10px;
 	background-color: red;
@@ -145,6 +149,26 @@ a:hover {
 .btn {
 	margin-left: 20px;
 }
+
+.new-badge {
+	background-color: yellow;
+	color: black;
+	font-weight: bold;
+	padding: 5px;
+	position: absolute;
+}
+
+.blinking-text {
+	animation: blinking 1s infinite;
+}
+
+.container {
+	padding-left: initial;
+}
+
+.chat {
+	bottom: 25;
+}
 </style>
 <body>
 	<div class="bodywrap">
@@ -158,168 +182,197 @@ a:hover {
 			</div>
 		</div>
 
-		<section class="section_service"
-			style="height: 130px; padding-bottom: 2px;">
-			<div
-				class="home-service container swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
-				<div class="swiper-wrapper"
-					style="transform: translate3d(0px, 0px, 0px);">
-					<div class="swiper-slide swiper-slide-active"
-						style="width: 235px; margin-right: 30px; margin-left: 110px;">
-						<span class="image"> <img
-							class="lazyload img-responsive loading"
-							src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service1.png?1676282094225"
-							alt="MIỄN PHÍ GIAO HÀNG" data-was-processed="true">
-						</span>
-						<h3>MIỄN PHÍ GIAO HÀNG</h3>
-						<p>Miễn phí ship với đơn hàng &gt; 498K</p>
-					</div>
-					<div class="swiper-slide swiper-slide-next"
-						style="width: 220px; margin-right: 30px;">
-						<span class="image"> <img
-							class="lazyload img-responsive loading"
-							src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service2.png?1676282094225"
-							alt="THANH TOÁN COD" data-was-processed="true">
-						</span>
-						<h3>THANH TOÁN COD</h3>
-						<p>Thanh toán khi nhận hàng (COD)</p>
-					</div>
-					<div class="swiper-slide" style="width: 220px; margin-right: 30px;">
-						<span class="image"> <img
-							class="lazyload img-responsive loading"
-							src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service3.png?1676282094225"
-							alt="KHÁCH HÀNG VIP" data-was-processed="true">
-						</span>
-						<h3>KHÁCH HÀNG VIP</h3>
-						<p>Ưu đãi dành cho khách hàng VIP</p>
-					</div>
-					<div class="swiper-slide" style="width: 220px; margin-right: 30px;">
-						<span class="image"> <img
-							class="lazyload img-responsive loading"
-							src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service4.png?1676282094225"
-							alt="HỖ TRỢ BẢO HÀNH" data-was-processed="true">
-						</span>
-						<h3>HỖ TRỢ BẢO HÀNH</h3>
-						<p>Đổi , sửa đồ tại tất cả store</p>
-					</div>
+		<!-- partial:index.partial.html -->
+		
+		<th:block th:if="${session.acc != null and session.acc.role != true}">
+		<div class="fabs">
+			<div class="chat">
+
+				<div id="chat_converse" class="chat_converse" style="height: 300px">
+					<!-- Hiển thị tin nhắn xen kẻ giữa người dùng và admin -->
+                <p id="messageNull"></p>
+				</div>
+
+				<div class="fab_field">
+					<a id="fab_listen" class="fab"><i class="zmdi zmdi-mic-outline"></i></a>
+					<a id="fab_send" class="fab" onclick="sendMessage()"><i
+						class="zmdi zmdi-mail-send"></i></a> <input type="hidden" id="sendUs"
+						value="1" />
+					<textarea id="chatSend" name="chat_message"
+						placeholder="Write a message" class="chat_field chat_message"></textarea>
+				</div>
+
+			</div>
+			<a id="prime" class="fab"><i class="prime zmdi zmdi-plus"></i></a>
+		</div>
+		</th:block>
+		<!-- partial -->
+		<script src='//code.jquery.com/jquery-1.11.3.min.js'></script>
+</body>
+</html>
+
+
+<section class="section_service"
+	style="height: 130px; padding-bottom: 2px;">
+	<div
+		class="home-service container swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
+		<div class="swiper-wrapper"
+			style="transform: translate3d(0px, 0px, 0px);">
+			<div class="swiper-slide swiper-slide-active"
+				style="width: 235px; margin-right: 30px; margin-left: 110px;">
+				<span class="image"> <img
+					class="lazyload img-responsive loading"
+					src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service1.png?1676282094225"
+					alt="MIỄN PHÍ GIAO HÀNG" data-was-processed="true">
+				</span>
+				<h3>MIỄN PHÍ GIAO HÀNG</h3>
+				<p>Miễn phí ship với đơn hàng &gt; 498K</p>
+			</div>
+			<div class="swiper-slide swiper-slide-next"
+				style="width: 220px; margin-right: 30px;">
+				<span class="image"> <img
+					class="lazyload img-responsive loading"
+					src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service2.png?1676282094225"
+					alt="THANH TOÁN COD" data-was-processed="true">
+				</span>
+				<h3>THANH TOÁN COD</h3>
+				<p>Thanh toán khi nhận hàng (COD)</p>
+			</div>
+			<div class="swiper-slide" style="width: 220px; margin-right: 30px;">
+				<span class="image"> <img
+					class="lazyload img-responsive loading"
+					src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service3.png?1676282094225"
+					alt="KHÁCH HÀNG VIP" data-was-processed="true">
+				</span>
+				<h3>KHÁCH HÀNG VIP</h3>
+				<p>Ưu đãi dành cho khách hàng VIP</p>
+			</div>
+			<div class="swiper-slide" style="width: 220px; margin-right: 30px;">
+				<span class="image"> <img
+					class="lazyload img-responsive loading"
+					src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/image_service4.png?1676282094225"
+					alt="HỖ TRỢ BẢO HÀNH" data-was-processed="true">
+				</span>
+				<h3>HỖ TRỢ BẢO HÀNH</h3>
+				<p>Đổi , sửa đồ tại tất cả store</p>
+			</div>
+		</div>
+
+
+	</div>
+</section>
+
+
+
+<section class="section_product_hot module_product">
+	<div class="container">
+		<div class="wrap_tab_index not-dqtab e-tabs ajax-tab-1"
+			data-section="ajax-tab-1">
+			<div class="row">
+				<div class="col-xl-5 col-lg-4 col-md-6 col-12 block-title">
+					<h2>
+						<span class="blinking-text">SẢN PHẨM HOT</span>
+					</h2>
 				</div>
 
 
-			</div>
-		</section>
+				<div class="col-12">
 
 
+					<div class="tab-1 tab-content current">
 
-		<section class="section_product_hot module_product">
-			<div class="container">
-				<div class="wrap_tab_index not-dqtab e-tabs ajax-tab-1"
-					data-section="ajax-tab-1">
-					<div class="row">
-						<div class="col-xl-5 col-lg-4 col-md-6 col-12 block-title">
-							<h2>
-
-
-								<span>SẢN PHẨM HOT</span>
-							</h2>
-						</div>
-
-
-						<div class="col-12">
-
-
-							<div class="tab-1 tab-content current">
-
-								<div
-									class="swiper_tab swiper-container swiper-carousel ajax-carousel swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
-									<div class="swiper-wrapper"
-										style="width: 1663px; transform: translate3d(0px, 0px, 0px);">
+						<div
+							class="swiper_tab swiper-container swiper-carousel ajax-carousel swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
+							<div class="swiper-wrapper"
+								style="width: 1663px; transform: translate3d(0px, 0px, 0px);">
 
 
 
 
-										<th:block th:each="item : ${listPro}">
+								<th:block th:each="item : ${listProHot}">
 
-											<div class="item swiper-slide"
-												style="margin-top: 20px; width: 217.5px; margin-right: 20px;">
-												<div class="item_product_main">
-													<form action="/cart/add" method="post"
-														class="variants product-action" data-cart-form=""
-														data-id="product-actions-26182932"
-														enctype="multipart/form-data">
-														<div class="product-thumbnail">
-															<a class="image_thumb scale_hover"
-																th:href="@{/shop_info/{id}(id=${item.id})}"
-																title="Áo khoác trẻ em"
-																style="height: 218px; background-color: white;"> <img
-																class="lazyload" th:src="@{'/images/' + ${item.img}}"
-																data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
-																alt="Áo khoác trẻ em"> <span class="sale-badge"
-																th:if="${item.checkSale()}"
-																th:text="${'-' + item.sale_percent + '%'}"></span>
-															</a>
-
-
-
-															<div class="action d-xl-flex d-none">
-																<input class="hidden" type="hidden" name="variantId"
-																	value="65670147"> <a
-																	style="text-decoration: none;"
-																	class="btn-cart btn-views" title="Tùy chọn"
-																	th:href="@{/add-to-cart/{id}(id=${item.id})}"> Thêm
-																	Vào Giỏ Hàng </a>
-
-															</div>
-														</div>
-														<div class="product-info">
-															<h3 class="product-name">
-																<a href="/ao-khoac-tre-em" th:text="${item.name}"></a>
-															</h3>
-															<div class="price-box">
-																<p th:if="${item.checkSale()}">
-																	<span th:text="${item.price}"></span>&nbsp;<span
-																		class="compare-price"
-																		th:text="${item.originalPrice } + 'đ'"></span>
-
-																</p>
-																<p th:unless="${item.checkSale()}"
-																	th:text="${item.price + 'đ'}"></p>
-															</div>
-
-														</div>
+									<div class="item swiper-slide"
+										style="margin-top: 20px; width: 217.5px; margin-right: 20px;">
+										<div class="item_product_main">
+											<form action="/cart/add" method="post"
+												class="variants product-action" data-cart-form=""
+												data-id="product-actions-26182932"
+												enctype="multipart/form-data">
+												<div class="product-thumbnail">
+													<a class="image_thumb scale_hover"
+														th:href="@{/shop_info/{id}(id=${item.id})}"
+														title="Áo khoác trẻ em"
+														style="height: 218px; background-color: white;"> <img
+														class="lazyload" th:src="@{'/images/' + ${item.img}}"
+														data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
+														alt="Áo khoác trẻ em"> <span class="sale-badge"
+														th:if="${item.checkSale()}"
+														th:text="${'-' + item.sale_percent + '%'}"></span> <span
+														class="new-badge" th:if="${item.checkProNew()}"
+														th:text="${'new'}"></span>
+													</a>
 
 
 
-														<!-- tính dã bán  -->
-														<th:block th:if="${item.in_stock > 0}"
-															th:with="count=${#aggregates.sum(item.details.![is_completed ? quantity : 0])}"
-															th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
-															<p
-																th:text="${  count != null ? 'Đã Bán ' + count : '0 Đã Bán'}"></p>
-														</th:block>
-														<th:block th:unless="${item.in_stock > 0}"
-															class="sold-out">
-															<b style="color: red" th:text="${'Đã Bán Hết'}"></b>
-														</th:block>
+													<div class="action d-xl-flex d-none">
+														<input class="hidden" type="hidden" name="variantId"
+															value="65670147"> <a
+															style="text-decoration: none;" class="btn-cart btn-views"
+															title="Tùy chọn"
+															th:href="@{/add-to-cart/{id}(id=${item.id})}"> Thêm
+															Vào Giỏ Hàng </a>
 
-													</form>
+													</div>
 												</div>
-											</div>
+												<div class="product-info">
+													<h3 class="product-name">
+														<a href="/ao-khoac-tre-em" th:text="${item.name}"></a>
+													</h3>
+													<div class="price-box">
+														<p th:if="${item.checkSale()}">
+															<span th:text="${item.price}"></span>&nbsp;<span
+																class="compare-price"
+																th:text="${item.originalPrice } + 'đ'"></span>
 
-										</th:block>
+														</p>
+														<p th:unless="${item.checkSale()}"
+															th:text="${item.price + 'đ'}"></p>
+													</div>
+
+												</div>
 
 
+
+												<!-- tính dã bán  -->
+												<th:block th:if="${item.in_stock > 0}"
+													th:with="count=${#aggregates.sum(item.details.![order_status == 'HoanThanh' ? quantity : 0])}"
+													th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
+													<p
+														th:text="${  count != null ? 'Đã Bán ' + count : '0 Đã Bán'}"></p>
+												</th:block>
+												<th:block th:unless="${item.in_stock > 0}" class="sold-out">
+													<b style="color: red" th:text="${'Đã Bán Hết'}"></b>
+												</th:block>
+
+											</form>
+										</div>
 									</div>
-								</div>
+
+								</th:block>
+
 
 							</div>
-
-
-
 						</div>
+
 					</div>
+
+
+
 				</div>
 			</div>
-		</section>
+		</div>
+	</div>
+</section>
 
 
 
@@ -328,69 +381,73 @@ a:hover {
 
 
 
-		<section class="section_product_sale module_product">
-			<div class="container">
+<section class="section_product_sale module_product">
+	<div class="container">
 
-				<div class="col-lg-12">
-					<div class="block-title">
-						<h2>
-							<a href="san-pham-noi-bat" title="SALE ĐỒNG GIÁ - ĐỪNG LO VỀ GIÁ">SALE
-								ĐỒNG GIÁ - ĐỪNG LO VỀ GIÁ</a>
-						</h2>
-					</div>
-				</div>
-				<div class="col-lg-12 banner_sale">
-					<a href="#" title="banner"><img class="img-responsive"
-						src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/banner_sale.png?1676282094225"
-						alt="banner"></a>
-				</div>
-				<div class="col-md-12 product">
-					<div class="row">
-						<th:block th:each="item : ${listSale}">
+		<div class="col-lg-12">
+			<div class="block-title">
+				<h2>
+					<a href="san-pham-noi-bat" title="SALE ĐỒNG GIÁ - ĐỪNG LO VỀ GIÁ">SALE
+						ĐỒNG GIÁ - ĐỪNG LO VỀ GIÁ</a>
+				</h2>
+			</div>
+		</div>
+		<div class="col-lg-12 banner_sale">
+			<a href="#" title="banner"><img class="img-responsive"
+				src="//bizweb.dktcdn.net/100/455/315/themes/894917/assets/banner_sale.png?1676282094225"
+				alt="banner"></a>
+		</div>
+		<div class="col-md-12 product">
+			<div class="row">
+				<th:block th:each="item : ${listSale}">
 
-							<div class="block-product">
-								<div
-									class="product-sale-swiper swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events"
-									style="cursor: grab;">
-									<div class="swiper-slide"
-										style="width: 210px; margin-right: 30px;">
-										<form action="/cart/add" method="post"
-											class="variants product-action" data-cart-form=""
-											data-id="product-actions-26194126"
-											enctype="multipart/form-data">
-											<div class="product-thumbnail">
-												<a class="image_thumb scale_hover"
-													th:href="@{/shop_info/{id}(id=${item.product_id.id})}"
-													title="${item.product_id.name}"
-													style="background-color: white;"> <img class="lazyload"
-													th:src="@{'/images/' + ${item.product_id.img}}"
-													data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/3-jpeg-d6dc2671-ad4d-4e7c-9a50-3607cf85ec34.jpg?v=1653299373627"
-													alt="${item.product_id.name}"><span
-													class="sale-badge" th:if="${item.product_id.checkSale}"
-													th:text="${'-' +item.product_id.sale_percent + '%'}"></span>
-													<!-- Thêm phần tử chứa chữ "Sale" --></a> </a>
-												<div class="action d-xl-flex d-none">
-													<input type="hidden" name="variantId" value="65705519">
-													<input hidden name="Pid" th:value="${item.product_id.id}">
-													<a style="text-decoration: none;"
-														class="btn-cart btn-views add_to_cart"
-														title="Thêm vào giỏ hàng"
-														th:href="@{/add-to-cart/{id}(id=${item.product_id.id})}">
-														<svg xmlns="http://www.w3.org/2000/svg" width="19"
-															height="19" viewBox="0 0 19 19" fill="none">
+					<div class="block-product">
+						<div
+							class="product-sale-swiper swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events"
+							style="cursor: grab;">
+							<div class="swiper-slide"
+								style="width: 210px; margin-right: 30px;">
+								<form action="/cart/add" method="post"
+									class="variants product-action" data-cart-form=""
+									data-id="product-actions-26194126"
+									enctype="multipart/form-data">
+									<div class="product-thumbnail">
+										<a class="image_thumb scale_hover"
+											th:href="@{/shop_info/{id}(id=${item.product_id.id})}"
+											title="${item.product_id.name}"
+											style="background-color: white;"> <img class="lazyload"
+											th:src="@{'/images/' + ${item.product_id.img}}"
+											data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/3-jpeg-d6dc2671-ad4d-4e7c-9a50-3607cf85ec34.jpg?v=1653299373627"
+											alt="${item.product_id.name}"><span class="sale-badge"
+											th:if="${item.product_id.checkSale}"
+											th:text="${'-' +item.product_id.sale_percent + '%'}"></span>
+
+											<span class="new-badge"
+											th:if="${item.product_id.checkProNew()}" th:text="${'new'}"></span>
+
+											<!-- Thêm phần tử chứa chữ "Sale" --></a>
+										<div class="action d-xl-flex d-none">
+											<input type="hidden" name="variantId" value="65705519">
+											<input hidden name="Pid" th:value="${item.product_id.id}">
+											<a style="text-decoration: none;"
+												class="btn-cart btn-views add_to_cart"
+												title="Thêm vào giỏ hàng"
+												th:href="@{/add-to-cart/{id}(id=${item.product_id.id})}">
+												<svg xmlns="http://www.w3.org/2000/svg" width="19"
+													height="19" viewBox="0 0 19 19" fill="none">
         <g>
             <path
-																d="M18.7179 6.86766C18.467 6.55289 18.0906 6.37232 17.6852 6.37232H14.026L12.0418 1.82891C11.9188 1.54721 11.5907 1.41848 11.309 1.54157C11.0272 1.66459 10.8986 1.99274 11.0216 2.27448L12.8112 6.37236H6.18877L7.97837 2.27448C8.10139 1.99274 7.97276 1.66462 7.69103 1.54157C7.40933 1.41848 7.08117 1.54713 6.95816 1.82891L4.97396 6.37236H1.31482C0.909367 6.37236 0.532967 6.55289 0.282071 6.86769C0.0357758 7.17674 -0.0551051 7.57403 0.0327328 7.95782L1.9868 16.493C2.12325 17.089 2.65046 17.5052 3.26889 17.5052H15.7311C16.3495 17.5052 16.8767 17.089 17.0132 16.493L18.9673 7.95778C19.0551 7.574 18.9642 7.1767 18.7179 6.86766ZM15.7311 16.3919H3.26889C3.17437 16.3919 3.09158 16.3299 3.07203 16.2445L1.11796 7.70937C1.10263 7.64239 1.12835 7.59199 1.15269 7.56153C1.17526 7.53318 1.22636 7.48564 1.31482 7.48564H4.48779L4.34198 7.81951C4.21897 8.10125 4.34759 8.42937 4.62932 8.55242C4.70183 8.58411 4.77739 8.59911 4.85179 8.59911C5.06636 8.59911 5.27083 8.47431 5.36219 8.26512L5.7026 7.48571H13.2975L13.6379 8.26512C13.7292 8.47434 13.9337 8.59911 14.1483 8.59911C14.2226 8.59911 14.2982 8.58411 14.3708 8.55242C14.6525 8.42941 14.7811 8.10125 14.6581 7.81951L14.5123 7.48564H17.6853C17.7737 7.48564 17.8248 7.53318 17.8474 7.56153C17.8717 7.59203 17.8974 7.64243 17.8821 7.70933L15.928 16.2445C15.9085 16.3299 15.8256 16.3919 15.7311 16.3919Z"
-																fill="white"></path>
+														d="M18.7179 6.86766C18.467 6.55289 18.0906 6.37232 17.6852 6.37232H14.026L12.0418 1.82891C11.9188 1.54721 11.5907 1.41848 11.309 1.54157C11.0272 1.66459 10.8986 1.99274 11.0216 2.27448L12.8112 6.37236H6.18877L7.97837 2.27448C8.10139 1.99274 7.97276 1.66462 7.69103 1.54157C7.40933 1.41848 7.08117 1.54713 6.95816 1.82891L4.97396 6.37236H1.31482C0.909367 6.37236 0.532967 6.55289 0.282071 6.86769C0.0357758 7.17674 -0.0551051 7.57403 0.0327328 7.95782L1.9868 16.493C2.12325 17.089 2.65046 17.5052 3.26889 17.5052H15.7311C16.3495 17.5052 16.8767 17.089 17.0132 16.493L18.9673 7.95778C19.0551 7.574 18.9642 7.1767 18.7179 6.86766ZM15.7311 16.3919H3.26889C3.17437 16.3919 3.09158 16.3299 3.07203 16.2445L1.11796 7.70937C1.10263 7.64239 1.12835 7.59199 1.15269 7.56153C1.17526 7.53318 1.22636 7.48564 1.31482 7.48564H4.48779L4.34198 7.81951C4.21897 8.10125 4.34759 8.42937 4.62932 8.55242C4.70183 8.58411 4.77739 8.59911 4.85179 8.59911C5.06636 8.59911 5.27083 8.47431 5.36219 8.26512L5.7026 7.48571H13.2975L13.6379 8.26512C13.7292 8.47434 13.9337 8.59911 14.1483 8.59911C14.2226 8.59911 14.2982 8.58411 14.3708 8.55242C14.6525 8.42941 14.7811 8.10125 14.6581 7.81951L14.5123 7.48564H17.6853C17.7737 7.48564 17.8248 7.53318 17.8474 7.56153C17.8717 7.59203 17.8974 7.64243 17.8821 7.70933L15.928 16.2445C15.9085 16.3299 15.8256 16.3919 15.7311 16.3919Z"
+														fill="white"></path>
             <path
-																d="M6.16016 9.89771C5.85274 9.89771 5.60352 10.1469 5.60352 10.4543V14.5364C5.60352 14.8438 5.85274 15.093 6.16016 15.093C6.46757 15.093 6.7168 14.8438 6.7168 14.5364V10.4543C6.7168 10.1469 6.46761 9.89771 6.16016 9.89771Z"
-																fill="white"></path>
+														d="M6.16016 9.89771C5.85274 9.89771 5.60352 10.1469 5.60352 10.4543V14.5364C5.60352 14.8438 5.85274 15.093 6.16016 15.093C6.46757 15.093 6.7168 14.8438 6.7168 14.5364V10.4543C6.7168 10.1469 6.46761 9.89771 6.16016 9.89771Z"
+														fill="white"></path>
             <path
-																d="M9.5 9.89771C9.19259 9.89771 8.94336 10.1469 8.94336 10.4543V14.5364C8.94336 14.8438 9.19259 15.093 9.5 15.093C9.80741 15.093 10.0566 14.8438 10.0566 14.5364V10.4543C10.0566 10.1469 9.80741 9.89771 9.5 9.89771Z"
-																fill="white"></path>
+														d="M9.5 9.89771C9.19259 9.89771 8.94336 10.1469 8.94336 10.4543V14.5364C8.94336 14.8438 9.19259 15.093 9.5 15.093C9.80741 15.093 10.0566 14.8438 10.0566 14.5364V10.4543C10.0566 10.1469 9.80741 9.89771 9.5 9.89771Z"
+														fill="white"></path>
             <path
-																d="M12.8398 9.89771C12.5324 9.89771 12.2832 10.1469 12.2832 10.4543V14.5364C12.2832 14.8438 12.5324 15.093 12.8398 15.093C13.1473 15.093 13.3965 14.8438 13.3965 14.5364V10.4543C13.3964 10.1469 13.1473 9.89771 12.8398 9.89771Z"
-																fill="white"></path>
+														d="M12.8398 9.89771C12.5324 9.89771 12.2832 10.1469 12.2832 10.4543V14.5364C12.2832 14.8438 12.5324 15.093 12.8398 15.093C13.1473 15.093 13.3965 14.8438 13.3965 14.5364V10.4543C13.3964 10.1469 13.1473 9.89771 12.8398 9.89771Z"
+														fill="white"></path>
         </g>
         <defs>
             <clipPath>
@@ -398,226 +455,229 @@ a:hover {
             </clipPath>
         </defs>
     </svg> Thêm vào giỏ hàng
-													</a>
+											</a>
 
 
-												</div>
-											</div>
-
-											<div class="product-info">
-												<h3 class="product-name">
-													<a href="" th:title="${item.product_id.name}  "
-														th:text="${item.product_id.name}"></a>
-												</h3>
-												<div>
-													<p class="price-box" th:text="${item.price_sale} + 'đ' "></p>
-												</div>
-
-											</div>
-											<th:block th:if="${item.product_id.in_stock > 0}"
-												th:with="count=${#aggregates.sum(item.product_id.details.![is_completed ?  1 : 0])}"
-												th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
-												<p style="color: #cccce9"
-													th:text="${count != null ? count +' Đã Bán' : '0' +' Đã Bán'}"></p>
-											</th:block>
-											<th:block th:unless="${item.product_id.in_stock > 0}"
-												class="sold-out">
-												<b style="color: #cccce9" th:text="${'Đã Bán Hết'}"></b>
-											</th:block>
-										</form>
+										</div>
 									</div>
 
-								</div>
+									<div class="product-info">
+										<h3 class="product-name">
+											<a href="" th:title="${item.product_id.name}  "
+												th:text="${item.product_id.name}"></a>
+										</h3>
+										<div>
+											<p class="price-box" th:text="${item.price_sale} + 'đ' "></p>
+										</div>
+
+									</div>
+									<th:block th:if="${item.product_id.in_stock > 0}"
+										th:with="count=${#aggregates.sum(item.product_id.details.![order_status == 'HoanThanh' ?  1 : 0])}"
+										th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
+										<p style="color: #cccce9"
+											th:text="${count != null ? count +' Đã Bán' : '0' +' Đã Bán'}"></p>
+									</th:block>
+									<th:block th:unless="${item.product_id.in_stock > 0}"
+										class="sold-out">
+										<b style="color: #cccce9" th:text="${'Đã Bán Hết'}"></b>
+									</th:block>
+								</form>
 							</div>
 
-						</th:block>
-
-					</div>
-					<div class="view-more clearfix">
-						<a href="ProductSale" title="Xem tất cả">Xem tất cả</a>
-					</div>
-				</div>
-			</div>
-	</div>
-	</section>
-	<script>
-		var swiperwish = new Swiper('.product-sale-swiper', {
-			slidesPerView : 8,
-			loop : false,
-			grabCursor : true,
-			spaceBetween : 30,
-			roundLengths : true,
-			slideToClickedSlide : false,
-
-			autoplay : false,
-			breakpoints : {
-				300 : {
-					slidesPerView : 2,
-					slidesPerColumnFill : 'row',
-					slidesPerColumn : 2,
-					spaceBetween : 30
-				},
-				768 : {
-					slidesPerView : 3,
-					spaceBetween : 30
-				},
-				991 : {
-					slidesPerView : 4,
-					spaceBetween : 30
-				},
-				1200 : {
-					slidesPerView : 5,
-					spaceBetween : 30
-				}
-			}
-		});
-	</script>
-
-
-
-
-	<section class="section_product_goodprice module_product">
-		<div class="container">
-			<div class="wrap_tab_index not-dqtab e-tabs ajax-tab-2"
-				data-section-2="ajax-tab-2">
-				<div class="row">
-					<div class="col-xl-5 col-lg-4 col-md-6 col-12 block-title">
-						<h2>
-							<span>SẢN PHẨM GIÁ TỐT</span>
-						</h2>
-					</div>
-					<div class="tab_big col-xl-7 col-lg-8 col-md-6 col-12">
-						<div class="tab_ul">
-							<ul class="tabs tabs-title tab-pc tabtitle2 ajax clearfix">
-
-
-
-
-								<li class="tab-link tab_cate has-content current"
-									data-tab="tab-1" data-url="/quan-ao"><span>Quần áo</span>
-								</li>
-
-								<li class="tab-link tab_cate " data-tab="tab-2"
-									data-url="/phu-kien"><span>Phụ kiện</span></li>
-
-								<li class="tab-link tab_cate " data-tab="tab-3"
-									data-url="/giay-dep"><span>Giầy dép</span></li>
-
-								<li class="tab-link tab_cate " data-tab="tab-4"
-									data-url="/be-gai"><span>Bé gái</span></li>
-
-								<li class="tab-link tab_cate " data-tab="tab-5"
-									data-url="/be-trai"><span>Bé trai</span></li>
-
-							</ul>
-							<a class="prev3 button"> <svg
-									xmlns="http://www.w3.org/2000/svg" width="12" height="9"
-									viewBox="0 0 12 9" fill="none">
-										<path d="M4.47107 1L0.999988 4.52892L4.47107 8"
-										stroke="#AAABAB" stroke-miterlimit="10" stroke-linecap="round"
-										stroke-linejoin="round">
-										</path>
-										<path d="M6.49585 4.52905H1.05781" stroke="#AAABAB"
-										stroke-miterlimit="10" stroke-linecap="round"
-										stroke-linejoin="round"></path>
-										<path d="M10.8347 4.52905H8.80992" stroke="#AAABAB"
-										stroke-miterlimit="10" stroke-linecap="round"
-										stroke-linejoin="round"></path>
-									</svg>
-							</a> <a class="next3 button"> <svg
-									xmlns="http://www.w3.org/2000/svg" width="20" height="14"
-									viewBox="0 0 20 14" fill="none">
-										<path d="M12.4492 1L18.4492 7.09998L12.4492 13.1"
-										fill="#FFF6E8"></path>
-										<path d="M12.4492 1L18.4492 7.09998L12.4492 13.1"
-										stroke="#1C5B41" stroke-width="1.5" stroke-miterlimit="10"
-										stroke-linecap="round" stroke-linejoin="round"></path>
-										<path d="M8.94922 7.09998H18.3492" stroke="#1C5B41"
-										stroke-width="1.5" stroke-miterlimit="10"
-										stroke-linecap="round" stroke-linejoin="round">
-										</path>
-										<path d="M1.44922 7.09998H4.94922" stroke="#1C5B41"
-										stroke-width="1.5" stroke-miterlimit="10"
-										stroke-linecap="round" stroke-linejoin="round">
-										</path>
-									</svg>
-							</a>
 						</div>
 					</div>
 
-					<div class="col-lg-12 col-md-7 col-12">
+				</th:block>
+
+			</div>
+			<div class="view-more clearfix">
+				<a href="ProductSale" title="Xem tất cả">Xem tất cả</a>
+			</div>
+		</div>
+	</div>
+	</div>
+</section>
+<script>
+	var swiperwish = new Swiper('.product-sale-swiper', {
+		slidesPerView : 8,
+		loop : false,
+		grabCursor : true,
+		spaceBetween : 30,
+		roundLengths : true,
+		slideToClickedSlide : false,
+
+		autoplay : false,
+		breakpoints : {
+			300 : {
+				slidesPerView : 2,
+				slidesPerColumnFill : 'row',
+				slidesPerColumn : 2,
+				spaceBetween : 30
+			},
+			768 : {
+				slidesPerView : 3,
+				spaceBetween : 30
+			},
+			991 : {
+				slidesPerView : 4,
+				spaceBetween : 30
+			},
+			1200 : {
+				slidesPerView : 5,
+				spaceBetween : 30
+			}
+		}
+	});
+</script>
 
 
 
 
-						<div class="tab-1 tab-content current">
+<section class="section_product_goodprice module_product">
+	<div class="container">
+		<div class="wrap_tab_index not-dqtab e-tabs ajax-tab-2"
+			data-section-2="ajax-tab-2">
+			<div class="row">
+				<div class="col-xl-5 col-lg-4 col-md-6 col-12 block-title">
+					<h2>
+						<span>SẢN PHẨM Mới</span>
+					</h2>
+				</div>
 
-							<div
-								class="swiper_tab swiper-container swiper-carousel2 ajax-carousel swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events swiper-container-multirow">
-								<div class="swiper-wrapper"
-									style="width: 1284px; transform: translate3d(0px, 0px, 0px);">
+
+				<div class="col-lg-12 col-md-7 col-12">
 
 
+
+
+					<div class="tab-1 tab-content current">
+
+						<div
+							class="swiper_tab swiper-container swiper-carousel ajax-carousel swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
+							<div class="swiper-wrapper"
+								style="width: 1663px; transform: translate3d(0px, 0px, 0px);">
+
+
+
+
+								<th:block th:each="item : ${listProNew}">
 
 									<div class="item swiper-slide"
-										style="margin-top: 20px; width: 163.333px; margin-right: 20px;">
+										style="margin-top: 20px; width: 217.5px; margin-right: 20px;">
 										<div class="item_product_main">
-
 											<form action="/cart/add" method="post"
 												class="variants product-action" data-cart-form=""
 												data-id="product-actions-26182932"
 												enctype="multipart/form-data">
 												<div class="product-thumbnail">
-													<a class="image_thumb scale_hover" href="/ao-khoac-tre-em"
-														title="Áo khoác trẻ em" style="height: 163px;"> <img
-														class="lazyload"
-														src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+													<a class="image_thumb scale_hover"
+														th:href="@{/shop_info/{id}(id=${item.id})}"
+														title="Áo khoác trẻ em"
+														style="height: 218px; background-color: white;"> <img
+														class="lazyload" th:src="@{'/images/' + ${item.img}}"
 														data-src="//bizweb.dktcdn.net/thumb/large/100/455/315/products/1-jpeg.jpg?v=1653279682177"
-														alt="Áo khoác trẻ em">
+														alt="Áo khoác trẻ em"> <span class="sale-badge"
+														th:if="${item.checkSale()}"
+														th:text="${'-' + item.sale_percent + '%'}"></span> <span
+														class="new-badge" th:if="${item.checkProNew()}"
+														th:text="${'new'}"></span>
 													</a>
+
+
 
 													<div class="action d-xl-flex d-none">
 														<input class="hidden" type="hidden" name="variantId"
-															value="65670147">
-														<button class="btn-cart btn-views" title="Tùy chọn"
-															type="button"
-															onclick="window.location.href='/ao-khoac-tre-em'">
-															Tùy chọn</button>
+															value="65670147"> <a
+															style="text-decoration: none;" class="btn-cart btn-views"
+															title="Tùy chọn"
+															th:href="@{/add-to-cart/{id}(id=${item.id})}"> Thêm
+															Vào Giỏ Hàng </a>
 
 													</div>
 												</div>
 												<div class="product-info">
 													<h3 class="product-name">
-														<a href="/ao-khoac-tre-em" title="Áo khoác trẻ em">Áo
-															khoác trẻ em</a>
+														<a href="/ao-khoac-tre-em" th:text="${item.name}"></a>
 													</h3>
 													<div class="price-box">
-														150.000₫&nbsp; <span class="compare-price">200.000₫</span>
+														<p th:if="${item.checkSale()}">
+															<span th:text="${item.price}"></span>&nbsp;<span
+																class="compare-price"
+																th:text="${item.originalPrice } + 'đ'"></span>
 
+														</p>
+														<p th:unless="${item.checkSale()}"
+															th:text="${item.price + 'đ'}"></p>
 													</div>
+
 												</div>
+
+
+
+												<!-- tính dã bán  -->
+												<th:block th:if="${item.in_stock > 0}"
+													th:with="count=${#aggregates.sum(item.details.![order_status == 'HoanThanh' ? quantity : 0])}"
+													th:class="${count != null ? 'sold-out' : 'not-sold-out'}">
+													<p
+														th:text="${  count != null ? 'Đã Bán ' + count : '0 Đã Bán'}"></p>
+												</th:block>
+												<th:block th:unless="${item.in_stock > 0}" class="sold-out">
+													<b style="color: red" th:text="${'Đã Bán Hết'}"></b>
+												</th:block>
+
 											</form>
 										</div>
 									</div>
 
-								</div>
-							</div>
-							<div class="view-more clearfix">
-								<a href="sanphamnoibat" title="Xem tất cả">Xem tất cả</a>
+								</th:block>
 							</div>
 
+							<div class="" style="text-align: center;">
+								<a href="getProNew" class="btn btn-warning"
+									style="padding: 20px 70px;">Xem Tất Cả</a>
+							</div>
 						</div>
 
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
+	<br /> <br /> <br />
+</section>
+<script type="text/javascript">
+	if (typeof (Storage) !== "undefined") {
+		if (localStorage.getItem('fab-color') === null) {
+			localStorage.setItem("fab-color", "blue");
+		}
+		$('.fabs').addClass(localStorage.getItem("fab-color"));
+	} else {
+		$('.fabs').addClass("blue");
+	}
 
-		<script src="index/js/file_js.js"></script>
-		<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-		<link rel="stylesheet"
-			href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	//Fab click
+	$('#prime').click(function() {
+		toggleFab();
+	});
+
+	//Toggle chat and links
+	function toggleFab() {
+		$('.prime').toggleClass('zmdi-plus');
+		$('.prime').toggleClass('zmdi-close');
+		$('.prime').toggleClass('is-active');
+		$('#prime').toggleClass('is-float');
+		$('.chat').toggleClass('is-visible');
+		$('.fab').toggleClass('is-visible');
+
+	}
+</script>
+<div th:replace="views/footer :: footer"></div>
+<script src="index/js/chat.js"></script>
+<script src="index/js/file_js.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet"
+	href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 </body>
 
 </html>

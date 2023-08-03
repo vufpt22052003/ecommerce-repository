@@ -1,5 +1,12 @@
 package com.example.shop.model;
 
+import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -18,15 +25,27 @@ public class Comment {
 
 	private String contents;
 
-	private int uid;
+	
+	
+	@ManyToOne
+	@JsonManagedReference
+	@JoinColumn(name = "uid")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Thêm annotation này
+	private Users uid;
 
-	private String create_date;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date create_date;
 
-	private String updated_at;
+	private int rating;
 
 	@ManyToOne
+	@JsonManagedReference
 	@JoinColumn(name = "product_id")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Thêm annotation này
 	private Products product_id;
 
-}
+	@OneToMany(mappedBy = "coment_id")
+	@JsonIgnore
+	private List<coment_photo> cmt_photo;
 
+}

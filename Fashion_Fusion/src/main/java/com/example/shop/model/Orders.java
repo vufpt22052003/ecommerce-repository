@@ -3,7 +3,7 @@ package com.example.shop.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Table;
+import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,7 +34,7 @@ public class Orders {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonManagedReference
+	@JsonIgnore
 	private Users user_id;
 
 	private String created_at;
@@ -46,7 +46,11 @@ public class Orders {
 	List<Order_details> order_details;
 
 	@ManyToOne
-	@JoinColumn(name ="adres_id")
+	@JoinColumn(name = "adres_id")
 	private Address adres_id;
+
+	private String Notes;
+	private String transport;
+	private boolean payment_status;
 
 }

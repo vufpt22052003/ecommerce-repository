@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.shop.DAO.SaleDAO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
 
@@ -60,23 +61,18 @@ public class Products {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_day;
 
-//	public boolean checkProNew() {
-//	    if (this.getCreated_day() == null) {
-//	        return false; // hoặc giá trị mặc định khác tuỳ thuộc vào yêu cầu của bạn
-//	    }
-//
-//	    Date currentDate = new Date();
-//	    Calendar calendar = Calendar.getInstance();
-//	    calendar.setTime(currentDate);
-//	    calendar.add(Calendar.DAY_OF_MONTH, -7);
-//	    Date startDateMinus7Days = calendar.getTime();
-//	    
-//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-//	    String formattedStartDate = dateFormat.format(startDateMinus7Days);
-//	    System.out.println(formattedStartDate);
-//
-//	    return this.getCreated_day().before(startDateMinus7Days);
-//	}
+	public boolean checkProNew() {
+		if (this.getCreated_day() == null) {
+			return false; // hoặc giá trị mặc định khác tuỳ thuộc vào yêu cầu của bạn
+		}
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -7); // trừ 7 ngày
+		Date startDateMinus7Days = calendar.getTime();
+
+		return this.getCreated_day().after(startDateMinus7Days);
+	}
+
 	@Transient
 	private boolean checkIsSale; // biến kiểm tra id đó có sale k (bên controller)
 
@@ -102,8 +98,6 @@ public class Products {
 		}
 		return 0;
 	}
-
-
 
 	@Transient
 	public int sale_percent; // biến lưu % giảm giá
@@ -137,7 +131,7 @@ public class Products {
 					double discountPercentage = (price_product - price_sale) / price_product * 100;
 					sale_percent = (int) discountPercentage;
 				}
-
+				checkIsSale = true;
 				foundSale = true;
 
 				break;
@@ -163,10 +157,12 @@ public class Products {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonIgnore
+	//@JsonIgnore
 	private Users user_id;
 
 	@OneToMany(mappedBy = "product_id")
+	@JsonBackReference
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Thêm annotation này
 	@JsonIgnore
 	List<Comment> comment;
 

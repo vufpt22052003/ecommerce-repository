@@ -19,7 +19,7 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 
 	@Query(value = "SELECT * FROM Products WHERE price <= ?;", nativeQuery = true)
 	Page<Products> ByPriceASC(Pageable pageable, double price);
-	
+
 	@Query(value = "select * from Products where price >= ?", nativeQuery = true)
 	Page<Products> ByPriceDESC(Pageable pageable, double price);
 
@@ -40,7 +40,19 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 
 	// lấy danh sách sp theo uses
 	@Query("SELECT p FROM Products p WHERE p.user_id.id = ?1 ORDER BY p.id DESC")
-	Page<Products> finAllByUser(Pageable pageable, int uid);
+Page<Products> finAllByUser(Pageable pageable, int uid);
+
+	// lấy danh sách sp theo uses
+	@Query(value = "SELECT * FROM ( " +
+	        "    SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum " +
+	        "    FROM Products " +
+	        "    WHERE user_id = ?1 " +
+	        ") AS SubQuery " +
+	        "WHERE RowNum > 1 " +
+	        "ORDER BY RowNum " +
+	        "OFFSET ?2 ROWS " +
+	        "FETCH NEXT ?3 ROWS ONLY", nativeQuery = true)
+	List<Products> getProductByUser(int userId, int offset, int limit);
 
 	// lấy danh sách khi tim kiếm
 	@Query("SELECT p FROM Products p WHERE p.name LIKE %:keyword%")
@@ -50,11 +62,17 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 	@Query("SELECT p from Products p where p.category.id = ?1")
 	Page<Products> getProByCatoId(Pageable pageable, int id);
 
-	@Query("SELECT p FROM Products p ORDER BY p.id DESC")
-	List<Products> findTop8Products(Pageable pageable);
+	@Query(value = "SELECT * FROM Products ORDER BY id DESC LIMIT 8", nativeQuery = true)
+	List<Products> findTop8Products();
 
 	// lấy danh sách với điều kiện danhf cho ai ( nam nữ trẻ em )
 	@Query(value = " select * from Products where target_audience = ?", nativeQuery = true)
 	Page<Products> findByTargetAudience(Pageable pageable, String target_aud);
+
+	// lấy sp mới
+	@Query(value = "SELECT * FROM Products\r\n"
+			+ "WHERE created_day >= DATEADD(DAY, -7, CONVERT(DATETIME, CONVERT(DATE, GETDATE()), 101));\r\n"
+			+ "", nativeQuery = true)
+	Page<Products> getProNew(Pageable pageable);
 
 }

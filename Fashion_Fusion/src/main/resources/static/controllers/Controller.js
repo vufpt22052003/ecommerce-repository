@@ -4,8 +4,23 @@ var app = angular.module('MyApp', []);
 // phía sản phẩm
 app.controller('PorductController', ['$http', '$scope', '$rootScope', function($http, $scope, $rootScope) {
 	$scope.currentPage = 0; // Trang hiện tại
-	$scope.pageSize = 5; // Số sản phẩm hiển thị trên mỗi trang
+	$scope.pageSize = 7; // Số sản phẩm hiển thị trên mỗi trang
 	$scope.totalItems = 0; // Tổng số sản phẩm
+
+	// Hàm thay đổi trang
+	$scope.goToNextPage = function(page) {
+		$scope.currentPage = $scope.currentPage + 1;
+		$scope.loadData();
+	};
+
+
+	$scope.goToFirstPage = function() {
+		$scope.currentPage = 0;
+		// Gọi hàm để tải dữ liệu cho trang đầu tiên tại đây
+		$scope.loadData();
+	};
+
+
 
 	// Hàm thay đổi trang
 	$scope.changePage = function(page) {
@@ -17,7 +32,8 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 	$rootScope.data = []
 	$scope.day = false
 	$scope.loadData = function() {
-		$http.get('api/listProByUs/' + $scope.currentPage)
+
+		$http.get('/api/listProByUs/' + $scope.currentPage)
 			.then(function(response) {
 				$rootScope.data = response.data.content; // Dữ liệu sản phẩm
 				$scope.totalItems = response.data.totalElements; // Cập nhật tổng số sản phẩm
@@ -62,6 +78,7 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 
 
 	$scope.ShowPro = function(id) {
+
 		$scope.dataProDTO = {}
 		$http({
 			method: 'GET',
@@ -75,6 +92,7 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 		});
 	}
 	$scope.ShowPro();
+
 
 	$rootScope.getSaleById = function(id) {
 
@@ -292,20 +310,96 @@ app.controller('statisticsCtrl', ['$http', '$scope', '$rootScope', function($htt
 // order
 app.controller('OrderController', ['$http', '$scope', '$rootScope', function($http, $scope, $rootScope) {
 
-	// phía ng dùng
+
+	$scope.postCmt = function() {
+		var comment = $scope.comment;
+		var rating = $scope.rating;
+
+		var pid = $scope.selectedProduct.id; // Đọc giá trị selectedProduct.id
+		console.log(pid);
+
+		var detailsId = $scope.selectedProduct.detailsId;
+		var images = $('#imageInput')[0].files;
+
+		var formData = new FormData();
+
+		for (var i = 0; i < images.length; i++) {
+			var file = images[i];
+
+			// Lưu trữ file ảnh
+			formData.append('images[]', file, file.name);
+		}
+		formData.append('comment', comment);
+		formData.append('ProductId', pid);
+		formData.append('detailsId', detailsId);
+		formData.append('rating', rating);
+
+
+		$.ajax({
+			url: "/api/postComment",
+			method: "POST",
+			data: formData,
+			contentType: false,
+			processData: false,
+			success: function(response) {
+				console.log("Success:", response);
+				$('#reviewModal').modal('hide'); // Đóng modal
+				$scope.loadData($scope.information);
+
+				// Hiển thị thông báo xác nhận thành công
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: 'Cảm Ơn Bạn Đã Đánh Giá',
+					showConfirmButton: false,
+					timer: 1500
+				});
+				document.getElementById("myForm").reset();
+
+
+			},
+			error: function(xhr, status, error) {
+				var errorMessage = xhr.responseJSON.message;
+				if (xhr.status === 400) {
+					errorMessage = "Đã có lỗi xảy ra, không thể xác nhận đơn hàng.";
+				}
+
+				// Hiển thị thông báo lỗi
+				Swal.fire({
+					icon: 'error',
+					title: 'Đã Có Lỗi Xảy Ra',
+					text: 'Đánh Giá Thất Bại',
+
+				})
+			}
+		});
+	};
+
+	$scope.testPlugin = function() {
+		$.toast({
+			heading: 'Xác nhận thành công',
+			text: 'Đơn hàng đã được xác nhận.',
+			position: 'top-right',
+			icon: 'success'
+		});
+	}
+
 	$scope.information = 'pending';
-	$scope.data = [];
+	// phía ng dùng
 	$scope.loadData = function(type) {
-		$scope.information = type
+
+		$scope.information = type;
 		if (type === 'cancel') {
-			$scope.classify = false
+			$scope.classify = false;
 		} else {
-			$scope.classify = true
+			$scope.classify = true;
 		}
 		$http.get('/api/OrderStatus?type=' + type)
 			.then(function(response) {
+				response.data.reverse(); // Đảo ngược mảng response.data
 				$scope.data = response.data;
 
+				$scope.selectedProduct = response.data
 			})
 			.catch(function(error) {
 				console.error('Error:', error);
@@ -315,33 +409,52 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 
 	$scope.loadData($scope.information);
 
+	$scope.openModal = function(item, itemAll) {
 
-	$scope.openModal = function(item) {
-		$scope.selectedProduct = item;
+		if (itemAll === 'itemAll') {
+			$scope.selectedProduct = item;
+		}
+
+		if (itemAll === 'itemCofirmed') {
+			$scope.selectedProduct = item;
+		}
+
+		if (itemAll === 'cancel') {
+			$scope.selectedProduct = item;
+		}
 	};
+
 
 	/////////end///////////
 
 
 	//////////////// phía admin
 	$scope.details = [];
-	$scope.selectType = "all";
+	$scope.selectType = "DangCho";
+	$scope.countDay = 0;
 
-
-	$scope.countDay = 0
 	$scope.loadDetails = function(type) {
 		$http.get('/api/getOrderDetails?type=' + type)
 			.then(function(response) {
 				$scope.details = response.data;
 				$scope.details.reverse(); // Đảo ngược thứ tự của mảng details để lấy đơn hàng mới
-				console.log(response.data)
+				console.log(response.data);
 				var currentDate = moment().format('YYYY-MM-DD HH:mm:ss');
 				for (var i = 0; i < response.data.length; i++) {
 					var createdDate = moment(response.data[i].created_at);
 					if (createdDate.isSame(currentDate, 'day')) {
-						$scope.countDay++
+						$scope.countDay++;
+						console.log($scope.details)
 					}
 				}
+
+				// Nhiều điều kiện trong toán tử 3 ngôi
+				$scope.status =
+					($scope.selectType == 'DangCho') ? "Đang Chờ" :
+						($scope.selectType == 'ChuanBi') ? "Chuẩn Bị Hàng" :
+							($scope.selectType == 'BanGiaoVanChuyen') ? "Đã Bàn Giao Cho Vận Chuyển" :
+								($scope.selectType == 'HuyDon') ? "Đơn Đã Bị Hủy" :
+									($scope.selectType == 'HoanThanh') ? "Đơn Hàng Thành Công" : "";
 
 			})
 			.catch(function(error) {
@@ -352,14 +465,13 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 	$scope.loadDetails($scope.selectType); // Gọi hàm loadDetails với type ban đầu
 
 
-
 	/////////////////////////////////////
 
 	$scope.confirm = function(id) {
 		// Hiển thị hộp thoại xác nhận
 		Swal.fire({
 			title: 'Xác nhận',
-			text: 'Bạn có muốn xác nhận đơn hàng này?',
+			text: 'Bạn có muốn xác nhận đơn hàng này đã hoàn thành?',
 			icon: 'info',
 			showCancelButton: true,
 			confirmButtonText: 'Yes',
@@ -407,6 +519,34 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 		});
 	};
 
+	$scope.update_status = function(orderId) {
+		// Lấy giá trị đã chọn từ biến selectedStatus
+		var selectedStatus = $scope.selectedStatus;
+		// Thực hiện các xử lý cập nhật thông tin đơn hàng tại đây, sử dụng selectedStatus và orderId
+
+		// Ví dụ:
+		console.log("Mã đơn hàng:", orderId);
+		console.log("Trạng thái đã chọn:", selectedStatus);
+
+		$.ajax({
+			url: "/api/update_status",
+			type: "POST",
+			data: {
+				orderId: orderId,
+				selectedStatus: selectedStatus,
+			},
+			success: function(data) {
+				$scope.loadDetails($scope.selectType);
+				$scope.loadData($scope.information);
+
+			},
+			error: function(xhr, status, error) {
+				console.log(error);
+			}
+		});
+	};
+
+
 
 	$scope.cancel = function(id, cancel) {
 		// Hiển thị hộp thoại xác nhận
@@ -449,7 +589,15 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 			}
 		});
 	};
+	$scope.finById = function(id, name, img, detailsId) {
+		$scope.selectedProduct = {
+			id: id,
+			name: name,
+			img: img,
+			detailsId: detailsId
+		};
 
 
+	};
 
 }]);

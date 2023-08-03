@@ -7,7 +7,7 @@ function getCart() {
 		type: "GET",
 		dataType: "json",
 		success: function(response) {
-
+			response.reverse();
 			var cartList = response;
 			var table = $("#table_cart");
 
@@ -41,11 +41,16 @@ function getCart() {
 				var cell2 = $("<td>").html(`
 					<td class="product__cart__item">
 						<div class="product__cart__item__pic">
-							<img src="images/${cartItem.product_id.img}" class="contain" alt="" style="height:120px;width:120px;object-fit: contain;margin-left: 20px;">
+							<img src="images/${cartItem.product_id.img}" class="contain" alt="" style="height:155px;width:120px;object-fit: contain;margin-left: 20px;">
 						</div>
 						<div class="product__cart__item__text">
 							<h6>${cartItem.product_id.name}</h6>
 							<h5>$${cartItem.product_id.price.toFixed(2)}</h5>
+							<span > ${cartItem.color != null ? 'Màu : ' + cartItem.color : ''}</span>
+							<br />
+							<span> ${cartItem.size != null ? 'Kích Cở ' + cartItem.size : ''}<span>
+							<input type="hidden" value="${cartItem.size}" name="size"/>
+							<input type="hidden" value="${cartItem.color}" name="color"/>
 						</div>
 					</td>
 				`);
@@ -59,12 +64,16 @@ function getCart() {
 						</div>
 					</td>
 				`);
+
 				var cell4 = $("<td>").text(`$ ${(cartItem.product_id.price * cartItem.quantity).toFixed(2)}`);
+				var cell6 = $("<td>").text(`$ ${(cartItem.product_id.price * cartItem.quantity).toFixed(2)}`);
+
 				var cell5 = $("<td>").html(`
 					<td class="cart__close">
 						<i onclick="del(${cartItem.id})" class="fa fa-close"></i>
 					</td>
 				`);
+
 
 				newRow.append(cell1, cell2, cell3, cell4, cell5);
 
@@ -79,7 +88,8 @@ function getCart() {
 	});
 }
 
-// check giá tiền
+// check giá tiềnvar totalCount = 0; // Biến toàn cục
+
 function checkPrice() {
 	var checkboxes = document.querySelectorAll('input[name="check[]"]:checked');
 	var totalPrice = 0;
@@ -92,6 +102,8 @@ function checkPrice() {
 		count++;
 		exits = true;
 	}
+	totalCount = count; // Gán giá trị count vào biến toàn cục totalCount
+
 	if (exits) {
 		document.getElementById("totalPrice").innerHTML = "Tổng Thanh Toán (" + count + ") Sản Phẩm ₫" + totalPrice.toFixed(2);
 		document.getElementById("delCart").innerHTML = "Xóa (" + count + ") Sản Phẩm ";
@@ -99,7 +111,6 @@ function checkPrice() {
 	} else {
 		document.getElementById("btnDelCart").style.display = "none";
 		uncheckAll()
-
 	}
 }
 
@@ -107,14 +118,27 @@ function checkPrice() {
 // reset bỏ chọn các ô
 function update_cart() {
 	var checkboxes = document.querySelectorAll(".checkPrice");
+	var checkAll = document.querySelector(".textAll");
+	var checkedCheckbox = document.getElementById("checked");
+
 	for (var i = 0; i < checkboxes.length; i++) {
 		checkboxes[i].checked = false;
-		checkPrice()
 	}
+
+	if (checkAll) {
+		checkAll.checked = false;
+	}
+
+	if (checkedCheckbox) {
+		checkedCheckbox.checked = false;
+	}
+
+	checkPrice();
 }
 
+
 // chuyển qua trang mua hàng
-function Purchase() {
+function Purchase(event) {
 	var checkboxes = document.querySelectorAll(".checkPrice");
 	var uncheckedCount = 0;
 
@@ -125,21 +149,22 @@ function Purchase() {
 	}
 
 	if (uncheckedCount === checkboxes.length) {
-		alert("Please select at least one checkbox.");
-		return;
+		alert("Vui Lòng Chọn Sản Phẩm Muốn Mua");
+		event.preventDefault(); // Ngăn chặn sự kiện mặc định của form
 	}
-
 }
+
 
 //chọn tất cả
 function checkAll() {
 	var checkboxes = document.querySelectorAll(".checkPrice");
-	var count = 0;
 	for (var i = 0; i < checkboxes.length; i++) {
 		checkboxes[i].checked = true;
 		checkPrice()
 		count = checkboxes.length;
 	}
+	totalCount = count; // Gán giá trị count vào biến toàn cục totalCount
+
 	document.getElementById("textAll").innerHTML = "Chọn Tất Cả" + " (" + count + ") Sản Phẩm";
 }
 
@@ -202,30 +227,50 @@ function del(id) {
 	});
 }
 
-function deleteSelected() {
-	var checkboxes = document.querySelectorAll('input.checkPrice[name="check[]"]:checked');
-	var selectedIds = [];
-	var tbodys = document.getElementById("myTbody");
-	for (var i = 0; i < checkboxes.length; i++) {
-		var checkbox = checkboxes[i];
-		var id = checkbox.value;
-		var cartId = checkbox.getAttribute('data-cart-id'); // Lấy giá trị ID cart từ thuộc tính data
-		selectedIds.push(cartId);
-	}
 
-	$.ajax({
-		url: "/deleteSelected",
-		type: "POST",
-		dataType: "json",
-		data: {
-			selectedIds: selectedIds,
-		},
-		success: function(response) {
-			$(tbodys).empty(); // Xóa dữ liệu cũ trong tbody bằng jQuery
-			getCart();
-		},
-		error: function(xhr, status, error) {
-			console.log(error);
+function deleteSelected() {
+	Swal.fire({
+		title: 'Xóa Sản Phẩm Trong Giỏ Hàng ?',
+		text: "Xóa " + totalCount + " Sản Phẩm Có Trong Giỏ Hàng", // Biến toàn cục
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes, delete it!'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			Swal.fire(
+				'Deleted!',
+				'Your file has been deleted.',
+				'success'
+			).then(() => {
+				var checkboxes = document.querySelectorAll('input.checkPrice[name="check[]"]:checked');
+				var selectedIds = [];
+
+				var tbodys = document.getElementById("myTbody");
+
+				for (var i = 0; i < checkboxes.length; i++) {
+					var checkbox = checkboxes[i];
+					var id = checkbox.value;
+					var cartId = checkbox.getAttribute('data-cart-id'); // Lấy giá trị ID cart từ thuộc tính data
+					selectedIds.push(cartId);
+				}
+
+				$.ajax({
+					url: "/deleteSelected",
+					type: "POST",
+
+					data: {
+						selectedIds: selectedIds,
+					},
+					success: function(response) {
+						getCart();
+					},
+					error: function(xhr, status, error) {
+						console.log(error);
+					}
+				});
+			});
 		}
 	});
 }

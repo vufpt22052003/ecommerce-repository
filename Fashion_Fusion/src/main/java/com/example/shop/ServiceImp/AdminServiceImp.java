@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.shop.DAO.CategoryDAO;
 import com.example.shop.DAO.ColorDAO;
@@ -21,7 +22,6 @@ import com.example.shop.model.Products;
 import com.example.shop.model.Sale;
 import com.example.shop.model.Size;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class AdminServiceImp implements AdminService {

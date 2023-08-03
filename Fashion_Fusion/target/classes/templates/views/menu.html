@@ -1,4 +1,9 @@
+<style>
 
+a {
+	text-direction: none !important;
+}
+</style>
 <div th:fragment="menu">
 
 	<header class="header">
@@ -75,7 +80,8 @@
 									class="input-group-field st-default-search-input search-text"
 									autocomplete="off" required=""> <span
 									class="input-group-btn custom-span">
-									<button type="submit" class="btn icon-fallback-text">
+									<button type="submit" class="btn icon-fallback-text"
+										id="btnShearch">
 										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 											<path
 												d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg>
@@ -155,8 +161,8 @@
 					</div>
 					<nav class="header-nav">
 						<ul class="item_big">
-							<li class="nav-item active "><a class="a-img" href="/index"
-								title="Trang chủ"> Trang chủ </a></li>
+							<li class="nav-item "><a class="a-img" th:href="@{/page}">Shop</a></li>
+
 							<li class="nav-item "><a class="a-img caret-down" href=""
 								title="Sản phẩm"> Sản phẩm </a> <i class="fa fa-caret-down"></i>
 								<ul class="item_small">
@@ -164,26 +170,27 @@
 											Sản phẩm nổi bật </a> <i class="fa fa-caret-down"></i>
 										<ul>
 											<li><a
-												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='1')}"
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? 0 : '0'}__/{cato}(cato='1')}"
 												title="Quần áo" class="a3"> Quần áo </a></li>
 
 											<li><a href="/giay-dep"
-												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='2')}"
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? 0 : '0'}__/{cato}(cato='2')}"
 												title="Giày dép" class="a3"> Giày dép </a></li>
 
 											<li><a href="/be-gai"
-												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='16')}"
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? 0 : '0'}__/{cato}(cato='16')}"
 												title="Bé gái" class="a3">Mũ Nón</a></li>
 											<li><a href="/be-trai"
-												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? '0/' : ''}__{cato}(cato='17')}"
+												th:href="@{/getCatogery/__${(i != null && i.isPresent()) ? 0 : '0'}__/{cato}(cato='17')}"
 												title="Bé trai" class="a3">Ba Lô Túi Xách</a></li>
 										</ul></li>
 									<li><a class="" href="/getHotTrend"
 										title="Sản phẩm hot trend"> Sản phẩm hot trend </a></li>
 									<li><a class="" href="/ProductSale"
 										title="Sản phẩm khuyến mãi"> Sản phẩm khuyến mãi </a></li>
+									<li><a class="" href="/getProNew" title="Sản phẩm mới">
+											Sản phẩm Mới </a></li>
 								</ul></li>
-							<li class="nav-item "><a class="a-img" th:href="@{/page}">Shop</a></li>
 							<!-- i.isPresent() kiểm tra có nulll hay k -->
 							<li class="nav-item "><a class="a-img" href="/be-trai"
 								title="Bé trai"
@@ -193,22 +200,28 @@
 								th:href="@{/audiences/__${(i != null && i.isPresent()) ? 0 : '0'}__/nữ}"
 								title="Nữ">Thời Trang Nữ</a></li>
 
-							<li class="nav-item"><a class="a-img"
+							<li th:if="${session.acc != null}" class="nav-item"><a
+								class="a-img"
 								th:href="@{/audiences/__${(i != null && i.isPresent()) ? 0 : '0'}__/trẻ_em}"
 								title="Bé gái"> Trẻ Em </a></li>
+							<li class="nav-item"><a class="a-img" href="/CouponHunter"
+								title="Bé gái"> Săn Phiếu Giảm Giá </a></li>
+
+
 
 							<li th:if="${session.acc != null}" class="nav-item "><a
 								class="a-img caret-down" href="" title="Sản phẩm"> Tài Khoản</a>
 								<ul class="item_small">
-									<li class="nav-item "><a class="a-img" href="/adres">Địa
-											Chỉ</a></li>
 									<li class="nav-item "><a class="a-img" href="/MyOrders">Quản
 											Lý Đơn Hàng</a></li>
+									<li class="nav-item "><a class="a-img" href="/adres">Địa
+											Chỉ</a></li>
+
 
 
 									<li class="nav-item "><a class="a-img"
 										href="/manageAcount">Tài Khoản Của Tôi</a></li>
-									<li class="nav-item "><a class="a-img" href="/homeAdmin"
+									<li class="nav-item "><a class="a-img" href="/Admin/homeAdmin"
 										target="_blank">Kênh Người Bán</a></li>
 								</ul></li>
 					</nav>

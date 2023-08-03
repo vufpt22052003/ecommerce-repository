@@ -38,12 +38,14 @@ public class AdresController {
 
 			@RequestParam(value = "idAdres", required = false) Integer idAdres,
 			@RequestParam(value = "old_adres", required = false) String old_adres) {
+		Users acc = (Users) session.getAttribute("acc");
+		if (acc == null) {
+			return "views/login";
+		}
 		ArrayList<Address> getAll = (ArrayList<Address>) adresServiceImp.findAll();
 
 		String fullAddress = ward + ", " + district + ", " + province;
 		adres.setAdress(fullAddress);
-
-		Users acc = (Users) session.getAttribute("acc");
 		int id = acc.getId();
 		adres.setUid(id);
 
@@ -81,5 +83,4 @@ public class AdresController {
 		return "redirect:/adres";
 	}
 
-	
 }

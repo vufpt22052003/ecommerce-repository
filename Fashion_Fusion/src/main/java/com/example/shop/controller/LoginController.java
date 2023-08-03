@@ -1,12 +1,19 @@
 package com.example.shop.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,9 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.shop.DAO.LoginDAO;
+import com.example.shop.DAO.UsersDAO;
 import com.example.shop.Service.EmailService;
 import com.example.shop.Service.LoginService;
+import com.example.shop.Service.UserService;
 import com.example.shop.ServiceImp.LoginServiceImp;
 import com.example.shop.model.Users;
 
@@ -24,7 +32,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
 @Controller
 public class LoginController {
@@ -33,7 +40,7 @@ public class LoginController {
 	HttpServletRequest request;
 
 	@Autowired
-	LoginDAO logindao;
+	UsersDAO logindao;
 	@Autowired
 	LoginServiceImp loginServiceImp;
 	@Autowired
@@ -42,11 +49,14 @@ public class LoginController {
 	HttpSession session;
 	@Autowired
 	EmailService emailService;
+	@Autowired
+	UserService userService;
 
-	@GetMapping({ "/login", "/logout" })
+	@GetMapping({ "/login" })
 	public String Login() {
 		String url = request.getRequestURL().toString();
 		if (url.contains("login")) {
+
 			return "views/login";
 		}
 		if (url.contains("logout")) {
@@ -60,32 +70,44 @@ public class LoginController {
 
 	}
 
-	@PostMapping("/sign_in")
-	public String login(@ModelAttribute("model") Users account, Model model, HttpServletRequest request) {
-//		String referer = request.getHeader("Referer");
-//		System.out.println(referer);
-		Users acc = loginServiceImp.checkLogin(account.getPass(), account.getSdt());
-		if (acc != null) {
-			session.setAttribute("acc", acc);
-			/*
-			 * if (referer != null && !referer.isEmpty()) { return "redirect:" + referer; }
-			 * else { return "redirect:/index"; }
-			 */
-		} else {
-			List<Users> list = logindao.findAll();
-			for (Users item : list) {
-				if (item.getSdt() != account.getSdt()) {
-					model.addAttribute("error", "Số Điện Thoại Không Đúng");
-				}
-				if (item.getPass() != account.getPass()) {
-					model.addAttribute("error", "Mật Khẩu Không Đúng");
-				}
-			}
-			return "redirect:/login";
-		}
+	@PostMapping("/login")
+	public String login(HttpServletRequest request, @ModelAttribute("model") Users account) {
+		UserDetails userDetails = userService.loadUserByUsername(account.getSdt());
 
-		return "redirect:/index";
+		// Lưu thông tin người dùng vào session
+		HttpSession session = request.getSession();
+
+		session.setAttribute("acc", userDetails);
+
+		return "redirect:/login"; // Chuyển hướng đến trang chính sau khi đăng nhập thành công
 	}
+
+//	@PostMapping("/login")
+//	public String login(@ModelAttribute("model") Users account, Model model, HttpServletRequest request) {
+////		String referer = request.getHeader("Referer");
+////		System.out.println(referer);
+//		Users acc = loginServiceImp.checkLogin(account.getPass(), account.getSdt());
+//		if (acc != null) {
+//			session.setAttribute("acc", acc);
+//			/*
+//			 * if (referer != null && !referer.isEmpty()) { return "redirect:" + referer; }
+//			 * else { return "redirect:/index"; }
+//			 */
+//		} else {
+//			List<Users> list = logindao.findAll();
+//			for (Users item : list) {
+//				if (item.getSdt() != account.getSdt()) {
+//					model.addAttribute("error", "Số Điện Thoại Không Đúng");
+//				}
+//				if (item.getPass() != account.getPass()) {
+//					model.addAttribute("error", "Mật Khẩu Không Đúng");
+//				}
+//			}
+//			return "redirect:/login";
+//		}
+//
+//		return "redirect:/index";
+//	}
 
 	// Gửi email
 	@PostMapping("/sendEmail")
@@ -136,7 +158,7 @@ public class LoginController {
 	@PostMapping("/sign_up")
 	public ResponseEntity<String> signUp(@RequestParam("newName") String newName,
 			@RequestParam("newPass") String newPass, @RequestParam("newEmail") String newEmail,
-			@RequestParam("newSdt") int newSdt) {
+			@RequestParam("newSdt") String newSdt) {
 		List<Users> list = logindao.findAll();
 		for (Users item : list) {
 			if (item.getSdt() == newSdt) {
@@ -146,10 +168,18 @@ public class LoginController {
 
 		Users us = new Users();
 		us.setUs(newName);
-		us.setPass(newPass);
+
 		us.setEmail(newEmail);
-		us.setIs_admin(false);
+		us.setRole(false);
 		us.setSdt(newSdt);
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String formatDateTime = now.format(formatter);
+		us.setCreate_day(formatDateTime);
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(newPass);
+		us.setPass(hashedPassword);
 		logindao.save(us);
 
 		return ResponseEntity.ok("Đăng Ký Thành Công");

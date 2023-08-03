@@ -56,7 +56,7 @@ public class ProductAPI {
 			@RequestParam(value = "type", defaultValue = "all") String type) throws ParseException {
 
 		List<Sale> list = null;
- 		// lấy ngày hiện tại
+		// lấy ngày hiện tại
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date currentDate = new Date();
 		String formattedDate = formatter.format(currentDate);
@@ -78,7 +78,6 @@ public class ProductAPI {
 	// xoa sale
 	@RequestMapping("/api/delSale")
 	public ResponseEntity<Void> delSale(@RequestParam("id") int sid) {
-		System.out.println(sid + "sid");
 		saleDAO.deleteById(sid);
 		return new ResponseEntity<>(HttpStatus.OK);
 
@@ -87,9 +86,9 @@ public class ProductAPI {
 	// api sản phẩm
 	@GetMapping("api/listProByUs/{i}")
 	public ResponseEntity<Page<Products>> finAllByUser(@PathVariable("i") Optional<Integer> i) {
-		Pageable pageable = PageRequest.of(i.orElse(0), 5);
+		Pageable pageable = PageRequest.of(i.orElse(0), 7);
 
-		Page<Products> list = productsServiceImp.finAllByUser(pageable, 1);
+		Page<Products> list = productsServiceImp.finAllByUser(pageable);
 		// Xử lý dữ liệu và gán giá trị cho thuộc tính checkSale
 		for (Products product : list) {
 			boolean hasSale = product.checkSale() == false;
@@ -112,6 +111,14 @@ public class ProductAPI {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+//	// lấy ra dannh sách product bao gôm ảnh và catogery theo id product
+//	@GetMapping("api/Pronew")
+//	public ResponseEntity<List<Products>> newPro() {
+//		Pageable pageable = PageRequest.of(0, 12);
+//		List<Products> list = productsServiceImp.getProNew(pageable);
+//		return ResponseEntity.ok(list);
+//	}
 
 	// timf id sale
 	@GetMapping("/api/getSaleById")
@@ -143,7 +150,6 @@ public class ProductAPI {
 		return new ResponseEntity<>(total, HttpStatus.OK);
 	}
 
-	
 	// viet api cho catogery
 	@GetMapping("/api/category")
 	public ResponseEntity<List<Category>> getCategory() {

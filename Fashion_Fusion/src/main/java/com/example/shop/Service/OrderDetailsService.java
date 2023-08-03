@@ -22,4 +22,10 @@ public interface OrderDetailsService {
 
 	void cancelOrder(int id, String cancel);
 
+	void update_status(String status, int id);
+
+	List<Order_details> getOderStatus(String status);
+
+	List<Order_details> getOderStatusTransport(String status);
+
 }

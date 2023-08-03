@@ -85,6 +85,11 @@
 	media="screen and (min-width: 481px)">
 </head>
 <style>
+.container {
+	padding-left: initial;
+	padding-right: initial;
+}
+
 a {
 	text-decoration: none !important;
 	color: #336087
@@ -100,67 +105,8 @@ a:hover {
 	width: 600px;
 }
 
-.button {
-	display: inline-block;
-	padding: 10px 20px;
-	background-color: #4CAF50;
-	color: white;
-	text-align: center;
-	text-decoration: none;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
-	margin-right: 10px;
-}
-
-.button:hover {
-	background-color: #45a049;
-}
-
-.description {
-	height: 60px;
-	background-color: rgba(0, 0, 0, .02);
-	padding: 20px;
-}
-
-button span {
-	display: block;
-	margin-left: 0.3em;
-	transition: all 0.3s ease-in-out;
-}
-
-button svg {
-	display: block;
-	transform-origin: center center;
-	transition: transform 0.3s ease-in-out;
-}
-
-button:hover .svg-wrapper {
-	animation: fly-1 0.6s ease-in-out infinite alternate;
-}
-
-button:hover svg {
-	transform: translateX(1.2em) rotate(45deg) scale(1.1);
-}
-
-button:hover span {
-	transform: translateX(5em);
-}
-
-button:active {
-	transform: scale(0.95);
-}
-
-.inputShearch {
-	width: 202px;
-}
-
-.search-switch {
-	background: whitesmoke;
-}
-
-.btn {
-	margin-left: 105px;
+#btnShearch {
+	margin-left: 115px;
 	margin-bottom: 20px;
 }
 
@@ -219,9 +165,149 @@ a {
 .icon {
 	margin-right: 5px;
 }
+
+.comment-box {
+	margin-bottom: 20px;
+	padding: 10px;
+	background-color: #fdfdfd;
+}
+
+.avatar-img {
+	width: 80px;
+	border-radius: 100%;
+}
+
+.comment-name {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.comment-date {
+	color: #888;
+}
+
+.comment-content {
+	margin-top: 5px;
+}
+
+.rating-stars {
+	display: inline-block;
+	color: gold;
+}
+
+.star {
+	font-size: 24px;
+}
+
+.image-container {
+	position: relative;
+	display: inline-block;
+}
+
+.image-wrapper {
+	position: relative;
+	display: inline-block;
+}
+
+.large-image {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 999;
+	display: none;
+	width: 500px;
+}
+
+.customer-info {
+	display: flex;
+	align-items: center;
+}
+
+.customer-info .name {
+	margin-right: 10px;
+}
+
+.name {
+	color: rebeccapurple;
+}
+
+.containerButton {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap; /* Thêm thuộc tính flex-wrap */
+}
+
+.radio-tile-group {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.radio-tile-group .input-container {
+	position: relative;
+	height: 40px;
+	margin: 0.5rem;
+}
+
+.radio-tile-group .input-container .radio-button {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	cursor: pointer;
+}
+
+.radio-tile-group .input-container .radio-tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	border: 2px solid #079ad9;
+	border-radius: 5px;
+	padding: 1rem;
+	transition: transform 300ms ease;
+}
+
+.radio-tile-group .input-container .icon svg {
+	fill: #079ad9;
+}
+
+.radio-tile-group .input-container .radio-tile-label {
+	text-align: center;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: #079ad9;
+}
+
+.radio-tile-group .input-container .radio-button:checked+.radio-tile {
+	background-color: #079ad9;
+	border: 2px solid #079ad9;
+	color: white;
+	transform: scale(1.1, 1.1);
+}
+
+.radio-tile-group .input-container .radio-button:checked+.radio-tile .icon svg
+	{
+	fill: white;
+	background-color: #079ad9;
+}
+
+.radio-tile-group .input-container .radio-button:checked+.radio-tile .radio-tile-label
+	{
+	color: white;
+	background-color: #079ad9;
+}
 </style>
 
-<body ng-app="MyApp" ng-controller="CommentController">
+<body>
 	<div class="opacity_menu"></div>
 
 	<div th:replace="views/menu :: menu"></div>
@@ -234,7 +320,7 @@ a {
 		as="script">
 	<script
 		src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/swiper-plugin.js?1684485482688"></script>
-	<br />
+
 	<main class="wrapperMain_content" style="background-color: #f5f5f5;">
 
 		<br />
@@ -348,104 +434,159 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 
 					</div>
 					<div class="col-12 col-md-12 col-lg-8 details-pro">
+						<form enctype="multipart/form-data" id="add-to-cart-form"
+							data-cart-form="" action="/add-to-cart" method="post"
+							class="wishItem">
+							<div class="row">
+								<div class="col-lg-7 col-xl-7 col-md-7 col-12">
+									<div class="prview"></div>
+									<h1 class="title-head" th:text="${product.get().name}"></h1>
+									<div class="flex-vd">
 
-						<div class="row">
-							<div class="col-lg-7 col-xl-7 col-md-7 col-12">
-								<div class="prview"></div>
-								<h1 class="title-head" th:text="${product.get().name}"></h1>
-								<div class="flex-vd">
-
-									<div class="vendor">
-										<span>Thương hiệu: <span
-											th:text="${product.get().origin}"></span></span>
-									</div>
-
-									<div class="skuuu sku-product">
-										<span class="variant-sku" itemprop="sku" content="kmx">Mã
-											sản phẩm: <strong th:text="${product.get().id}"></strong>
-										</span>
-									</div>
-								</div>
-
-								<div class="group-action-button">
-
-									<div class="flashdetails" th:if="${product.get().checkSale}">
-
-										<div class="timer">
-											<p>
-												Nhanh tay chỉ còn <br> <span
-													th:text="${product.get().sale[0].contend_sale}"></span>
-											</p>
-											<div class="timein" data-time="8/30/2022 15:10:00"
-												data-countdown-type="hours">
-												<span>06</span>:<span>28</span>:<span>51</span>
-											</div>
-
+										<div class="vendor">
+											<span>Thương hiệu: <span
+												th:text="${product.get().origin}"></span></span>
 										</div>
 
-										<div class="flashsale_product">
+										<div class="skuuu sku-product">
+											<span class="variant-sku" itemprop="sku" content="kmx">Mã
+												sản phẩm: <strong th:text="${product.get().id}"></strong>
+											</span>
+										</div>
+									</div>
 
 
-											<div class="product-item-flash" data-productid="26841733"
-												data-qty="300" data-pavailable="true">
-												<div class="flashproduct">
-													<div class="quantity_sale" style="">
-														<div class="titlecount">
-															<b class="qtyflash">213</b> sản phẩm đã bán
-														</div>
 
-														<div class="barprocess">
-															<div class="countlength_sale" style="width: 71%;"></div>
+
+
+
+									<br />
+
+
+									<div class="group-action-button">
+
+										<div class="flashdetails" th:if="${product.get().checkSale}">
+
+											<div class="timer">
+												<p>
+													Nhanh tay chỉ còn <br> <span
+														th:text="${product.get().sale[0].contend_sale}"></span>
+												</p>
+												<div class="timein" data-time="8/30/2022 15:10:00"
+													data-countdown-type="hours">
+													<span>06</span>:<span>28</span>:<span>51</span>
+												</div>
+
+											</div>
+
+											<div class="flashsale_product">
+
+
+												<div class="product-item-flash" data-productid="26841733"
+													data-qty="300" data-pavailable="true">
+													<div class="flashproduct">
+														<div class="quantity_sale" style="">
+															<div class="titlecount">
+																<b class="qtyflash">???</b> sản phẩm đã bán
+															</div>
+
+															<div class="barprocess">
+																<div class="countlength_sale" style="width: 71%;"></div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
 
-									<div class="group-power">
+										<div class="group-power">
 
-										<div class="inventory_quantity d-none">
+											<div class="inventory_quantity d-none">
 
-											<span class="a-stock a2">
-												<link itemprop="availability"
-													href="http://schema.org/InStock">Còn hàng
-											</span>
+												<span class="a-stock a2">
+													<link itemprop="availability"
+														href="http://schema.org/InStock">Còn hàng
+												</span>
+
+											</div>
+											<div class="price-box clearfix"
+												th:if="${product.get().checkSale}">
+
+												<span class="special-price"> <span
+													class="price product-price"
+													th:text="${product.get().price +'đ'}"></span>
+												</span>
+												<!-- Giá Khuyến mại -->
+												<span class="old-price"> Giá cũ: <del
+														class="price product-price-old">
+														<span th:text="${price} +'đ'"></span>
+													</del>
+												</span> <span class="old-price"
+													style="background-color: red; color: white; border-radius: 2px; padding: 5px"
+													th:text="${product.get().sale_percent} +'% giảm'"> </span>
+												<!-- Giás gốc -->
+												<span class="save-price d-none">Rẻ hơn <span
+													class="price product-price-save">35.000₫</span> so với thị
+													trường
+												</span>
+												<!-- Tiết kiệm -->
+
+											</div>
+											<div th:unless="${product.get().checkSale}"
+												style="background-color: #eaeaea; height: 60px; padding: 15px;">
+												<h3 style="color: red" th:text="${product.get().price+'$'}"></h3>
+												<br />
+											</div>
 
 										</div>
-										<div class="price-box clearfix"
-											th:if="${product.get().checkSale}">
 
-											<span class="special-price"> <span
-												class="price product-price"
-												th:text="${product.get().price +'đ'}"></span>
-											</span>
-											<!-- Giá Khuyến mại -->
-											<span class="old-price"> Giá cũ: <del
-													class="price product-price-old">
-													<span th:text="${price} +'đ'"></span>
-												</del>
-											</span> <span class="old-price"
-												style="background-color: red; color: white; border-radius: 2px; padding: 5px"
-												th:text="${product.get().sale_percent} +'% giảm'"> </span>
-											<!-- Giás gốc -->
-											<span class="save-price d-none">Rẻ hơn <span
-												class="price product-price-save">35.000₫</span> so với thị
-												trường
-											</span>
-											<!-- Tiết kiệm -->
 
-										</div>
-										<div th:unless="${product.get().checkSale}">
-											<h3 style="color: red" th:text="${product.get().price+'$'}"></h3>
-											<br />
+										<div class="col-md-12"
+											th:if="${listColor != NULL and  listColor.size() > 0 }">
+											<div class="row">
+
+												<div class="containerButton">
+													<span style="color: red">MÀU</span> : &nbsp;
+													<div class="radio-tile-group"
+														th:each="color : ${listColor}">
+														<div class="input-container">
+															<input id="walk" class="radio-button" type="radio"
+																required="required" th:value="${color.color}"
+																onclick="toggleButton(this)" name="color">
+															<div class="radio-tile">
+																<b th:text="${color.color}"></b>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
 										</div>
 
-									</div>
 
-									<form enctype="multipart/form-data" id="add-to-cart-form"
-										data-cart-form="" action="/cart/add" method="post"
-										class="wishItem">
+
+										<div class="col-md-12"
+											th:if="${listSize != null and listSize.size() > 0}">
+											<div class="row">
+												<div class="containerButton">
+													<span style="color: red">SIZE</span>: &nbsp;
+													<div class="radio-tile-group" th:each="size : ${listSize}">
+														<div class="input-container">
+															<input id="walk" class="radio-button" type="radio"
+																required="required" th:value="${size.size}"
+																onclick="toggleButton(this)" name="size">
+															<div class="radio-tile">
+																<div class="icon walk-icon">
+																	<b th:text="${size.size}"></b>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
 										<div class="form-product">
 											<div class="box-variant clearfix d-none">
 												<input type="hidden" id="one_variant" name="variantId"
@@ -470,15 +611,21 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 															class="btn-plus btn-cts" type="button">+</button>
 													</div>
 												</div>
+												<input type="hidden" th:value="${product.get().id}"
+													name="productId" />
 
-												<div class="sbtn-mua">
-													<a th:href="@{/checkBuyNow/{id}(id=${product.get().id})}"
-														class="button no-underline"> <span class="icon">&#x1F4B8;</span>
-														Mua ngay
-													</a> <a th:href="@{/add-to-cart/{id}(id=${product.get().id})}"
-														class="button"> <span class="icon">&#128722;</span>
-														Thêm vào giỏ hàng
-													</a>
+												<div class="sbtn-mua" style="margin-right: 40px;">
+													<!--th:href="@{/checkBuyNow/{id}(id=${product.get().id})}"> -->
+													<!--th:href="@{/add-to-cart/{id}(id=${product.get().id})}"> -->
+													<button type="submit" class="btn btn-primary"
+														value="buyNow" name="type">
+														<span class="icon">&#x1F4B8;</span>Mua ngay
+													</button>
+													&nbsp;
+													<button type="submit" class="btn btn-warning"
+														value="addCart" name="type">
+														<span class="icon">&#128722;</span> Thêm vào giỏ hàng
+													</button>
 												</div>
 											</div>
 											<div class="product-wish">
@@ -491,414 +638,453 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												</a>
 											</div>
 										</div>
-									</form>
-									<ul class="social-media__item-list list--unstyled" role="list"
-										style="list-style: none;">
-										<li>Chia sẻ ngay:</li>
-										<li class="social-media__item social-media__item--facebook">
-											<a title="Chia sẻ lên Facebook"
-											href="https://www.facebook.com/sharer.php?u=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi"
-											target="_blank" rel="noopener"
-											aria-label="Chia sẻ lên Facebook"> <svg
-													xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+						</form>
+						<ul class="social-media__item-list list--unstyled" role="list"
+							style="list-style: none;">
+							<li>Chia sẻ ngay:</li>
+							<li class="social-media__item social-media__item--facebook">
+								<a title="Chia sẻ lên Facebook"
+								href="https://www.facebook.com/sharer.php?u=https://${product.get().name}"
+								target="_blank" rel="noopener" aria-label="Chia sẻ lên Facebook">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
 														<path
-														d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
+											d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z">
 															</path>
 													</svg> Chia sẻ
-										</a>
-										</li>
-										<li class="social-media__item social-media__item--pinterest">
-											<a title="Chia sẻ lên Pinterest"
-											href="https://pinterest.com/pin/create/button/?url=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi&amp;"
-											target="_blank" rel="noopener" aria-label="Pinterest"> <svg
-													xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+							</a>
+							</li>
+							<li class="social-media__item social-media__item--pinterest">
+								<a title="Chia sẻ lên Pinterest"
+								href="https://pinterest.com/pin/create/button/?url=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi&amp;"
+								target="_blank" rel="noopener" aria-label="Pinterest"> <svg
+										xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
 														<path
-														d="M204 6.5C101.4 6.5 0 74.9 0 185.6 0 256 39.6 296 63.6 296c9.9 0 15.6-27.6 15.6-35.4 0-9.3-23.7-29.1-23.7-67.8 0-80.4 61.2-137.4 140.4-137.4 68.1 0 118.5 38.7 118.5 109.8 0 53.1-21.3 152.7-90.3 152.7-24.9 0-46.2-18-46.2-43.8 0-37.8 26.4-74.4 26.4-113.4 0-66.2-93.9-54.2-93.9 25.8 0 16.8 2.1 35.4 9.6 50.7-13.8 59.4-42 147.9-42 209.1 0 18.9 2.7 37.5 4.5 56.4 3.4 3.8 1.7 3.4 6.9 1.5 50.4-69 48.6-82.5 71.4-172.8 12.3 23.4 44.1 36 69.3 36 106.2 0 153.9-103.5 153.9-196.8C384 71.3 298.2 6.5 204 6.5z">
+											d="M204 6.5C101.4 6.5 0 74.9 0 185.6 0 256 39.6 296 63.6 296c9.9 0 15.6-27.6 15.6-35.4 0-9.3-23.7-29.1-23.7-67.8 0-80.4 61.2-137.4 140.4-137.4 68.1 0 118.5 38.7 118.5 109.8 0 53.1-21.3 152.7-90.3 152.7-24.9 0-46.2-18-46.2-43.8 0-37.8 26.4-74.4 26.4-113.4 0-66.2-93.9-54.2-93.9 25.8 0 16.8 2.1 35.4 9.6 50.7-13.8 59.4-42 147.9-42 209.1 0 18.9 2.7 37.5 4.5 56.4 3.4 3.8 1.7 3.4 6.9 1.5 50.4-69 48.6-82.5 71.4-172.8 12.3 23.4 44.1 36 69.3 36 106.2 0 153.9-103.5 153.9-196.8C384 71.3 298.2 6.5 204 6.5z">
 														</path>
 													</svg> Chia sẻ
-										</a>
-										</li>
-										<li class="social-media__item social-media__item--twitter">
-											<a title="Chia sẻ lên Twitter"
-											href="https://twitter.com/share?url=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi"
-											target="_blank" rel="noopener" aria-label="Tweet on Twitter">
-												<svg xmlns="http://www.w3.org/2000/svg"
-													viewBox="0 0 512 512">
+							</a>
+							</li>
+							<li class="social-media__item social-media__item--twitter">
+								<a title="Chia sẻ lên Twitter"
+								href="https://twitter.com/share?url=https://ego-baby.mysapo.net/ao-thun-be-gai-cotton-hinh-con-voi"
+								target="_blank" rel="noopener" aria-label="Tweet on Twitter">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 														<path
-														d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
+											d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
 														</path>
 													</svg> Chia sẻ
-										</a>
-										</li>
-									</ul>
-								</div>
+							</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-5 col-xl-5 col-md-5 col-12"
+					style="border: 1px solid; border-color: red; height: 360px;">
+					<div class="service">
+						<h2 style="color: black">Dịch vụ khách hàng</h2>
+						<div class="benefit-item">
+							<div class="image">
+								<img class="lazyload loaded"
+									src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv1.png?1684485482688"
+									data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv1.png?1684485482688"
+									alt="Hỗ trợ 24/7" data-was-processed="true">
 							</div>
-							<div class="col-lg-5 col-xl-5 col-md-5 col-12">
-								<div class="service">
-									<h2 style="color: black">Dịch vụ khách hàng</h2>
-									<div class="benefit-item">
-										<div class="image">
-											<img class="lazyload loaded"
-												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv1.png?1684485482688"
-												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv1.png?1684485482688"
-												alt="Hỗ trợ 24/7" data-was-processed="true">
-										</div>
-										<div class="contentsv">
-											<h4>Hỗ trợ 24/7</h4>
-											<p>Nhân viên online hỗ trợ</p>
-										</div>
-									</div>
-									<div class="benefit-item">
-										<div class="image">
-											<img class="lazyload loaded"
-												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv2.png?1684485482688"
-												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv2.png?1684485482688"
-												alt="Tiết kiệm" data-was-processed="true">
-										</div>
-										<div class="contentsv">
-											<h4>Tiết kiệm</h4>
-											<p>Mua nhiều ưu đãi hơn</p>
-										</div>
-									</div>
-									<div class="benefit-item">
-										<div class="image">
-											<img class="lazyload loaded"
-												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv3.png?1684485482688"
-												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv3.png?1684485482688"
-												alt="Quà tặng" data-was-processed="true">
-										</div>
-										<div class="contentsv">
-											<h4>Quà tặng</h4>
-											<p>Tri ân khách hàng cũ</p>
-										</div>
-									</div>
-									<div class="benefit-item">
-										<div class="image">
-											<img class="lazyload loaded"
-												src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv4.png?1684485482688"
-												data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv4.png?1684485482688"
-												alt="Vận chuyển" data-was-processed="true">
-										</div>
-										<div class="contentsv">
-											<h4>Vận chuyển</h4>
-											<p>Siêu nhanh, toàn thế giới</p>
-										</div>
-									</div>
-								</div>
-
+							<div class="contentsv">
+								<h4>Hỗ trợ 24/7</h4>
+								<p>Nhân viên online hỗ trợ</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<div class="image">
+								<img class="lazyload loaded"
+									src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv2.png?1684485482688"
+									data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv2.png?1684485482688"
+									alt="Tiết kiệm" data-was-processed="true">
+							</div>
+							<div class="contentsv">
+								<h4>Tiết kiệm</h4>
+								<p>Mua nhiều ưu đãi hơn</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<div class="image">
+								<img class="lazyload loaded"
+									src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv3.png?1684485482688"
+									data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv3.png?1684485482688"
+									alt="Quà tặng" data-was-processed="true">
+							</div>
+							<div class="contentsv">
+								<h4>Quà tặng</h4>
+								<p>Tri ân khách hàng cũ</p>
+							</div>
+						</div>
+						<div class="benefit-item">
+							<div class="image">
+								<img class="lazyload loaded"
+									src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv4.png?1684485482688"
+									data-src="//bizweb.dktcdn.net/100/459/160/themes/867807/assets/ico_sv4.png?1684485482688"
+									alt="Vận chuyển" data-was-processed="true">
+							</div>
+							<div class="contentsv">
+								<h4>Vận chuyển</h4>
+								<p>Siêu nhanh, toàn thế giới</p>
 							</div>
 						</div>
 					</div>
-
-
-					<div class="col-12">
-						<div class="row">
-							<div class="col-lg-8 col-12">
-								<br /> <br /> <br />
-
-
-								<div class="row" style="background-color: white;">
-									<div class="col-2" style="margin-bottom: 20px;">
-										<div class="avatar" style="background-color: white;">
-											<img th:src="@{'/images/'+${product.get().user_id.avt}}"
-												alt="Avatar">
-										</div>
-
-									</div>
-									<div class="col-2">
-										<br /> <b th:text="${product.get().user_id.us}"></b><br />
-										<p th:text="${product.get().user_id.email}"></p>
-
-									</div>
-									<div class="col-5">
-										<br /> <a class="btn btn-success"
-											th:href="@{/shopUser/{uid}(uid=${product.get().user_id.id})}"><i
-											class="fas fa-store"></i> Xem Shop</a>
-									</div>
-								</div>
-
-
-								<br />
-								<div class="ba-text-fpt">
-
-									<div class="description">
-										<b>Chi Tiết Sản Phẩm</b>
-									</div>
-									<br />
-									<p th:text="${'Tên Sản Phẩm : '+product.get().name}">
-								</div>
-								<div class="rte"
-									style="white-space: pre-wrap; line-height: 0.1;">
-									<p th:text="${'- ' + product.get().description}"></p>
-								</div>
-
-								<br /> <br />
-
-
-								<hr />
-								<br /> <br /> <br />
-
-
-								<form name="/formCmt">
-
-									<div class="col-12" style="background-color: #f9f9f9;">
-										<div class="form-outline">
-											<label class="form-label" for="textAreaExample">Đánh
-												Giá Của Bạn Về Sản Phẩm</label><br />
-											<textarea class="form-control" id="textAreaExample1" rows="4"
-												ng-model="comment"></textarea>
-										</div>
-										<br />
-										<div id="myElement" ng-init="productId=${product.get().id}"></div>
-
-
-										<input hidden th:value="${product.get().id}">
-
-
-										<button class="btn btn-danger" id="post-comment-btn"
-											type="button" ng-click="postComment()">
-											<div class="svg-wrapper-1">
-												<div class="svg-wrapper">
-													<svg height="24" width="24" viewBox="0 0 24 24"
-														xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0h24v24H0z" fill="none"></path>
-            <path
-															d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
-															fill="currentColor"></path>
-          </svg>
-												</div>
-											</div>
-											<button>Click here</button>
-									</div>
-								</form>
-
-							</div>
-							<!-- cmt -->
-
-
-
-							<div class="col-lg-4 col-12">
-								<aside class="popular_categories">
-									<h2 class="title-module">Danh mục nổi bật</h2>
-									<div class="wrap-slide-cate slide-cate-product">
-										<div
-											class="swiper-container swiper-cateproduct swiper-container-initialized swiper-container-horizontal swiper-container-multirow"
-											style="cursor: grab;">
-											<ul class="swiper-wrapper slide-categories"
-												id="swiper-wrapper-dd8f29597e8a54e4" aria-live="polite"
-												style="width: 516px; transform: translate3d(0px, 0px, 0px);">
-												<li class="cate-item swiper-slide swiper-slide-active"
-													role="group" aria-label="1 / 8"
-													style="order: 0; width: 119px; margin-right: 10px;"><a
-													class="image image_thumb radius-12" href="/dam-be-gai"
-													title="Đầm bé gái" style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/dam-be-gai-80.png?v=1657182649087"
-														alt="Đầm bé gái">
-												</a>
-													<h4 class="title_cate_">
-														<a th:href="@{/audiences/{target}(target='nữ')}"
-															title="Bé gái">Đầm bé gái</a>
-													</h4></li>
-												<li class="cate-item swiper-slide swiper-slide-next"
-													role="group" aria-label="2 / 8"
-													style="-webkit-box-ordinal-group: 1; order: 1; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12"
-													th:href="@{/audiences/{target}(target='nữ')}"
-													style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-gai-80.png?v=1657182638380"
-														alt="Bộ bé gái">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/bo-be-gai" title="Bộ bé gái">Đồ Bộ Nữ</a>
-													</h4>
-												</li>
-												<li class="cate-item swiper-slide" role="group"
-													aria-label="3 / 8"
-													style="-webkit-box-ordinal-group: 4; order: 4; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Áo bé gái" style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/ao-be-gai-80.png?v=1657182670947"
-														alt="Áo bé gái">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/ao-be-gai" title="Áo bé gái">Áo bé gái</a>
-													</h4>
-												</li>
-												<li class="cate-item swiper-slide" role="group"
-													aria-label="4 / 8"
-													style="-webkit-box-ordinal-group: 5; order: 5; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12"
-													th:href="@{/audiences/{target}(target='trẻ_em')}"
-													style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-trai-80.png?v=1657182685220"
-														alt="Bộ bé trai">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/bo-be-trai" title="Bộ bé trai">Bộ bé trai</a>
-													</h4>
-												</li>
-												<li class="cate-item swiper-slide" role="group"
-													aria-label="5 / 8"
-													style="-webkit-box-ordinal-group: 2; order: 2; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12"
-													th:href="@{/audiences/{target}(target='trẻ_em')}"
-													style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-trai-80.png?v=1657182701517"
-														alt="Quần bé trai">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/quan-be-trai" title="Quần bé trai">Quần bé
-															trai</a>
-													</h4>
-												</li>
-												<li class="cate-item swiper-slide" role="group"
-													aria-label="6 / 8"
-													style="-webkit-box-ordinal-group: 3; order: 3; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12" href=""
-													title="Áo bé trai" style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/ao-be-trai-80.png?v=1657182718667"
-														alt="Áo bé trai">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/ao-be-trai" title="Áo bé trai">Áo bé trai</a>
-													</h4>
-												</li>
-												<li class="cate-item swiper-slide" role="group"
-													aria-label="7 / 8"
-													style="-webkit-box-ordinal-group: 6; order: 6; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12"
-													th:href="@{/audiences/{target}(target='trẻ_em')}"
-													style="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-gai-80.png?v=1657182733363"
-														alt="Quần bé gái">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/quan-be-gai" title="Quần bé gái">Quần bé gái</a>
-													</h4>
-												</li>
-												<li class="cate-item swiper-slide" role="group"
-													aria-label="8 / 8"
-													style="-webkit-box-ordinal-group: 7; order: 7; margin-top: 10px; width: 119px; margin-right: 10px;">
-													<a class="image image_thumb radius-12"
-													th:href="@{/getCatogery/{cato}(cato='2')}" title="Giày dép"
-													qstyle="height: 119px;"> <img
-														class="image_cate_thumb lazyload" width="140" height="140"
-														src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
-														data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/giay-be-gai-80.png?v=1657184995837"
-														alt="Giày dép">
-												</a>
-													<h4 class="title_cate_">
-														<a href="/giay-dep" title="Giày dép">Giày dép</a>
-													</h4>
-												</li>
-											</ul>
-											<span class="swiper-notification" aria-live="assertive"
-												aria-atomic="true"></span>
-										</div>
-										<div class="swiper-button-prev swiper-button-disabled"
-											tabindex="-1" role="button" aria-label="Previous slide"
-											aria-controls="swiper-wrapper-dd8f29597e8a54e4"
-											aria-disabled="true">
-											<svg class="icon">
-													<use xlink:href="#previcon"></use>
-												</svg>
-										</div>
-										<div class="swiper-button-next" tabindex="0" role="button"
-											aria-label="Next slide"
-											aria-controls="swiper-wrapper-dd8f29597e8a54e4"
-											aria-disabled="false">
-											<svg class="icon">
-												>
-												</svg>
-										</div>
-									</div>
-								</aside>
-								<aside class="related_blogs">
-									<h2 class="title-module">Tin tức liên quan</h2>
-									<ul>
-										<li><a href="/co-nen-mua-quan-ao-tre-em-tren-san-online"
-											title="Có nên mua quần áo trẻ em trên sàn online?">Có nên
-												mua quần áo trẻ em trên sàn online?</a></li>
-
-									</ul>
-								</aside>
-								<script>
-									var galleryRelated = new Swiper(
-											'.swiper-cateproduct',
-											{
-												grabCursor : true,
-												spaceBetween : 10,
-												slidesPerView : 3,
-												roundLengths : true,
-												slideToClickedSlide : false,
-												slidesPerColumn : 2,
-												slidesPerColumnFill : 'row',
-												slidesPerGroup : 2,
-												slideToClickedSlide : false,
-												navigation : {
-													nextEl : '.slide-cate-product .swiper-button-next',
-													prevEl : '.slide-cate-product .swiper-button-prev',
-												},
-												breakpoints : {
-													300 : {
-														slidesPerView : 2,
-														slidesPerGroup : 2,
-														spaceBetween : 10,
-														slidesPerColumn : 2,
-														slidesPerColumnFill : 'row'
-													},
-													640 : {
-														slidesPerView : 4,
-														slidesPerGroup : 2,
-														spaceBetween : 10,
-														slidesPerColumn : 2,
-														slidesPerColumnFill : 'row'
-													},
-													768 : {
-														slidesPerView : 4,
-														slidesPerGroup : 2,
-														spaceBetween : 10,
-														slidesPerColumn : 2,
-														slidesPerColumnFill : 'row'
-													},
-													1024 : {
-														slidesPerView : 3,
-														slidesPerGroup : 2,
-														spaceBetween : 10
-													},
-													1200 : {
-														slidesPerView : 3,
-														slidesPerGroup : 2,
-														spaceBetween : 10
-													}
-												}
-											});
-								</script>
-							</div>
-
-						</div>
-
-					</div>
-
 
 				</div>
 			</div>
+			</div>
+
+
+			<div class="col-12">
+				<div class="row">
+					<div class="col-lg-8 col-12">
+						<br /> <br /> <br />
+
+
+						<div class="row"
+							style="background-color: white; margin-top: 20px; margin-bottom: 20px; height: 130px;">
+
+							<div class="col-2" style="margin-top: 15px;">
+								<div class="avatar" style="background-color: white;">
+									<th:block th:if="${product.get().user_id.avt != null}">
+										<img th:src="@{'/images/'+${product.get().user_id.avt}}"
+											alt="Avatar">
+									</th:block>
+									<th:block th:unless="${product.get().user_id.avt != null}">
+										<img
+											src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+											alt="" style="width: 80px; border-radius: 100%;">
+									</th:block>
+								</div>
+							</div>
+							<div class="col-2" style="margin-top: 15px;">
+								<br /> <b th:text="${product.get().user_id.us}"></b><br />
+								<p th:text="${product.get().user_id.email}"></p>
+							</div>
+							<div class="col-5" style="margin-top: 15px;">
+								<br /> <a class="btn btn-success" style="margin-left: 165px;"
+									th:href="@{/shopUser/{uid}(uid=${product.get().user_id.id})}">
+									<i class="fas fa-store"></i> Xem Shop
+								</a>
+							</div>
+						</div>
+
+
+
+						<br />
+						<div class="ba-text-fpt">
+
+							<div class="description">
+								<b>Chi Tiết Sản Phẩm</b>
+							</div>
+							<br />
+							<p th:text="${'Tên Sản Phẩm : '+product.get().name}">
+						</div>
+						<div class="rte" style="white-space: pre-wrap; line-height: 0.1;">
+							<p th:text="${'- ' + product.get().description}"></p>
+						</div>
+
+						<br /> <br />
+
+
+						<hr />
+						<br /> <br /> 
+
+						<th:block th:if="${listCmt == null or listCmt.isEmpty()}">
+							<h4 style="color: #1f1f6a; text-align: center;"
+								th:text="${'Sản Phẩm Chưa Có Đánh Giá Nào'}"></h4>
+						</th:block>
+
+
+						<th:block th:if="${listCmt != null and listCmt.size() > 0 }">
+						<h4 style="    padding-bottom: 13px;">	Đánh Giá Sản Phẩm</h4>
+							<div class="comment-box row"
+								style="width: 760px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">
+
+								<div class="col-md-4"
+									style="background-color: #fff1f1; padding-top: 20px; padding-left: 20px;">
+									<br /> <br />
+
+									<th:block th:unless="${listCmt == null or listCmt.isEmpty()}">
+							
+								<h1 style="color: #997373" th:text="${countRating + ' trên 5'}"></h1>
+									</th:block>
+								</div>
+
+
+								<div class="col-md-2">
+									<div th:if="${listCountRating != null}">
+
+										<p th:each="starCount : ${#numbers.sequence(1, 5)}">
+											<span th:each="star : ${#numbers.sequence(1, starCount)}"
+												style="color: red;">&#9733; </span> <br />
+										</p>
+									</div>
+
+								</div>
+								<div class="col-md-6">
+
+									<p th:each="countRating : ${listCountRating}"
+										th:text="${countRating +' &nbsp; Đánh Giá' }"></p>
+								</div>
+
+							</div>
+						</th:block>
+
+
+
+
+
+						<th:block th:each="it : ${listCmt}">
+							<div class="comment-box row"
+								style="width: 760px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">
+								<div class="col-2 mghji">
+									<div th:if="${it.uid.avt != null}">
+										<img th:src="@{'/images/'+${it.uid.avt}}" alt="avatar"
+											style="width: 80px; border-radius: 100%;">
+									</div>
+									<div th:unless="${it.uid.avt != null}">
+										<img
+											src="https://i.pinimg.com/originals/c6/e5/65/c6e56503cfdd87da299f72dc416023d4.jpg"
+											alt="" style="width: 80px; border-radius: 100%;">
+									</div>
+
+								</div>
+								<div class="col-10 detaila">
+
+									<th:block th:each="item : ${it.rating}">
+										<div class="rating-stars">
+											<span th:each="star : ${#numbers.sequence(1 , item)}">&#9733;</span>
+											<span th:if="${item < 5 }"
+												th:each="emptyStar : ${#numbers.sequence(item +1, 5)}">&#9734;</span>
+
+										</div>
+									</th:block>
+
+									<div class="customer-info">
+										<span
+											th:if="${it.uid.id != null && (session.acc?.id == it.uid.id)}">
+											<span class="name" th:text="${it.uid.us}"></span> <!--  <a 
+<!-- 													th:attr="onclick='delCmt(\'' + ${it.id} + '\')'"><i -->
+											<!-- 														class="fa fa-trash"></i></a> -->
+
+										</span> <span
+											th:unless="${it.uid.id != null && (session.acc?.id == it.uid.id)}">
+											<span class="name" th:text="${it.uid.us}"></span>
+										</span> &nbsp;&nbsp;&nbsp;
+										<div class="middle"
+											data-spm-anchor-id="a2o4n.pdp_revamp.ratings_reviews.i0.70007043HzMHch">
+											<img class="verifyImg" width="15" height="16"
+												src="//lzd-img-global.slatic.net/g/tps/tfs/TB1bOqBeb_I8KJjy1XaXXbsxpXa-30-32.png">
+											<span class="verify" style="color: chocolate;"
+												data-spm-anchor-id="a2o4n.pdp_revamp.ratings_reviews.i1.70007043HzMHch">Chứng
+												nhận đã mua hàng</span>
+										</div>
+									</div>
+
+									<br /> <b class="cmt" th:text="${it.contents}"></b><br /> <br />
+									<div class="image-container">
+										<th:block th:each="item : ${ListImgCmt}">
+											<th:block th:if="${item[1] == it.uid.id }">
+												<div class="image-wrapper">
+													<img class="small-image"
+														th:src="@{'/EvaluateImg/'+ ${item[0]}}"
+														style="width: 80px" alt=""> <img class="large-image"
+														th:src="@{'/EvaluateImg/'+ ${item[0]}}" alt="">
+												</div>
+											</th:block>
+										</th:block>
+									</div>
+
+
+
+
+
+								</div>
+
+							</div>
+						</th:block>
+
+					</div>
+					<!-- cmt -->
+
+
+
+					<div class="col-lg-4 col-12">
+						<aside class="popular_categories">
+							<h2 class="title-module">Danh mục nổi bật</h2>
+							<div class="wrap-slide-cate slide-cate-product">
+								<div
+									class="swiper-container swiper-cateproduct swiper-container-initialized swiper-container-horizontal swiper-container-multirow"
+									style="cursor: grab;">
+									<ul class="swiper-wrapper slide-categories"
+										id="swiper-wrapper-dd8f29597e8a54e4" aria-live="polite"
+										style="width: 516px; transform: translate3d(0px, 0px, 0px);">
+										<li class="cate-item swiper-slide swiper-slide-active"
+											role="group" aria-label="1 / 8"
+											style="order: 0; width: 119px; margin-right: 10px;"><a
+											class="image image_thumb radius-12" href="/dam-be-gai"
+											title="Đầm bé gái" style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/dam-be-gai-80.png?v=1657182649087"
+												alt="Đầm bé gái">
+										</a>
+											<h4 class="title_cate_">
+												<a th:href="@{/audiences/{target}(target='nữ')}"
+													title="Bé gái">Đầm bé gái</a>
+											</h4></li>
+										<li class="cate-item swiper-slide swiper-slide-next"
+											role="group" aria-label="2 / 8"
+											style="-webkit-box-ordinal-group: 1; order: 1; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12"
+											th:href="@{/audiences/{target}(target='nữ')}"
+											style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-gai-80.png?v=1657182638380"
+												alt="Bộ bé gái">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/bo-be-gai" title="Bộ bé gái">Đồ Bộ Nữ</a>
+											</h4>
+										</li>
+										<li class="cate-item swiper-slide" role="group"
+											aria-label="3 / 8"
+											style="-webkit-box-ordinal-group: 4; order: 4; margin-top: 10px; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12" href=""
+											title="Áo bé gái" style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/ao-be-gai-80.png?v=1657182670947"
+												alt="Áo bé gái">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/ao-be-gai" title="Áo bé gái">Áo bé gái</a>
+											</h4>
+										</li>
+										<li class="cate-item swiper-slide" role="group"
+											aria-label="4 / 8"
+											style="-webkit-box-ordinal-group: 5; order: 5; margin-top: 10px; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12"
+											th:href="@{/audiences/{target}(target='trẻ_em')}"
+											style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/bo-be-trai-80.png?v=1657182685220"
+												alt="Bộ bé trai">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/bo-be-trai" title="Bộ bé trai">Bộ bé trai</a>
+											</h4>
+										</li>
+										<li class="cate-item swiper-slide" role="group"
+											aria-label="5 / 8"
+											style="-webkit-box-ordinal-group: 2; order: 2; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12"
+											th:href="@{/audiences/{target}(target='trẻ_em')}"
+											style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-trai-80.png?v=1657182701517"
+												alt="Quần bé trai">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/quan-be-trai" title="Quần bé trai">Quần bé
+													trai</a>
+											</h4>
+										</li>
+										<li class="cate-item swiper-slide" role="group"
+											aria-label="6 / 8"
+											style="-webkit-box-ordinal-group: 3; order: 3; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12" href=""
+											title="Áo bé trai" style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/ao-be-trai-80.png?v=1657182718667"
+												alt="Áo bé trai">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/ao-be-trai" title="Áo bé trai">Áo bé trai</a>
+											</h4>
+										</li>
+										<li class="cate-item swiper-slide" role="group"
+											aria-label="7 / 8"
+											style="-webkit-box-ordinal-group: 6; order: 6; margin-top: 10px; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12"
+											th:href="@{/audiences/{target}(target='trẻ_em')}"
+											style="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/quan-be-gai-80.png?v=1657182733363"
+												alt="Quần bé gái">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/quan-be-gai" title="Quần bé gái">Quần bé gái</a>
+											</h4>
+										</li>
+										<li class="cate-item swiper-slide" role="group"
+											aria-label="8 / 8"
+											style="-webkit-box-ordinal-group: 7; order: 7; margin-top: 10px; width: 119px; margin-right: 10px;">
+											<a class="image image_thumb radius-12"
+											th:href="@{/getCatogery/{cato}(cato='2')}" title="Giày dép"
+											qstyle="height: 119px;"> <img
+												class="image_cate_thumb lazyload" width="140" height="140"
+												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
+												data-src="//bizweb.dktcdn.net/thumb/compact/100/459/160/collections/giay-be-gai-80.png?v=1657184995837"
+												alt="Giày dép">
+										</a>
+											<h4 class="title_cate_">
+												<a href="/giay-dep" title="Giày dép">Giày dép</a>
+											</h4>
+										</li>
+									</ul>
+									<span class="swiper-notification" aria-live="assertive"
+										aria-atomic="true"></span>
+								</div>
+								<div class="swiper-button-prev swiper-button-disabled"
+									tabindex="-1" role="button" aria-label="Previous slide"
+									aria-controls="swiper-wrapper-dd8f29597e8a54e4"
+									aria-disabled="true">
+									<svg class="icon">
+													<use xlink:href="#previcon"></use>
+												</svg>
+								</div>
+								<div class="swiper-button-next" tabindex="0" role="button"
+									aria-label="Next slide"
+									aria-controls="swiper-wrapper-dd8f29597e8a54e4"
+									aria-disabled="false">
+									<svg class="icon">
+												>
+												</svg>
+								</div>
+							</div>
+						</aside>
+						<aside class="related_blogs">
+							<h2 class="title-module">Tin tức liên quan</h2>
+							<ul>
+								<li><a
+									href="https://becungshop.vn/bai-viet/co-nen-mua-quan-ao-tre-em-tren-san-online-2218"
+									title="Có nên mua quần áo trẻ em trên sàn online?">Có nên
+										mua quần áo trẻ em trên sàn online?</a></li>
+
+							</ul>
+						</aside>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+			</div>
+			</div>
 		</section>
 
+		<div th:replace="views/footer :: footer"></div>
 
 
 		<script>
@@ -910,6 +1096,55 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 				link.href = img;
 				link.querySelector('img').src = img;
 			}
+
+			var galleryRelated = new Swiper('.swiper-cateproduct', {
+				grabCursor : true,
+				spaceBetween : 10,
+				slidesPerView : 3,
+				roundLengths : true,
+				slideToClickedSlide : false,
+				slidesPerColumn : 2,
+				slidesPerColumnFill : 'row',
+				slidesPerGroup : 2,
+				slideToClickedSlide : false,
+				navigation : {
+					nextEl : '.slide-cate-product .swiper-button-next',
+					prevEl : '.slide-cate-product .swiper-button-prev',
+				},
+				breakpoints : {
+					300 : {
+						slidesPerView : 2,
+						slidesPerGroup : 2,
+						spaceBetween : 10,
+						slidesPerColumn : 2,
+						slidesPerColumnFill : 'row'
+					},
+					640 : {
+						slidesPerView : 4,
+						slidesPerGroup : 2,
+						spaceBetween : 10,
+						slidesPerColumn : 2,
+						slidesPerColumnFill : 'row'
+					},
+					768 : {
+						slidesPerView : 4,
+						slidesPerGroup : 2,
+						spaceBetween : 10,
+						slidesPerColumn : 2,
+						slidesPerColumnFill : 'row'
+					},
+					1024 : {
+						slidesPerView : 3,
+						slidesPerGroup : 2,
+						spaceBetween : 10
+					},
+					1200 : {
+						slidesPerView : 3,
+						slidesPerGroup : 2,
+						spaceBetween : 10
+					}
+				}
+			});
 		</script>
 
 		<script
@@ -947,17 +1182,28 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 
 	</div>
 </body>
+<script type="text/javascript">
+	document.querySelectorAll('.small-image').forEach(function(image) {
+		image.addEventListener('mouseover', function() {
+			var largeImage = this.nextElementSibling;
+			largeImage.style.display = 'block';
+		});
 
+		image.addEventListener('mouseout', function() {
+			var largeImage = this.nextElementSibling;
+			largeImage.style.display = 'none';
+		});
+	});
+</script>
 </html>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="/controllers/ajaxPostCmt.js"></script>
+<script src="/controllers/Evaluate.js"></script>
 <script src="/details/js.js"></script>
-
+<script src="/controllers/ShopUserController.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
