@@ -125,15 +125,14 @@ public class AdminController {
 		return "/Admin/edit-product";
 	}
 
-	@PostMapping("addSale")
+	@PostMapping("Admin/addSale")
 	public String addSale(@RequestParam("Pid") int pid) throws ParseException {
-
 		Sale sale = new Sale();
 		String price_sale = request.getParameter("sale_price");
 
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 		String start_datetime_str = request.getParameter("start_datetime");
-		Date start_datetime = formatter.parse(start_datetime_str);
+		Date start_datetime = (Date) formatter.parse(start_datetime_str);
 
 		String end_datetime_str = request.getParameter("end_datetime");
 		Date end_datetime = (Date) formatter.parse(end_datetime_str);
@@ -162,7 +161,8 @@ public class AdminController {
 		}
 
 		saleDAO.save(sale);
-		return "redirect:/saleManage";
+
+		return "redirect:/Admin/saleManage";
 
 	}
 
@@ -175,7 +175,6 @@ public class AdminController {
 			@RequestParam(value = "end_datetime", required = false) String end_datetime_str,
 			@RequestParam(value = "fileNames", required = false) String[] files) {
 		Products product = new Products();
-		System.out.println(files + "---");
 		getForm(pro, product);
 		try {
 			// Xử lý và lưu giá trị category_id
@@ -195,7 +194,7 @@ public class AdminController {
 
 			Path path = Paths.get("src/main/resources/static/images/");
 			Path filePath = path.resolve(image.getOriginalFilename());
-
+			
 			Optional<Products> finByIdPro = productsDAO.findById(Pid);
 			if (!finByIdPro.isPresent()) {
 				// nếu id k tồn tại thì thêm
@@ -271,25 +270,6 @@ public class AdminController {
 				// Lưu lại sản phẩm đã chỉnh sửa vào cơ sở dữ liệu
 				adminServiceImp.editProduct(existingProduct, Pid);
 
-//				// size
-//				List<Size> size = sizeDAO.listSize(existingProduct.getId());
-//				// Xóa các bản ghi cũ
-//				for (Size colorItem : size) {
-//					sizeDAO.delete(colorItem);
-//				}
-//				if (size != null && !size.isEmpty()) {
-//					if (sizes != null) {
-//						for (String sizeItem : sizes) {
-//							if (sizeItem != null && !sizeItem.isEmpty()) { // Kiểm tra size có giá trị hợp lệ không
-//
-//								Size sizeEntity = new Size();
-//								sizeEntity.setSize(sizeItem);
-//								sizeEntity.setProduct_id(existingProduct);
-//								sizeDAO.save(sizeEntity);
-//							}
-//						}
-//					}
-//				}
 				// edit size
 				adminServiceImp.updateSzie(Pid, sizes);
 
@@ -367,7 +347,7 @@ public class AdminController {
 		return "redirect:/success";
 	}
 
-	@PostMapping("/editSale")
+	@PostMapping("Admin/editSale")
 	public String editSale(@ModelAttribute Sale sale) {
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -403,7 +383,7 @@ public class AdminController {
 			e.printStackTrace();
 			// Xử lý lỗi khi không thể chuyển đổi định dạng
 		}
-		return "redirect:/saleManage";
+		return "redirect:/Admin/saleManage";
 	}
 
 //	// thêm cato
@@ -429,7 +409,7 @@ public class AdminController {
 
 		return "OrderAdmin/ProdutManage";
 	}
-	
+
 	@GetMapping("/Admin/homeAdmin")
 	public String OrderAdmin() {
 		return "/OrderAdmin/home";

@@ -74,16 +74,11 @@ app.controller('SaleController', ['$http', '$scope', '$rootScope', function($htt
 			if (result.isConfirmed) {
 				$http({
 					method: 'GET',
-					url: 'api/delSale', // Thêm tham số id vào URL
+					url: '/api/delSale', // Thêm tham số id vào URL
 					params: { id: id }
 				}).then(function(response) {
 					$scope.loadSale($scope.selectType);
-					$.toast({
-						heading: 'Đơn Hàng Sale Xóa Thành Công',
-						text: 'Đơn Hàng Sale Đã Được Xóa.',
-						position: 'top-right',
-						icon: 'success'
-					})
+				
 				}, function(error) {
 					// Xử lý lỗi (nếu có)
 					console.log(error);

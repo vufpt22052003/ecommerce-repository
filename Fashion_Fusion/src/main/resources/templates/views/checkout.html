@@ -167,6 +167,7 @@
 									</tr>
 								</thead>
 
+								<!-- mua ngay -->
 								<tbody th:if="${buyProduct != null}">
 									<tr>
 										<td class="product__cart__item">
@@ -201,7 +202,7 @@
 										</td>
 									</tr>
 								</tbody>
-
+								<!-- mua tự cart -->
 								<tbody th:if="${session.selectedProducts != null}">
 									<tr th:each="product : ${session.selectedProducts}"
 										style="border: 1px solid rgba(0, 0, 0, .125); margin-bottom: 10px;">
@@ -224,6 +225,7 @@
 												<div class="pro-qty-2">
 													<input type="text" th:value="${product.quantity}"
 														name="quantity">
+
 												</div>
 											</div>
 										</td>
@@ -296,12 +298,12 @@
 
 										</th:block>
 									</th:block>
-									<th:block th:each="it : ${listVch}"
+									<!-- 	<th:block th:each="it : ${listVch}"
 										th:if="${it.Status == false}">
 										<p th:text="${'
 										Bạn Chưa Có voucher'}"></p>
 
-									</th:block>
+									</th:block> -->
 								</div>
 							</div>
 

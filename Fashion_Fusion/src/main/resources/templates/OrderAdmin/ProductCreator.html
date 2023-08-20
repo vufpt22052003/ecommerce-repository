@@ -213,8 +213,8 @@
 															class="d-flex flex-wrap">
 															<div class="input-wrapper">
 																<input class="w3-input w3-border w3-round" type="text"
-																	name="color[]" placeholder="thêm màu sắc"> <span
-																	class="delete-input" onclick="deleteInput(event)">&times;</span>
+																	name="color[]" placeholder="thêm màu sắc"  required="required"> <span
+																	class="delete-input" onclick="deleteInput(event)"&times;</span>
 															</div>
 
 														</div>
@@ -231,9 +231,9 @@
 
 															<div class="input-wrapper">
 																<input class="w3-input w3-border w3-round" type="text"
-																	name="sizes[]" placeholder="Chọn Size"> <span
+																	name="sizes[]" placeholder="Chọn Size" required="required"> <span
 																	class="delete-input" th:attr="data-index=${index}"
-																	onclick="deleteInputSize(event)">&times;</span>
+																	onclick="deleteInputSize(event)" >&times;</span>
 															</div>
 														</div>
 														<br />

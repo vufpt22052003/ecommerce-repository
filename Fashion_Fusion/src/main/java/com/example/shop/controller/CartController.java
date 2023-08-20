@@ -100,12 +100,12 @@ public class CartController {
 		if (pid != null) {
 			id = pid;
 		} else if (productId != null) {
-			id = productId;
+			id = productId;	
 		}
 
 		// form them vào giỏ hàng
 		if (type != null && type.equals("addCart")) {
-			if (quantity != null) {
+			if (quantity != null || quantity > 	0 ) {
 				addToCart(quantity, id, color, size);
 			}
 			return "redirect:/cart";
@@ -168,7 +168,6 @@ public class CartController {
 			@RequestParam(value = "color", required = false) String color,
 			@RequestParam(value = "size", required = false) String size,
 			@RequestParam(value = "quantity", required = false) int quantity) {
-
 
 		buyNow(pid, model, quantity, color, size);
 		return "views/checkout";

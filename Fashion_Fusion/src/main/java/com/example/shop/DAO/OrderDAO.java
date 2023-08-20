@@ -15,7 +15,7 @@ public interface OrderDAO extends JpaRepository<Orders, Integer> {
 			+ "p.user_id AS nguoi_ban, SUM(od.quantity) AS total_quantity\r\n" + "FROM Orders o\r\n"
 			+ "INNER JOIN Order_details od ON o.id = od.order_id\r\n"
 			+ "INNER JOIN Products p ON od.product_id = p.id\r\n" + "INNER JOIN Account u ON o.user_id = u.id\r\n"
-			+ "WHERE od.order_status = 'HoanThanh' AND p.user_id = 1\r\n" + "GROUP BY u.id, u.us, p.user_id, u.avt\r\n"
+			+ "WHERE od.order_status = 'HoanThanh' AND p.user_id = ?  \r\n" + "GROUP BY u.id, u.us, p.user_id, u.avt\r\n"
 			+ "ORDER BY total_quantity DESC\r\n", nativeQuery = true)
 	List<Object[]> getTopAccountsByOrder(int id);
 

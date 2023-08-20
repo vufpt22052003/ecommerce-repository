@@ -183,28 +183,28 @@ a:hover {
 		</div>
 
 		<!-- partial:index.partial.html -->
-		
+
 		<th:block th:if="${session.acc != null and session.acc.role != true}">
-		<div class="fabs">
-			<div class="chat">
+			<div class="fabs">
+				<div class="chat">
 
-				<div id="chat_converse" class="chat_converse" style="height: 300px">
-					<!-- Hiển thị tin nhắn xen kẻ giữa người dùng và admin -->
-                <p id="messageNull"></p>
+					<div id="chat_converse" class="chat_converse" style="height: 300px">
+						<!-- Hiển thị tin nhắn xen kẻ giữa người dùng và admin -->
+						<p id="messageNull"></p>
+					</div>
+
+					<div class="fab_field">
+						<a id="fab_listen" class="fab"><i
+							class="zmdi zmdi-mic-outline"></i></a> <a id="fab_send" class="fab"
+							onclick="sendMessage()"><i class="zmdi zmdi-mail-send"></i></a> <input
+							type="hidden" id="sendUs" value="1" />
+						<textarea id="chatSend" name="chat_message"
+							placeholder="Write a message" class="chat_field chat_message"></textarea>
+					</div>
+
 				</div>
-
-				<div class="fab_field">
-					<a id="fab_listen" class="fab"><i class="zmdi zmdi-mic-outline"></i></a>
-					<a id="fab_send" class="fab" onclick="sendMessage()"><i
-						class="zmdi zmdi-mail-send"></i></a> <input type="hidden" id="sendUs"
-						value="1" />
-					<textarea id="chatSend" name="chat_message"
-						placeholder="Write a message" class="chat_field chat_message"></textarea>
-				</div>
-
+				<a id="prime" class="fab"><i class="prime zmdi zmdi-plus"></i></a>
 			</div>
-			<a id="prime" class="fab"><i class="prime zmdi zmdi-plus"></i></a>
-		</div>
 		</th:block>
 		<!-- partial -->
 		<script src='//code.jquery.com/jquery-1.11.3.min.js'></script>

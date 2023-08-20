@@ -790,7 +790,7 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 
 
 						<hr />
-						<br /> <br /> 
+						<br /> <br />
 
 						<th:block th:if="${listCmt == null or listCmt.isEmpty()}">
 							<h4 style="color: #1f1f6a; text-align: center;"
@@ -799,7 +799,7 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 
 
 						<th:block th:if="${listCmt != null and listCmt.size() > 0 }">
-						<h4 style="    padding-bottom: 13px;">	Đánh Giá Sản Phẩm</h4>
+							<h4 style="padding-bottom: 13px;">Đánh Giá Sản Phẩm</h4>
 							<div class="comment-box row"
 								style="width: 760px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">
 
@@ -808,8 +808,9 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 									<br /> <br />
 
 									<th:block th:unless="${listCmt == null or listCmt.isEmpty()}">
-							
-								<h1 style="color: #997373" th:text="${countRating + ' trên 5'}"></h1>
+
+										<h1 style="color: #997373"
+											th:text="${countRating + ' trên 5'}"></h1>
 									</th:block>
 								</div>
 
@@ -925,7 +926,7 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 										<li class="cate-item swiper-slide swiper-slide-active"
 											role="group" aria-label="1 / 8"
 											style="order: 0; width: 119px; margin-right: 10px;"><a
-											class="image image_thumb radius-12" href="/dam-be-gai"
+											class="image image_thumb radius-12" th:href="@{/audiences/{target}(target='0/trẻ_em')}"
 											title="Đầm bé gái" style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -933,14 +934,14 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Đầm bé gái">
 										</a>
 											<h4 class="title_cate_">
-												<a th:href="@{/audiences/{target}(target='nữ')}"
+												<a 
 													title="Bé gái">Đầm bé gái</a>
 											</h4></li>
 										<li class="cate-item swiper-slide swiper-slide-next"
 											role="group" aria-label="2 / 8"
 											style="-webkit-box-ordinal-group: 1; order: 1; width: 119px; margin-right: 10px;">
 											<a class="image image_thumb radius-12"
-											th:href="@{/audiences/{target}(target='nữ')}"
+											th:href="@{/audiences/{target}(target='0/nữ')}"
 											style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -948,13 +949,14 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Bộ bé gái">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/bo-be-gai" title="Bộ bé gái">Đồ Bộ Nữ</a>
+												<a th:href="@{/audiences/{target}(target='nữ')}"
+													title="Bộ bégái">Đồ Bộ Nữ</a>
 											</h4>
 										</li>
 										<li class="cate-item swiper-slide" role="group"
 											aria-label="3 / 8"
 											style="-webkit-box-ordinal-group: 4; order: 4; margin-top: 10px; width: 119px; margin-right: 10px;">
-											<a class="image image_thumb radius-12" href=""
+											<a class="image image_thumb radius-12" th:href="@{/audiences/{target}(target='0/trẻ_em')}"
 											title="Áo bé gái" style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -962,14 +964,15 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Áo bé gái">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/ao-be-gai" title="Áo bé gái">Áo bé gái</a>
+												<a 
+													title="Áo bé gái">Áo bé gái</a>
 											</h4>
 										</li>
 										<li class="cate-item swiper-slide" role="group"
 											aria-label="4 / 8"
 											style="-webkit-box-ordinal-group: 5; order: 5; margin-top: 10px; width: 119px; margin-right: 10px;">
 											<a class="image image_thumb radius-12"
-											th:href="@{/audiences/{target}(target='trẻ_em')}"
+											th:href="@{/audiences/{target}(target='0/trẻ_em')}"
 											style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -977,14 +980,15 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Bộ bé trai">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/bo-be-trai" title="Bộ bé trai">Bộ bé trai</a>
+												<a 
+													title="Bộ bé trai">Bộ bé trai</a>
 											</h4>
 										</li>
 										<li class="cate-item swiper-slide" role="group"
 											aria-label="5 / 8"
 											style="-webkit-box-ordinal-group: 2; order: 2; width: 119px; margin-right: 10px;">
 											<a class="image image_thumb radius-12"
-											th:href="@{/audiences/{target}(target='trẻ_em')}"
+											th:href="@{/audiences/{target}(target='0/trẻ_em')}"
 											style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -992,14 +996,14 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Quần bé trai">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/quan-be-trai" title="Quần bé trai">Quần bé
-													trai</a>
+												<a
+													title="Quần bé trai">Quần bé trai</a>
 											</h4>
 										</li>
 										<li class="cate-item swiper-slide" role="group"
 											aria-label="6 / 8"
 											style="-webkit-box-ordinal-group: 3; order: 3; width: 119px; margin-right: 10px;">
-											<a class="image image_thumb radius-12" href=""
+											<a class="image image_thumb radius-12" th:href="@{/audiences/{target}(target='0/trẻ_em')}"
 											title="Áo bé trai" style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -1007,14 +1011,15 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Áo bé trai">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/ao-be-trai" title="Áo bé trai">Áo bé trai</a>
+												<a th:href="@{/audiences/{target}(target='trẻ_em')}"
+													title="Áo bé trai">Áo bé trai</a>
 											</h4>
 										</li>
 										<li class="cate-item swiper-slide" role="group"
 											aria-label="7 / 8"
 											style="-webkit-box-ordinal-group: 6; order: 6; margin-top: 10px; width: 119px; margin-right: 10px;">
 											<a class="image image_thumb radius-12"
-											th:href="@{/audiences/{target}(target='trẻ_em')}"
+										th:href="@{/audiences/{target}(target='0/trẻ_em')}"
 											style="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -1022,14 +1027,15 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Quần bé gái">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/quan-be-gai" title="Quần bé gái">Quần bé gái</a>
+												<a th:href="@{/audiences/{target}(target='trẻ_em')}"
+													title="Quần bé gái">Quần bé gái</a>
 											</h4>
 										</li>
 										<li class="cate-item swiper-slide" role="group"
 											aria-label="8 / 8"
 											style="-webkit-box-ordinal-group: 7; order: 7; margin-top: 10px; width: 119px; margin-right: 10px;">
 											<a class="image image_thumb radius-12"
-											th:href="@{/getCatogery/{cato}(cato='2')}" title="Giày dép"
+											th:href="@{/getCatogery/{cato}(cato='0/2')}" title="Giày dép"
 											qstyle="height: 119px;"> <img
 												class="image_cate_thumb lazyload" width="140" height="140"
 												src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA="
@@ -1037,7 +1043,8 @@ Hình in sử dụng công nghệ in chuyển nhiệt không bong tróc, không 
 												alt="Giày dép">
 										</a>
 											<h4 class="title_cate_">
-												<a href="/giay-dep" title="Giày dép">Giày dép</a>
+												<a th:href="@{/audiences/{target}(target='trẻ_em')}"
+													title="Giày dép">Giày dép</a>
 											</h4>
 										</li>
 									</ul>

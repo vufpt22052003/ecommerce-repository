@@ -12,20 +12,20 @@ public interface OrderService {
 
 	void add_order(Orders od);
 
-
-
-	List<Order_details> Orders_Awaiting( );
-
-	List<Order_details> Orders_cancel( );
-
-	List<Order_details> Orders_confim( );
+	
 
 	List<Object[]> getTopUserByOder();
 
-
-
 	List<Orders> getOderStatus(String status);
 
+	List<Order_details> getOrderStatusMyOder(String status);
 
+
+
+	void updateShareRole(double price, double share_roses, int id);
+
+
+
+	List<Order_details> getListByOder(int id);
 
 }

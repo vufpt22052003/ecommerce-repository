@@ -53,7 +53,11 @@ public class ProductsServiceImp implements ProductsService {
 	public List<Products> getProductByUs(int uid, int offset, int limit) {
 		List<Products> productPage = productsDAO.getProductByUser(uid, offset, limit);
 		return productPage;
+	}
 
+	@Override
+	public Page<Products> getProductById(Pageable pageable, int id) {
+		return productsDAO.finAllByUser(pageable , id);
 	}
 
 	// lấy danh sách sp theo uses
@@ -210,12 +214,6 @@ public class ProductsServiceImp implements ProductsService {
 	@Override
 	public Page<Products> getProNew(Pageable pageable) {
 		return productsDAO.getProNew(pageable);
-	}
-
-	@Override
-	public Page<Products> finAllByUser(Pageable pageable, int uid) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

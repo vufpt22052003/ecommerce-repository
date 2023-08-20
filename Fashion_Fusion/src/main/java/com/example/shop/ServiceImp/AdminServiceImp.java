@@ -81,13 +81,13 @@ public class AdminServiceImp implements AdminService {
 
 		// Lưu color (nếu có)
 		List<Color> colos = colorDAO.listColor(pid);
-		if (colos != null && !colos.isEmpty()) {
 
-			// Xóa các bản ghi cũ
-			for (Color colorItem : colos) {
-				colorDAO.delete(colorItem);
-			}
-			if (color != null && color.length > 0) {
+		// Xóa các bản ghi cũ
+		for (Color colorItem : colos) {
+			colorDAO.delete(colorItem);
+		}
+		if (colos != null && !colos.isEmpty()) {
+			if (color != null ) {
 				for (String clr : color) {
 					if (clr != null && !clr.isEmpty()) { // Kiểm tra color có giá trị hợp lệ không
 						Color colorEntity = new Color();

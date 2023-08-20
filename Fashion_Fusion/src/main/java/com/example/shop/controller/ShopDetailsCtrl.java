@@ -134,7 +134,7 @@ public class ShopDetailsCtrl {
 			System.out.println(objects[1]);
 		}
 
-		return "views/shop-details2";
+		return "views/shopDetails";
 	}
 
 	@GetMapping("/detai")

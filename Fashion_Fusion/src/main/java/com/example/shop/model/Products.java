@@ -157,12 +157,12 @@ public class Products {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	//@JsonIgnore
+	@JsonIgnore
 	private Users user_id;
 
 	@OneToMany(mappedBy = "product_id")
 	@JsonBackReference
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Thêm annotation này
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // Thêm annotation này
 	@JsonIgnore
 	List<Comment> comment;
 
@@ -177,6 +177,11 @@ public class Products {
 	@OneToMany(mappedBy = "product_id")
 	@JsonBackReference
 	List<Color> colors;
+
+	@OneToMany
+	@JsonIgnore
+	@JoinColumn(name = "product_id")
+	List<Rose> rose;
 
 	@OneToMany(mappedBy = "product_id")
 	@JsonIgnore

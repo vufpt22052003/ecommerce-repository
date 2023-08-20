@@ -50,7 +50,6 @@ public interface ProductsService {
 
 	void delProById(int id);
 
-	Page<Products> finAllByUser(Pageable pageable, int uid);
 
 	List<Category> getListCato();
 
@@ -75,5 +74,7 @@ public interface ProductsService {
 	List<Object[]> ListImgCmt(int id);
 
 	List<Products> getProductByUs(int uid, int offset, int limit);
+
+	Page<Products> getProductById(Pageable pageable, int id);
 
 }

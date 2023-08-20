@@ -92,6 +92,7 @@ public class OrderController {
 			@ModelAttribute("checkout") Order_details model_details,
 			@RequestParam(value = "idVouch", required = false) Integer idVouch,
 			@RequestParam(value = "productId", required = false) Integer pid,
+			@RequestParam(value = "quantity", required = false) Integer quantity,
 			@RequestParam("submitButton") String submitButton, SessionStatus sessionStatus,
 			@RequestParam("id_adres") int id_adres, @RequestParam(value = "color", required = false) String color,
 			@RequestParam(value = "size", required = false) String size,
@@ -133,7 +134,7 @@ public class OrderController {
 				// getOrderedProductDetails đc gọi từ public Order_details
 				// getOrderedProductDetails()
 
-				Order_details od_detailsCart = getOrderedProductDetails(ord, pro, currentDate, color, size);
+				Order_details od_detailsCart = getOrderedProductDetails(ord, pro, currentDate, color, size, quantity);
 				orderDetailsService.add_orderDetails(od_detailsCart);
 			}
 		}
@@ -148,7 +149,7 @@ public class OrderController {
 			ord.setPayment_status(false);
 
 			orderService.add_order(ord);
-			Order_details od_details = getOrderedProductDetails(ord, pro, currentDate, color, size);
+			Order_details od_details = getOrderedProductDetails(ord, pro, currentDate, color, size, quantity);
 
 			orderDetailsService.add_orderDetails(od_details);
 
@@ -175,7 +176,7 @@ public class OrderController {
 				session.setAttribute("color", color);
 				session.setAttribute("size", size);
 				session.setAttribute("currentDate", currentDate);
-
+				session.setAttribute("quantity", quantity);
 				return new ModelAndView("views/Success");
 			} else {
 
@@ -186,7 +187,7 @@ public class OrderController {
 	}
 
 	public Order_details getOrderedProductDetails(Orders ord, Optional<Products> pro, Date currentDate, String color,
-			String size) {
+			String size, int quantity) {
 		Order_details od_details = new Order_details();
 
 		od_details.setOrder_id(ord);
@@ -196,7 +197,7 @@ public class OrderController {
 			od_details.setProduct_id(pro.get());
 		}
 		od_details.setOrder_status("DangCho");
-		od_details.setQuantity(1);
+		od_details.setQuantity(quantity);
 		od_details.setCreated_at(currentDate);
 		od_details.setColor(color);
 		od_details.setSize(size);
@@ -244,7 +245,8 @@ public class OrderController {
 		String color = (String) session.getAttribute("color");
 		String size = (String) session.getAttribute("size");
 		Date currentDate = (Date) session.getAttribute("currentDate");
-
+        int quantity = (int) session.getAttribute("quantity");
+        
 		// tìm id của địa chỉ và product
 		Orders ord = new Orders();
 
@@ -296,13 +298,14 @@ public class OrderController {
 			if (selectedProductsCart != null && selectedProductsCart.size() > 0) {
 				for (Cart cart : selectedProductsCart) {
 					Optional<Products> product = Optional.of(cart.getProduct_id());
+					
 					Order_details od_detailsCart = getOrderedProductDetails(ord, product, currentDate, cart.getColor(),
-							cart.getSize());
+							cart.getSize() , cart.getQuantity());
 					orderDetailsService.add_orderDetails(od_detailsCart);
 				}
 			} else {
 				// nếu mua bằng buy now thì lưu 1 cái
-				Order_details od_details = getOrderedProductDetails(ord, pro, currentDate, color, size);
+				Order_details od_details = getOrderedProductDetails(ord, pro, currentDate, color, size , quantity);
 				orderDetailsService.add_orderDetails(od_details);
 			}
 
@@ -316,7 +319,7 @@ public class OrderController {
 			session.removeAttribute("size");
 			session.removeAttribute("currentDate");
 			session.removeAttribute("selectedProducts");
-			session.removeAttribute("selectedProducts");
+			session.removeAttribute("quantity");
 		}
 
 //		for (String detail : orderDetailsArray) {

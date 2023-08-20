@@ -336,6 +336,9 @@ h2 small {
 													class="d-flex flex-wrap">
 													<p th:if="${listColor == null}"
 														th:text="${'Sản Phẩm K Có Màu'}"></p>
+														<th:block th:if="${listColor == null or listColor.isEmpty()}">
+														<input type="text" name="color[]"  />
+													</th:block>
 													<th:block th:each="it, stat : ${listColor}">
 														<div class="input-wrapper">
 															<input class="w3-input w3-border w3-round" type="text"

@@ -80,7 +80,13 @@ public class ProductAPI {
 	public ResponseEntity<Void> delSale(@RequestParam("id") int sid) {
 		saleDAO.deleteById(sid);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
+	// lấy sp theo id
+	@RequestMapping("/api/findByIdProduct")
+	public ResponseEntity<Optional<Products>> findByIdProduct(@RequestParam("id") int sid) {	
+		Optional<Products> pro = productsServiceImp.findById(sid);
+		return ResponseEntity.ok(pro);
 	}
 
 	// api sản phẩm
@@ -153,7 +159,6 @@ public class ProductAPI {
 	// viet api cho catogery
 	@GetMapping("/api/category")
 	public ResponseEntity<List<Category>> getCategory() {
-
 		List<Category> listCato = adminServiceImp.listCategory();
 		return new ResponseEntity<>(listCato, HttpStatus.OK);
 	}

@@ -46,7 +46,6 @@ import com.example.shop.model.Products;
 import com.example.shop.model.Sale;
 import com.example.shop.model.Users;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -112,14 +111,11 @@ public class ShopController {
 		m.addAttribute("listProNew", listProNew);
 
 		// Lấy danh sách tin nhắn của người dùng và admin
-		
 
-		// Sau khi đã sắp xếp theo thời gian, danh sách 'combinedMessages' đã được sắp xếp tăng dần theo thời gian gửi
+		// Sau khi đã sắp xếp theo thời gian, danh sách 'combinedMessages' đã được sắp
+		// xếp tăng dần theo thời gian gửi
 
-
-
-		//m.addAttribute("Listmessage", mesage);
-	
+		// m.addAttribute("Listmessage", mesage);
 
 		return "/views/index";
 	}
@@ -163,12 +159,12 @@ public class ShopController {
 	@RequestMapping(value = { "/searchProduct", "/searchProduct/{i}" })
 	public String searchByName(@PathVariable("i") Optional<Integer> i, Model model,
 			@RequestParam("nameProduct") String name, Model m) {
-		Pageable pageable = PageRequest.of(i.orElse(0), 1);
+		Pageable pageable = PageRequest.of(i.orElse(0), 12);
 		Page<Products> page = productsServiceImp.searchByName(pageable, name);
 		session.setAttribute("listPro", page);
 		model.addAttribute("query", "nameProduct=" + name);
 		m.addAttribute("message", name);
-
+		m.addAttribute("queryShare", name);
 		model.addAttribute("url", "searchProduct");
 
 		return "/views/shop";
@@ -217,7 +213,7 @@ public class ShopController {
 	// int uid, Model m) {
 	public String getProductByUser(@PathVariable("uid") int uid, Model m) {
 		Pageable pageable = PageRequest.of(0, 12);
-		Page<Products> pageASC = productsServiceImp.finAllByUser(pageable, uid);
+		Page<Products> pageASC = productsServiceImp.getProductById(pageable, uid);
 		m.addAttribute("listProUser", pageASC);
 
 		Optional<Users> user = loginDAO.findById(uid);

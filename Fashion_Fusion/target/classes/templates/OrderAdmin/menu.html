@@ -9,32 +9,52 @@ a {
 <div th:fragment="menu">
 	<aside class="left-sidebar" data-sidebarbg="skin6" style="z-index: 50;">
 		<!-- Sidebar scroll-->
-		<div class="scroll-sidebar" style="font-size: 15px">
+		<div class="scroll-sidebar" style="font-size: 15px; bottom: 90px;">
 
 
 			<!-- Sidebar navigation-->
 			<nav class="sidebar-nav" style="position: fixed;">
+				<a th:if="${session.acc.role == true}" href="/SuperAdmin/home"><img
+					style="width: 230px; padding-left: 10px;"
+					src="https://scontent.fdad3-4.fna.fbcdn.net/v/t39.30808-6/300383193_469971148473030_3989232523169049812_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=e3f864&_nc_ohc=jo3JXKSpypMAX_m2HYO&_nc_oc=AQkELhSlTzXjGcav4SR8uJKvXzYZggefttoM5JDU6g3rfnvEH0uNQ_ji5XJ3XX3TCfM&_nc_ht=scontent.fdad3-4.fna&oh=00_AfBFLc9RoelsBu7VrnZ5mw5NbO2lgSEApPnS1jlOL_sdDw&oe=64D9863E"
+					alt="" /></a> <a th:if="${session.acc.role == false}"
+					href="/SuperAdmin/home">
+					
+					<img
+					style="width: 230px; padding-left: 10px;"
+					src="https://gudlogo.com/wp-content/uploads/2019/04/logo-chu-V-valuefield_400x300.png"
+					alt="" /></a>
+
 				<ul id="sidebarnav">
 
 					<!-- Kiểm tra nếu session.acc tồn tại và có trường Role bằng true -->
 					<th:block th:if="${session.acc != null and session.acc.Role}">
+
+
+						<li class="sidebar-item pt-2"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							href="/SuperAdmin/home" aria-expanded="false"> <i
+								class=" fas fa-chart-line" aria-hidden="true"></i> <span
+								class="hide-menu">Thống Kê Doanh Thu</span>
+						</a></li>
+
 						<li class="sidebar-item"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
-							href="ManagerUsers" aria-expanded="false"> <i
+							href="/SuperAdmin/ManagerUsers" aria-expanded="false"> <i
 								class="fa fa-users"></i> <span class="hide-menu">Quản Lý
 									Tài Khoản</span>
 						</a></li>
 
 						<li class="sidebar-item"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
-							href="ManagerVoucher" aria-expanded="false"> <i
+							href="/SuperAdmin/ManagerUsers" aria-expanded="false"> <i
 								class="fa fa-gift"></i> <span class="hide-menu">Quản Lý
 									Voucher</span>
 						</a></li>
 
 						<li class="sidebar-item"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
-							href="/Admin/chat" aria-expanded="false"><i
+							href="/SuperAdmin/chat" aria-expanded="false"><i
 								class="fas fa-envelope"></i> <span class="hide-menu">Tin
 									Nhắn</span> </a></li>
 					</th:block>

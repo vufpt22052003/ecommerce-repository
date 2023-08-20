@@ -7,11 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import com.example.shop.Service.EmailService;
 import com.example.shop.Service.LoginService;
 import com.example.shop.Service.UserService;
 import com.example.shop.ServiceImp.LoginServiceImp;
+import com.example.shop.model.AccountTranSport;
 import com.example.shop.model.Users;
 
 import jakarta.servlet.http.Cookie;
@@ -51,11 +54,16 @@ public class LoginController {
 	EmailService emailService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	com.example.shop.DAO.AccountTranSportDAO accountTranSportDAO;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping({ "/login" })
 	public String Login() {
 		String url = request.getRequestURL().toString();
 		if (url.contains("login")) {
+			System.out.println("---");
 
 			return "views/login";
 		}
@@ -202,6 +210,32 @@ public class LoginController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@PostMapping("/TransportLogin")
+	public String login(@RequestParam("email") String email, @RequestParam("pass") String pass, Model m) {
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+		String encodedPassword = bCryptPasswordEncoder.encode(pass);
+		System.out.println(encodedPassword);
+		AccountTranSport acc = accountTranSportDAO.checkAccountTranSport(email, pass);
+		if (acc != null) {
+			System.out.println("tk có");
+			session.setAttribute("accTransport", acc);
+			return "redirect:/HomeTranSport"; // Chuyển hướng đến trang chính sau khi đăng nhập thành công
+		} else {
+			System.out.println("tk k có");
+			m.addAttribute("message", "Không Tìm Thấy Tài Khoản");
+			m.addAttribute("email", email);
+			m.addAttribute("pass", pass);
+		}
+		return "Shipper/Login";
+	}
+
+	@RequestMapping("api/TransportLogOut")
+	public ResponseEntity<Void> transportLogOut() {
+	    session.removeAttribute("accTransport");
+	    return ResponseEntity.ok().build();
 	}
 
 }

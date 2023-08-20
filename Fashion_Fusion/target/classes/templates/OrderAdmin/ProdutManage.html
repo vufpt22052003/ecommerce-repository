@@ -373,7 +373,7 @@ h2 small {
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
 							</div>
 							<div class="modal-body">
-								<form action="addSale" method="post">
+								<form action="/Admin/addSale" method="post">
 									<div class="form-group">
 										<div class="row">
 											<div class="col-md-12">
@@ -384,17 +384,26 @@ h2 small {
 														Đổi:</b> {{sale.price_sale}}
 												</div>
 
+
+												<div class="form-group" ng-hide="showPrice">
+													<b>Mã Sản Phẩm : </b>{{product.id}} <br /> <b>Giá Gốc
+														: </b> {{product.price}}<br /> <b>Tên Sản Phẩm : </b>
+													{{product.name}}<br />
+												</div>
+
+<hr />
 												<input hidden ng-value="id" name="Pid" />
 												<div class="form-group" ng-hide="!addPriceSale">
 													Gía Thay Đổi <input type="text" class="form-control"
-														style="margin-right: 50px; width: 150px;"
+														style="margin-right: 50px; "
 														ng-model="price_sale" name="sale_price" />
 												</div>
 												<div class="form-group">
 
 													<label for="contentSale">Nội Dung Giảm:</label>
 													<textarea class="form-control" id="contentSale" rows="2"
-														cols="15" ng-model="sale.contend_sale" name="contend_sale"></textarea>
+														cols="15" ng-model="sale.contend_sale" name="contend_sale"
+														required="required"></textarea>
 												</div>
 												<div ng-if="sale.is_sale === true ">Trạng Thái: Đang
 													Diễn Ra</div>
@@ -402,26 +411,28 @@ h2 small {
 											</div>
 										</div>
 									</div>
+
+
 									<div class="row">
 										<div class="col-6">
 											<div class="form-group">
 												<label for="startDate">Ngày Bắt Đầu:</label> <input
 													type="datetime-local" class="form-control" id="startDate"
-													ng-value="startDate" name="start_datetime">
+													ng-value="startDate" name="start_datetime"
+													required="required" min="{{ currentDate }}">
 											</div>
 										</div>
 										<div class="col-6">
 											<div class="form-group">
 												<label for="endDate">Ngày Kết Thúc:</label> <input
 													type="datetime-local" class="form-control" id="endDate"
-													ng-value="endDate" name="end_datetime">
+													ng-value="endDate" name="end_datetime" required="required">
 											</div>
 										</div>
 									</div>
 									<div class="modal-footer">
 										<button type="submit" class="btn btn-primary change-button"
-											ng-hide="!isUpdateClicked" ng-click="change()">Thay
-											Đổi</button>
+											ng-hide="!isUpdateClicked">Thay Đổi</button>
 
 
 									</div>
@@ -453,9 +464,9 @@ h2 small {
 					$(this).next('.table-details').collapse('show');
 				});
 			});
-			
-			function shearAdmin(){
-				
+
+			function shearAdmin() {
+
 			}
 		</script>
 	</div>

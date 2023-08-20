@@ -15,6 +15,7 @@ import com.example.shop.model.Orders;
 import com.example.shop.model.Users;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -44,41 +45,38 @@ public class OrderServiceImp implements OrderService {
 	// người dùng chờ đợi
 
 	@Override
-	public List<Order_details> Orders_Awaiting() {
+	public List<Order_details> getOrderStatusMyOder(String status) {
 		Users acc = (Users) session.getAttribute("acc");
 		int uid = acc.getId();
-		return (List<Order_details>) order_detailsDAO.Orders_AwaitingAndCancelled(uid);
+		return (List<Order_details>) order_detailsDAO.getOrderStatusMyOder(uid, status);
+	}
+	
+
+	@Override
+	public List<Order_details> getListByOder(int id) {
+		Users acc = (Users) session.getAttribute("acc");
+		int uid = acc.getId();
+		return (List<Order_details>) order_detailsDAO.getListByOder(id);
 	}
 
 	// người dùng coi đơn dã tahnh cong
 
 	@Override
-	public List<Order_details> Orders_confim() {
-		Users acc = (Users) session.getAttribute("acc");
-		int uid = acc.getId();
-		return (List<Order_details>) order_detailsDAO.Orders_confirmed(uid);
-	}
-	// người dùng coi đơn dã bị hủy
-
-	@Override
-	public List<Order_details> Orders_cancel() {
-		Users acc = (Users) session.getAttribute("acc");
-		int uid = acc.getId();
-		return (List<Order_details>) order_detailsDAO.Orders_cancel(uid);
-	}
-
-	@Override
 	public List<Object[]> getTopUserByOder() {
 		Users acc = (Users) session.getAttribute("acc");
 		int uid = acc.getId();
-		return orderDAO.getTopAccountsByOrder(uid);
-
+		return orderDAO.getTopAccountsByOrder(21);
 	}
-	
+
 	@Override
 	public List<Orders> getOderStatus(String status) {
 		return (List<Orders>) orderDAO.getOderStatus(status);
 	}
 
-	
+	@Override
+	@Transactional
+	public void updateShareRole(double price, double share_roses, int id) {
+		order_detailsDAO.ShareRose(price, share_roses, id);
+	}
+
 }

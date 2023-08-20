@@ -115,6 +115,7 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 	};
 
 	$scope.update = function(id) {
+
 		$rootScope.sale = {}; // Xóa dữ liệu trong $rootScope.sale
 		delete $rootScope.startDate; // Xóa giá trị trong $rootScope.startDate
 		delete $rootScope.endDate; // Xóa giá trị trong $rootScope.endDate   
@@ -124,12 +125,24 @@ app.controller('PorductController', ['$http', '$scope', '$rootScope', function($
 		$scope.addPriceSale = true;
 		$scope.id = id
 
+		$rootScope.product = {};
+		$http({
+			method: 'GET',
+			url: '/api/findByIdProduct',
+			params: { id: id }
+		}).then(function(response) {
+			console.log(response.data);
+			$rootScope.product = response.data;
+		}, function(error) {
+			console.log(error.data);
+		});
+
 	}
 
 	$scope.deleteProduct = function(id) {
 		Swal.fire({
 			title: 'Thông báo',
-			text: 'Bạn có muốn xóa Sale này không?',
+			text: 'Bạn có muốn xóa Sản Phẩm này không?',
 			icon: 'info',
 			showCancelButton: true,
 			confirmButtonText: 'Yes',
@@ -384,7 +397,7 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 		});
 	}
 
-	$scope.information = 'pending';
+	$scope.information = 'DangCho';
 	// phía ng dùng
 	$scope.loadData = function(type) {
 
@@ -538,7 +551,7 @@ app.controller('OrderController', ['$http', '$scope', '$rootScope', function($ht
 			success: function(data) {
 				$scope.loadDetails($scope.selectType);
 				$scope.loadData($scope.information);
-
+				location.reload()
 			},
 			error: function(xhr, status, error) {
 				console.log(error);

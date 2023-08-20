@@ -512,17 +512,23 @@ a {
 						<li class="nav-item"><a class="nav-link active show"
 							id="home-taThursday" data-toggle="tab" href="#home" role="tab"
 							aria-controls="home" aria-selected="true" ng-model="information"
-							ng-click="loadData('pending')"> Đang Chờ</a></li>
+							ng-click="loadData('DangCho')"> Đang Chờ</a></li>
+					
+						<li class="nav-item"><a class="nav-link"
+							 data-toggle="tab" href="#home" role="tab"
+							aria-controls="home" aria-selected="false" ng-model="information"
+							ng-click="loadData('BanGiaoVanChuyen')"> Vận Chuyển</a></li>
+							
 						<li class="nav-item"><a class="nav-link" id="profile-tab"
 							data-toggle="tab" href="#profile" role="tab"
 							aria-controls="profile" aria-selected="false"
-							ng-model="information" ng-click="loadData('confirm')">Hoàn
+							ng-model="information" ng-click="loadData('HoanThanh')">Hoàn
 								Thành</a></li>
 
 						<li class="nav-item"><a class="nav-link" id="contact-tab"
 							data-toggle="tab" href="#contact" role="tab"
 							aria-controls="contact" aria-selected="false"
-							ng-click="loadData('cancel' )">Đơn Hàng Đã Hủy</a></li>
+							ng-click="loadData('HuyDon' )">Đơn Hàng Đã Hủy</a></li>
 
 					</ul>
 					<div class="tab-content" id="myTabContent">
@@ -584,14 +590,19 @@ a {
 											</td>
 											<td>${{item.price * item.quantity}}</td>
 											<td>
-												<p ng-if="information == 'pending'">
+												<p ng-if="information == 'DangCho'">
 													<button class="btn btn-info" style="margin-top: 10px"
 														ng-click="cancel(item.id, 'userCancel')">Hủy Đơn
 														Hàng</button>
 													<button disabled class="btn btn-info"
 														style="margin-top: 10px">Đang Chờ</button>
 												</p>
-												<div ng-if="information == 'confirm'">
+												<div ng-if="information === 'BanGiaoVanChuyen' ">
+													<button disabled class="btn btn-info"
+														style="margin-top: 10px">Đơn Hàng Đã Được Bàn
+														Giao Cho Vận Chuyển</button>
+												</div>
+												<div ng-if="information == 'HoanThanh'">
 													<form action=/checkBuyNow method="post">
 														<input type="hidden" name="type" value="buyNow" /> <input
 															type="hidden" name="productId"
@@ -856,7 +867,7 @@ a {
 							<br /> <input type="hidden" ng-model="selectedProduct.id" /> <input
 								type="hidden" ng-model="selectedProduct.detailsId" />
 							<textarea class="form-control" id="comment" ng-model="comment"
-								rows="3"placeholder="Đánh Giá Của Bạn Về Sản Phẩm" required></textarea>
+								rows="3" placeholder="Đánh Giá Của Bạn Về Sản Phẩm" required></textarea>
 							<br />
 							<div class="border border-3 p-4 rounded">
 								<div class="mb-3">

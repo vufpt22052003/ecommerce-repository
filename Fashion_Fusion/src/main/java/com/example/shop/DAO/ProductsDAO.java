@@ -38,20 +38,15 @@ public interface ProductsDAO extends JpaRepository<Products, Integer> {
 	@Query("SELECT p FROM Products p WHERE p.name LIKE %:name% ORDER BY p.id DESC LIMIT 6")
 	List<Products> findByName(String name);
 
-	// lấy danh sách sp theo uses
-	@Query("SELECT p FROM Products p WHERE p.user_id.id = ?1 ORDER BY p.id DESC")
-Page<Products> finAllByUser(Pageable pageable, int uid);
 
 	// lấy danh sách sp theo uses
-	@Query(value = "SELECT * FROM ( " +
-	        "    SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum " +
-	        "    FROM Products " +
-	        "    WHERE user_id = ?1 " +
-	        ") AS SubQuery " +
-	        "WHERE RowNum > 1 " +
-	        "ORDER BY RowNum " +
-	        "OFFSET ?2 ROWS " +
-	        "FETCH NEXT ?3 ROWS ONLY", nativeQuery = true)
+	@Query("SELECT p FROM Products p WHERE p.user_id.id = ?1")
+	Page<Products> finAllByUser(Pageable pageable, int uid);
+
+	// lấy danh sách sp theo uses
+	@Query(value = "SELECT * FROM ( " + "    SELECT *, ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS RowNum "
+			+ "    FROM Products " + "    WHERE user_id = ?1 " + ") AS SubQuery " + "WHERE RowNum > 1 "
+			+ "ORDER BY RowNum " + "OFFSET ?2 ROWS " + "FETCH NEXT ?3 ROWS ONLY", nativeQuery = true)
 	List<Products> getProductByUser(int userId, int offset, int limit);
 
 	// lấy danh sách khi tim kiếm

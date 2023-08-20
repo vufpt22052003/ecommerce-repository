@@ -12,29 +12,47 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.shop.DAO.OrderDAO;
 import com.example.shop.DAO.Order_detailsDAO;
+import com.example.shop.Service.EmailService;
 import com.example.shop.Service.OrderDetailsService;
 import com.example.shop.Service.OrderService;
+import com.example.shop.Service.ProductsService;
+import com.example.shop.Service.RoseService;
 import com.example.shop.ServiceImp.CommentServiceImp;
 import com.example.shop.model.Comment;
 import com.example.shop.model.OrderStatusDTO;
 import com.example.shop.model.Order_details;
+import com.example.shop.model.Orders;
+import com.example.shop.model.Products;
+
+import jakarta.persistence.criteria.Order;
 
 @RestController
 public class OrderAPI {
-		@Autowired
-		OrderService orderService;
-	
-		@Autowired
-		OrderDetailsService orderDetailsService;
-		@Autowired
-		Order_detailsDAO order_detailsDAO;
+	@Autowired
+	OrderService orderService;
+	@Autowired
+	OrderDAO orderDAO;
+
+	@Autowired
+	OrderDetailsService orderDetailsService;
+	@Autowired
+	Order_detailsDAO order_detailsDAO;
 	@Autowired
 	CommentServiceImp commentServiceImp;
+
+	@Autowired
+	RoseService roseService;
+	@Autowired
+	ProductsService productsService;
+	@Autowired
+	EmailService emailService;
 
 	// lấy danh sách để ad sử lý
 	@GetMapping("api/getOrderDetails")
@@ -42,9 +60,7 @@ public class OrderAPI {
 		List<Order_details> list;
 		System.out.println(type);
 		list = orderDetailsService.getOderStatus(type);
-		for (Order_details order_details : list) {
-			System.out.println(order_details.getId());
-		}
+
 		/*
 		 * if (type.equals("all")) { // lấy tất cả list = orderService.listoder(); }
 		 * else if (type.equals("confirmed")) { // lấy danh sách đã chấp nhận list =
@@ -78,16 +94,13 @@ public class OrderAPI {
 	@GetMapping("/api/OrderStatus")
 	public ResponseEntity<List<Order_details>> listoder(@RequestParam("type") String type) {
 		// OrderStatusDTO orderStatusDTO = new OrderStatusDTO();
-		List<Order_details> orderList = null;
+		System.out.println(type);
+		List<Order_details> orderList;
 		// List<Comment> commentList = null;
 
-		if (type.equals("pending")) {
-			orderList = orderService.Orders_Awaiting();
-			// commentList = commentServiceImp.getCmtByUserId();
-		} else if (type.equals("confirm")) {
-			orderList = orderService.Orders_confim();
-		} else if (type.equals("cancel")) {
-			orderList = orderService.Orders_cancel();
+		if (type != null) {
+			orderList = orderService.getOrderStatusMyOder(type);
+
 		} else {
 			// Xử lý trường hợp không có điều kiện nào khớp
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -113,9 +126,43 @@ public class OrderAPI {
 
 	@RequestMapping("/api/update_status")
 	public ResponseEntity<Void> update_status(@RequestParam("selectedStatus") String selectedStatus,
-			@RequestParam("orderId") int orderId) {
-		System.out.println(selectedStatus);
-		orderDetailsService.update_status(selectedStatus, orderId);
+			@RequestParam(value = "orderDetails_id[]", required = false) Integer[] orderDetailsIds,
+			@RequestParam(value = "orderId", required = false) Integer orderId) {
+
+		if (orderId != null) {
+			orderDetailsService.update_status(selectedStatus, orderId);
+		}
+
+		if (orderDetailsIds != null) {
+
+			for (Integer oderDetaisId : orderDetailsIds) {
+				if (selectedStatus.equals("HoanThanh")) {
+
+					List<Order_details> orderDetailsList = order_detailsDAO.getListByOder(oderDetaisId);
+					Optional<Order_details> od = order_detailsDAO.findById(oderDetaisId);
+
+					String subject = "Thông Tin Đơn Hàng";
+					String baseBody = "Chào bạn,\n\nĐơn Hàng " + od.get().getProduct_id().getName() + " Có Mã " + " "
+							+ oderDetaisId + " Đang Trên Đường Giao Đến Bạn\n\nTrân trọng,\nĐội ngũ quản trị \n \n";
+					baseBody += "Xin Vui Lòng Chú ý Điện Thoại";
+					for (Order_details item : orderDetailsList) {
+						String userEmail = item.getOrder_id().getUser_id().getEmail();
+						String body = String.format(baseBody, oderDetaisId);
+						emailService.sendEmail(userEmail, subject, body);
+					}
+				}
+
+				orderDetailsService.update_status(selectedStatus, oderDetaisId);
+				Optional<Order_details> od = order_detailsDAO.findById(oderDetaisId);
+				Optional<Products> pro = productsService.findById(od.get().getProduct_id().getId());
+				roseService.save(od.get().getPrice(), pro.get());
+
+				int commissionAmount = (int) ((od.get().getPrice() * 10) / 100); // phần trăm được chia
+				double priceRose = od.get().getPrice() - commissionAmount; // Số tiền được chia
+				orderService.updateShareRole(priceRose, commissionAmount, oderDetaisId);
+			}
+		}
+
 		return ResponseEntity.ok().build();
 	}
 //	@GetMapping("/api/O")
